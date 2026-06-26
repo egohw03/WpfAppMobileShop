@@ -11,6 +11,7 @@ namespace WpfAppMobileShop.ViewModels
         private string _password;
         private string _errorMessage;
         private bool _isLoginSuccess;
+        private bool _isLoading;
 
         public string Username
         {
@@ -36,6 +37,12 @@ namespace WpfAppMobileShop.ViewModels
             set => SetProperty(ref _isLoginSuccess, value);
         }
 
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set => SetProperty(ref _isLoading, value);
+        }
+
         public ICommand LoginCommand { get; }
 
         public LoginViewModel()
@@ -50,6 +57,9 @@ namespace WpfAppMobileShop.ViewModels
                 ErrorMessage = "Vui lòng nhập tên đăng nhập và mật khẩu!";
                 return;
             }
+
+            IsLoading = true;
+            ErrorMessage = null;
 
             using (var context = new StoreDbContext())
             {
@@ -66,6 +76,8 @@ namespace WpfAppMobileShop.ViewModels
                     ErrorMessage = "Tên đăng nhập hoặc mật khẩu không đúng!";
                 }
             }
+
+            IsLoading = false;
         }
     }
 }

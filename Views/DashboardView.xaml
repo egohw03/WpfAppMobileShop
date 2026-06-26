@@ -4,60 +4,132 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="900">
     <ScrollViewer>
-        <Grid Margin="20">
+        <Grid Margin="24">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="{Binding Title}" FontSize="28" FontWeight="Bold" Foreground="#1976D2"/>
-            <Grid Grid.Row="1" Margin="0,20,0,20">
+
+            <TextBlock Text="Bảng điều khiển" Style="{StaticResource TitleTextStyle}" Margin="0,0,0,4"/>
+            <TextBlock Text="Tổng quan hoạt động cửa hàng" FontSize="13" Foreground="#888" Margin="0,0,0,20"/>
+
+            <Grid Grid.Row="1" Margin="0,0,0,24">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.Column="0" Background="White" CornerRadius="5" Padding="15" Margin="5">
-                    <StackPanel>
-                        <TextBlock Text="Tổng đơn hàng" FontSize="14" Foreground="#666"/>
-                        <TextBlock Text="{Binding TotalOrders}" FontSize="32" FontWeight="Bold" Foreground="#1976D2"/>
-                    </StackPanel>
-                </Border>
-                <Border Grid.Column="1" Background="White" CornerRadius="5" Padding="15" Margin="5">
-                    <StackPanel>
-                        <TextBlock Text="Tồn kho" FontSize="14" Foreground="#666"/>
-                        <TextBlock Text="{Binding TotalProducts}" FontSize="32" FontWeight="Bold" Foreground="#4CAF50"/>
-                    </StackPanel>
-                </Border>
-                <Border Grid.Column="2" Background="White" CornerRadius="5" Padding="15" Margin="5">
-                    <StackPanel>
-                        <TextBlock Text="Khách hàng" FontSize="14" Foreground="#666"/>
-                        <TextBlock Text="{Binding TotalCustomers}" FontSize="32" FontWeight="Bold" Foreground="#FF9800"/>
-                    </StackPanel>
-                </Border>
-                <Border Grid.Column="3" Background="White" CornerRadius="5" Padding="15" Margin="5">
-                    <StackPanel>
-                        <TextBlock Text="Doanh thu hôm nay" FontSize="14" Foreground="#666"/>
-                        <TextBlock Text="{Binding TodayRevenue, StringFormat=N0}" FontSize="32" FontWeight="Bold" Foreground="#F44336"/>
-                    </StackPanel>
-                </Border>
+
+                <md:Card Grid.Column="0" Margin="6" Padding="20" UniformCornerRadius="8">
+                    <md:Card.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#1976D2" Offset="0"/>
+                            <GradientStop Color="#1565C0" Offset="1"/>
+                        </LinearGradientBrush>
+                    </md:Card.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#33FFFFFF" CornerRadius="8" Width="48" Height="48">
+                            <md:PackIcon Kind="Receipt" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding TotalOrders}" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Tổng đơn hàng" FontSize="12" Foreground="#B3FFFFFF" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </md:Card>
+
+                <md:Card Grid.Column="1" Margin="6" Padding="20" UniformCornerRadius="8">
+                    <md:Card.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#4CAF50" Offset="0"/>
+                            <GradientStop Color="#388E3C" Offset="1"/>
+                        </LinearGradientBrush>
+                    </md:Card.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#33FFFFFF" CornerRadius="8" Width="48" Height="48">
+                            <md:PackIcon Kind="PackageVariantClosed" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding TotalProducts}" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Tồn kho" FontSize="12" Foreground="#B3FFFFFF" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </md:Card>
+
+                <md:Card Grid.Column="2" Margin="6" Padding="20" UniformCornerRadius="8">
+                    <md:Card.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#FF9800" Offset="0"/>
+                            <GradientStop Color="#F57C00" Offset="1"/>
+                        </LinearGradientBrush>
+                    </md:Card.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#33FFFFFF" CornerRadius="8" Width="48" Height="48">
+                            <md:PackIcon Kind="AccountGroup" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding TotalCustomers}" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Khách hàng" FontSize="12" Foreground="#B3FFFFFF" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </md:Card>
+
+                <md:Card Grid.Column="3" Margin="6" Padding="20" UniformCornerRadius="8">
+                    <md:Card.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#F44336" Offset="0"/>
+                            <GradientStop Color="#D32F2F" Offset="1"/>
+                        </LinearGradientBrush>
+                    </md:Card.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#33FFFFFF" CornerRadius="8" Width="48" Height="48">
+                            <md:PackIcon Kind="CurrencyUsd" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding TodayRevenue, StringFormat=N0}" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Doanh thu hôm nay" FontSize="12" Foreground="#B3FFFFFF" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </md:Card>
             </Grid>
+
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.Column="0" Background="White" CornerRadius="5" Padding="15" Margin="5">
+                <md:Card Grid.Column="0" Margin="6" Padding="20" UniformCornerRadius="8">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Doanh thu 7 ngày" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <md:PackIcon Kind="ChartTimelineVariant" FontSize="20" Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="  Doanh thu 7 ngày" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
                         <lvc:CartesianChart Grid.Row="1" Series="{Binding RevenueSeries}" 
                                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                             Hoverable="True">
@@ -69,19 +141,22 @@
                             </lvc:CartesianChart.AxisY>
                         </lvc:CartesianChart>
                     </Grid>
-                </Border>
-                <Border Grid.Column="1" Background="White" CornerRadius="5" Padding="15" Margin="5">
+                </md:Card>
+                <md:Card Grid.Column="1" Margin="6" Padding="20" UniformCornerRadius="8">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Top 5 sản phẩm bán chạy" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <md:PackIcon Kind="Poll" FontSize="20" Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="  Top 5 sản phẩm bán chạy" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
                         <lvc:PieChart Grid.Row="1" Series="{Binding TopProductsSeries}" 
                                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                       Hoverable="True"/>
                     </Grid>
-                </Border>
+                </md:Card>
             </Grid>
         </Grid>
     </ScrollViewer>

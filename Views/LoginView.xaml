@@ -1,18 +1,23 @@
 <Window x:Class="WpfAppMobileShop.Views.LoginView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:helpers="clr-namespace:WpfAppMobileShop.Helpers"
         Title="Đăng nhập - Mobile Shop"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
-        Width="400" Height="500"
+        Width="400" Height="520"
         FontFamily="Segoe UI">
-    <Border CornerRadius="10" Background="White" BorderBrush="#E0E0E0" BorderThickness="1">
+    <Window.Resources>
+        <helpers:BoolToVisibilityConverter x:Key="BoolToVis"/>
+    </Window.Resources>
+    <Border CornerRadius="12" Background="White" BorderBrush="#E0E0E0" BorderThickness="1">
         <Border.Effect>
-            <DropShadowEffect BlurRadius="20" ShadowDepth="0" Color="#40000000"/>
+            <DropShadowEffect BlurRadius="30" ShadowDepth="0" Color="#40000000"/>
         </Border.Effect>
-        <Grid Margin="30">
+        <Grid Margin="32">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -22,71 +27,62 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" Background="#1976D2" CornerRadius="50" Width="80" Height="80" HorizontalAlignment="Center" Margin="0,10,0,20">
+
+            <Border Grid.Row="0" Width="80" Height="80" HorizontalAlignment="Center" Margin="0,8,0,20">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#1976D2" Offset="0"/>
+                        <GradientStop Color="#1565C0" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.CornerRadius>
+                    <CornerRadius>40</CornerRadius>
+                </Border.CornerRadius>
                 <TextBlock Text="MS" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Border>
-            <TextBlock Grid.Row="1" Text="ĐĂNG NHẬP" FontSize="22" FontWeight="Bold" Foreground="#1E1E2D" HorizontalAlignment="Center" Margin="0,0,0,5"/>
-            <TextBlock Grid.Row="2" Text="Phần mềm quản lý cửa hàng di động" FontSize="12" Foreground="#888" HorizontalAlignment="Center" Margin="0,0,0,25"/>
-            <StackPanel Grid.Row="3" Margin="0,0,0,15">
-                <TextBlock Text="Tên đăng nhập" FontSize="13" Foreground="#555" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Height="42" FontSize="14"
-                         BorderBrush="#DDD" BorderThickness="1" Padding="10,0">
-                    <TextBox.Style>
-                        <Style TargetType="TextBox">
-                            <Setter Property="Background" Value="#F9F9F9"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsFocused" Value="True">
-                                    <Setter Property="Background" Value="White"/>
-                                    <Setter Property="BorderBrush" Value="#1976D2"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
+
+            <TextBlock Grid.Row="1" Text="ĐĂNG NHẬP" FontSize="22" FontWeight="Bold" Foreground="#1E1E2D" HorizontalAlignment="Center" Margin="0,0,0,4"/>
+            <TextBlock Grid.Row="2" Text="Phần mềm quản lý cửa hàng di động" FontSize="12" Foreground="#888" HorizontalAlignment="Center" Margin="0,0,0,28"/>
+
+            <StackPanel Grid.Row="3" Margin="0,0,0,16">
+                <TextBlock Text="Tên đăng nhập" FontSize="13" Foreground="#555" Margin="0,0,0,6"/>
+                <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Height="44" FontSize="14"
+                         Padding="12,0" BorderBrush="#DDD" BorderThickness="1"
+                         md:TextFieldAssist.HasFilledTextField="True"
+                         md:TextFieldAssist.CharacterCounterVisibility="Collapsed"/>
             </StackPanel>
+
             <StackPanel Grid.Row="4" Margin="0,0,0,20">
-                <TextBlock Text="Mật khẩu" FontSize="13" Foreground="#555" Margin="0,0,0,5"/>
-                <PasswordBox x:Name="PasswordBox" Height="42" FontSize="14"
-                             BorderBrush="#DDD" BorderThickness="1" Padding="10,0"
-                             Background="#F9F9F9" KeyDown="PasswordBox_KeyDown">
-                    <PasswordBox.Style>
-                        <Style TargetType="PasswordBox">
-                            <Style.Triggers>
-                                <Trigger Property="IsFocused" Value="True">
-                                    <Setter Property="Background" Value="White"/>
-                                    <Setter Property="BorderBrush" Value="#1976D2"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </PasswordBox.Style>
-                </PasswordBox>
+                <TextBlock Text="Mật khẩu" FontSize="13" Foreground="#555" Margin="0,0,0,6"/>
+                <PasswordBox x:Name="PasswordBox" Height="44" FontSize="14"
+                             Padding="12,0" BorderBrush="#DDD" BorderThickness="1"
+                             Background="#F9F9F9" KeyDown="PasswordBox_KeyDown"
+                             md:TextFieldAssist.HasFilledTextField="True"/>
             </StackPanel>
-            <TextBlock Grid.Row="5" Text="{Binding ErrorMessage}" Foreground="#F44336" FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-            <Button Grid.Row="6" Content="ĐĂNG NHẬP" Height="45" FontSize="15" FontWeight="Bold"
-                    Background="#1976D2" Foreground="White" BorderThickness="0"
-                    Cursor="Hand" Click="LoginButton_Click">
+
+            <TextBlock Grid.Row="5" Text="{Binding ErrorMessage}" Foreground="{StaticResource DangerBrush}" FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+
+            <Button Grid.Row="6" Height="46" FontSize="15" FontWeight="Bold"
+                    BorderThickness="0" Cursor="Hand" Click="LoginButton_Click">
                 <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="5">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
+                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                        <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Content" Value="ĐĂNG NHẬP"/>
                         <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#1565C0"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#0D47A1"/>
-                            </Trigger>
+                            <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                <Setter Property="Content" Value="ĐANG XỬ LÝ..."/>
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
             </Button>
+
+            <ProgressBar Grid.Row="6" Value="0" IsIndeterminate="True" 
+                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}"
+                            Foreground="{StaticResource AccentBrush}"
+                            Height="3" Margin="0,56,0,0"/>
         </Grid>
     </Border>
 </Window>

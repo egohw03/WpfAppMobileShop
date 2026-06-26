@@ -10,6 +10,7 @@ namespace WpfAppMobileShop.ViewModels
     {
         private object _currentViewModel;
         private bool _isSidebarExpanded = true;
+        private string _currentPage = "Dashboard";
 
         public object CurrentViewModel
         {
@@ -21,6 +22,12 @@ namespace WpfAppMobileShop.ViewModels
         {
             get => _isSidebarExpanded;
             set => SetProperty(ref _isSidebarExpanded, value);
+        }
+
+        public string CurrentPage
+        {
+            get => _currentPage;
+            set => SetProperty(ref _currentPage, value);
         }
 
         public string CurrentUserDisplay => $"Xin chào, {UserSession.CurrentUser?.FullName}";
@@ -69,6 +76,7 @@ namespace WpfAppMobileShop.ViewModels
                 if (CurrentViewModel is IDisposable old)
                     old.Dispose();
                 CurrentViewModel = newVM;
+                CurrentPage = target;
             }
         }
 

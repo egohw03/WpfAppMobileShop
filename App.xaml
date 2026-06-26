@@ -4,25 +4,119 @@
              xmlns:local="clr-namespace:WpfAppMobileShop"
              xmlns:viewmodels="clr-namespace:WpfAppMobileShop.ViewModels"
              xmlns:views="clr-namespace:WpfAppMobileShop.Views"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <DataTemplate DataType="{x:Type viewmodels:DashboardViewModel}">
-            <views:DashboardView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:ProductViewModel}">
-            <views:ProductView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:CategoryViewModel}">
-            <views:CategoryView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:CustomerViewModel}">
-            <views:CustomerView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:SalesViewModel}">
-            <views:SalesView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:UserViewModel}">
-            <views:UserView/>
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <md:BundledTheme BaseTheme="Light" PrimaryColor="Blue" SecondaryColor="LightBlue"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <SolidColorBrush x:Key="PrimaryDarkBrush" Color="#1A1A2E"/>
+            <SolidColorBrush x:Key="SidebarTextBrush" Color="#A2A3B7"/>
+            <SolidColorBrush x:Key="SidebarHoverBrush" Color="#27273A"/>
+            <SolidColorBrush x:Key="SidebarActiveBrush" Color="#1976D2"/>
+            <SolidColorBrush x:Key="AccentBrush" Color="#1976D2"/>
+            <SolidColorBrush x:Key="AccentLightBrush" Color="#E3F2FD"/>
+            <SolidColorBrush x:Key="SuccessBrush" Color="#4CAF50"/>
+            <SolidColorBrush x:Key="DangerBrush" Color="#F44336"/>
+            <SolidColorBrush x:Key="WarningBrush" Color="#FF9800"/>
+            <SolidColorBrush x:Key="PageBgBrush" Color="#F0F2F5"/>
+            <SolidColorBrush x:Key="CardBgBrush" Color="White"/>
+
+            <Style x:Key="SidebarBaseStyle" TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{StaticResource SidebarTextBrush}"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Height" Value="48"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="Padding" Value="20,0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" Padding="5">
+                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource SidebarHoverBrush}"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="SidebarButtonStyle" TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}"/>
+
+            <Style x:Key="SidebarLogoutStyle" TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource SidebarHoverBrush}"/>
+                        <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="TitleTextStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="26"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Foreground" Value="{StaticResource PrimaryDarkBrush}"/>
+            </Style>
+
+            <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Height" Value="38"/>
+                <Setter Property="Padding" Value="20,0"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+            </Style>
+
+            <Style x:Key="SuccessButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource SuccessBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Height" Value="38"/>
+                <Setter Property="Padding" Value="20,0"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+            </Style>
+
+            <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
+                <Setter Property="Height" Value="38"/>
+                <Setter Property="Padding" Value="15,0"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+
+            <Style x:Key="SearchBoxStyle" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFilledTextBox}">
+                <Setter Property="Height" Value="36"/>
+                <Setter Property="md:TextFieldAssist.CharacterCounterVisibility" Value="Collapsed"/>
+                <Setter Property="md:TextFieldAssist.HasFilledTextField" Value="True"/>
+            </Style>
+
+            <DataTemplate DataType="{x:Type viewmodels:DashboardViewModel}">
+                <views:DashboardView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:ProductViewModel}">
+                <views:ProductView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:CategoryViewModel}">
+                <views:CategoryView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:CustomerViewModel}">
+                <views:CustomerView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:SalesViewModel}">
+                <views:SalesView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:UserViewModel}">
+                <views:UserView/>
+            </DataTemplate>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -4,13 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helpers="clr-namespace:WpfAppMobileShop.Helpers"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <helpers:BoolToVisibilityConverter x:Key="BoolToVis"/>
         <helpers:BoolToVisibilityConverter x:Key="InverseBoolToVis" Invert="True"/>
     </UserControl.Resources>
-    <Grid Margin="20">
+    <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -18,18 +19,17 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="{Binding Title}" FontSize="28" FontWeight="Bold" Foreground="#1976D2"/>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,15,0,10">
+        <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextStyle}"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,12">
             <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
-                     Width="300" Height="30" ToolTip="Tìm kiếm người dùng..."/>
-            <Button Content="+ Thêm" Command="{Binding AddCommand}" 
-                    Background="#4CAF50" Foreground="White" Margin="10,0,0,0"
-                    Height="30" Padding="10,0" BorderThickness="0"/>
+                     Style="{StaticResource SearchBoxStyle}" Width="300"/>
+            <Button Content="THÊM" Command="{Binding AddCommand}" 
+                    Style="{StaticResource SuccessButton}" Margin="12,0,0,0"/>
         </StackPanel>
         <DataGrid Grid.Row="2" ItemsSource="{Binding Users}" 
                   SelectedItem="{Binding SelectedUser}" 
                   AutoGenerateColumns="False" IsReadOnly="True"
-                  AlternatingRowBackground="#F5F5F5" RowHeight="35">
+                  AlternatingRowBackground="#F5F5F5" RowHeight="40" BorderThickness="0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Mã" Binding="{Binding UserId}" Width="50"/>
                 <DataGridTextColumn Header="Tên đăng nhập" Binding="{Binding Username}" Width="120"/>
@@ -40,10 +40,10 @@
                 <DataGridCheckBoxColumn Header="Kích hoạt" Binding="{Binding IsActive}" Width="80"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Border Grid.Row="3" Background="#E3F2FD" Padding="15" Margin="0,10,0,0"
-                Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}">
+        <md:Card Grid.Row="3" Padding="16" Margin="0,12,0,0" UniformCornerRadius="8"
+                 Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}">
             <StackPanel>
-                <Grid Margin="0,0,0,8">
+                <Grid Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="*"/>
@@ -52,12 +52,12 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Tên đăng nhập:" VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="1" Text="{Binding EditingUser.Username}" Height="30"/>
+                    <TextBox Grid.Column="1" Text="{Binding EditingUser.Username}" Style="{StaticResource SearchBoxStyle}"/>
                     <TextBlock Grid.Column="2"/>
                     <TextBlock Grid.Column="3" Text="Mật khẩu:" VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="4" Text="{Binding EditingUser.Password}" Height="30"/>
+                    <TextBox Grid.Column="4" Text="{Binding EditingUser.Password}" Style="{StaticResource SearchBoxStyle}"/>
                 </Grid>
-                <Grid Margin="0,0,0,8">
+                <Grid Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="*"/>
@@ -66,15 +66,15 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Họ tên:" VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="1" Text="{Binding EditingUser.FullName}" Height="30"/>
+                    <TextBox Grid.Column="1" Text="{Binding EditingUser.FullName}" Style="{StaticResource SearchBoxStyle}"/>
                     <TextBlock Grid.Column="2"/>
                     <TextBlock Grid.Column="3" Text="Vai trò:" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Column="4" SelectedValue="{Binding EditingUser.Role}" Height="30">
+                    <ComboBox Grid.Column="4" SelectedValue="{Binding EditingUser.Role}" Height="36">
                         <ComboBoxItem Content="Admin"/>
                         <ComboBoxItem Content="Staff"/>
                     </ComboBox>
                 </Grid>
-                <Grid Margin="0,0,0,8">
+                <Grid Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="*"/>
@@ -83,10 +83,10 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="SĐT:" VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="1" Text="{Binding EditingUser.Phone}" Height="30"/>
+                    <TextBox Grid.Column="1" Text="{Binding EditingUser.Phone}" Style="{StaticResource SearchBoxStyle}"/>
                     <TextBlock Grid.Column="2"/>
                     <TextBlock Grid.Column="3" Text="Email:" VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="4" Text="{Binding EditingUser.Email}" Height="30"/>
+                    <TextBox Grid.Column="4" Text="{Binding EditingUser.Email}" Style="{StaticResource SearchBoxStyle}"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -96,19 +96,19 @@
                     <TextBlock Text="Kích hoạt:" VerticalAlignment="Center"/>
                     <CheckBox Grid.Column="1" IsChecked="{Binding EditingUser.IsActive}" VerticalAlignment="Center"/>
                 </Grid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                    <Button Content="Lưu" Command="{Binding SaveCommand}" 
-                            Background="#1976D2" Foreground="White" Height="35" Padding="15,0" Margin="0,0,10,0" BorderThickness="0"/>
-                    <Button Content="Hủy" Command="{Binding CancelCommand}" 
-                            Background="#F44336" Foreground="White" Height="35" Padding="15,0" BorderThickness="0"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                    <Button Content="LƯU" Command="{Binding SaveCommand}" 
+                            Style="{StaticResource PrimaryButton}" Margin="0,0,10,0"/>
+                    <Button Content="HỦY" Command="{Binding CancelCommand}" 
+                            Style="{StaticResource DangerButton}"/>
                 </StackPanel>
             </StackPanel>
-        </Border>
-        <Border Grid.Row="4" Margin="0,10,0,0" Padding="15"
+        </md:Card>
+        <Border Grid.Row="4" Margin="0,12,0,0" Padding="12"
                 Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVis}}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Xóa" Command="{Binding DeleteCommand}" 
-                        Background="#F44336" Foreground="White" Height="35" Padding="15,0" BorderThickness="0"/>
+                <Button Content="XÓA" Command="{Binding DeleteCommand}" 
+                        Style="{StaticResource DangerButton}"/>
             </StackPanel>
         </Border>
     </Grid>

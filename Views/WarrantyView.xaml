@@ -1,0 +1,47 @@
+<UserControl x:Class="WpfAppMobileShop.Views.WarrantyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helpers="clr-namespace:WpfAppMobileShop.Helpers"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="500" d:DesignWidth="900">
+    <UserControl.Resources>
+        <helpers:BoolToVisibilityConverter x:Key="BoolToVis"/>
+    </UserControl.Resources>
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextStyle}"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,12">
+            <TextBlock Text="Loc:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <ComboBox SelectedValue="{Binding FilterStatus}" Width="160" Height="34">
+                <ComboBoxItem Content="Tat ca" IsSelected="True"/>
+                <ComboBoxItem Content="Active"/>
+                <ComboBoxItem Content="Expired"/>
+                <ComboBoxItem Content="Used"/>
+            </ComboBox>
+        </StackPanel>
+        <DataGrid Grid.Row="2" ItemsSource="{Binding Warranties}" SelectedItem="{Binding SelectedWarranty}" AutoGenerateColumns="False" IsReadOnly="True" AlternatingRowBackground="#F5F5F5" RowHeight="36" BorderThickness="0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="SP" Binding="{Binding Product.ProductName}" Width="*"/>
+                <DataGridTextColumn Header="KH" Binding="{Binding Customer.FullName}" Width="140"/>
+                <DataGridTextColumn Header="Bat dau" Binding="{Binding StartDate, StringFormat=dd/MM/yyyy}" Width="100"/>
+                <DataGridTextColumn Header="Het han" Binding="{Binding EndDate, StringFormat=dd/MM/yyyy}" Width="100"/>
+                <DataGridTextColumn Header="TT" Binding="{Binding Status}" Width="80"/>
+                <DataGridTextColumn Header="Ghi chu" Binding="{Binding Notes}" Width="200"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <md:Card Grid.Row="3" Padding="16" UniformCornerRadius="8" Margin="0,12,0,0" Visibility="{Binding SelectedWarranty, Converter={StaticResource BoolToVis}}">
+            <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <TextBlock Text="Ghi chu bao hanh:" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="1" Text="{Binding WarrantyNotes}" Height="34" Margin="12,0" Width="400"
+                         md:TextFieldAssist.HasFilledTextField="True" md:TextFieldAssist.CharacterCounterVisibility="Collapsed"/>
+                <Button Grid.Column="2" Content="GHI NHAN" Command="{Binding RecordClaimCommand}" Style="{StaticResource PrimaryButton}"/>
+            </Grid>
+        </md:Card>
+    </Grid>
+</UserControl>

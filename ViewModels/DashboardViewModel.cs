@@ -18,6 +18,11 @@ namespace WpfAppMobileShop.ViewModels
         private int _totalProducts;
         private int _totalCustomers;
         private decimal _todayRevenue;
+        private int _pendingOrders;
+        private int _lowStockProducts;
+        private decimal _monthlyRevenue;
+        private string _topCustomerName;
+        private decimal _topCustomerTotal;
 
         public string Title => "Bảng điều khiển";
 
@@ -69,6 +74,36 @@ namespace WpfAppMobileShop.ViewModels
             set => SetProperty(ref _todayRevenue, value);
         }
 
+        public int PendingOrders
+        {
+            get => _pendingOrders;
+            set => SetProperty(ref _pendingOrders, value);
+        }
+
+        public int LowStockProducts
+        {
+            get => _lowStockProducts;
+            set => SetProperty(ref _lowStockProducts, value);
+        }
+
+        public decimal MonthlyRevenue
+        {
+            get => _monthlyRevenue;
+            set => SetProperty(ref _monthlyRevenue, value);
+        }
+
+        public string TopCustomerName
+        {
+            get => _topCustomerName;
+            set => SetProperty(ref _topCustomerName, value);
+        }
+
+        public decimal TopCustomerTotal
+        {
+            get => _topCustomerTotal;
+            set => SetProperty(ref _topCustomerTotal, value);
+        }
+
         public DashboardViewModel()
         {
             try
@@ -97,6 +132,8 @@ namespace WpfAppMobileShop.ViewModels
         {
             var today = DateTime.Today;
             var sevenDaysAgo = today.AddDays(-6);
+            var firstOfMonth = new DateTime(today.Year, today.Month, 1);
+            var lowStockThreshold = int.Parse(_context.Settings.Find("LowStockThreshold")?.Value ?? "10");
 
             TotalOrders = _context.Orders.Count();
             TotalProducts = _context.Products.Sum(p => p.StockQuantity);
@@ -151,6 +188,21 @@ namespace WpfAppMobileShop.ViewModels
             };
 
             TopProductLabels = topProducts.Select(p => p.Name).ToArray();
+
+            PendingOrders = _context.Orders.Count(o => o.Status == "Pending");
+            LowStockProducts = _context.Products.Count(p => p.StockQuantity > 0 && p.StockQuantity < lowStockThreshold);
+            MonthlyRevenue = _context.Orders
+                .Where(o => o.OrderDate >= firstOfMonth && o.Status != "Cancelled")
+                .Sum(o => (decimal?)o.FinalAmount) ?? 0;
+
+            var topCustomer = _context.Orders
+                .Where(o => o.CustomerId != null && o.Status != "Cancelled")
+                .GroupBy(o => o.Customer)
+                .Select(g => new { Name = g.Key.FullName, Total = g.Sum(o => o.FinalAmount) })
+                .OrderByDescending(c => c.Total)
+                .FirstOrDefault();
+            TopCustomerName = topCustomer?.Name ?? "N/A";
+            TopCustomerTotal = topCustomer?.Total ?? 0;
         }
     }
 }

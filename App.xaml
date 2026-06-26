@@ -111,6 +111,30 @@
             <DataTemplate DataType="{x:Type viewmodels:CustomerViewModel}">
                 <views:CustomerView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:OrderViewModel}">
+                <views:OrderView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:InventoryViewModel}">
+                <views:InventoryView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:SupplierViewModel}">
+                <views:SupplierView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:PromoViewModel}">
+                <views:PromoView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:ReportViewModel}">
+                <views:ReportView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:WarrantyViewModel}">
+                <views:WarrantyView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:BackupViewModel}">
+                <views:BackupView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}">
+                <views:SettingsView/>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:SalesViewModel}">
                 <views:SalesView/>
             </DataTemplate>

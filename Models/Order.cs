@@ -16,6 +16,16 @@ namespace WpfAppMobileShop.Models
         [Required]
         public decimal TotalAmount { get; set; }
 
+        public decimal DiscountAmount { get; set; }
+
+        public decimal FinalAmount { get; set; }
+
+        [StringLength(20)]
+        public string Status { get; set; }
+
+        [StringLength(500)]
+        public string Notes { get; set; }
+
         public int? CustomerId { get; set; }
 
         public int UserId { get; set; }

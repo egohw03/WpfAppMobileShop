@@ -59,6 +59,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Giỏ hàng" FontSize="18" FontWeight="SemiBold" 
@@ -133,9 +134,27 @@
                         </StackPanel>
                     </md:Card>
 
-                    <Button Grid.Row="5" Content="THANH TOÁN" Command="{Binding CheckoutCommand}"
-                            Style="{StaticResource SuccessButton}" Height="48" FontSize="16" 
-                            FontWeight="Bold" Margin="0,4,0,0"/>
+                    <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBox Text="{Binding PromoCodeInput, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="120" Height="34"
+                                 md:TextFieldAssist.HasFilledTextField="True"
+                                 md:TextFieldAssist.CharacterCounterVisibility="Collapsed"
+                                 ToolTip="Mã giảm giá"/>
+                        <Button Content="ÁP DỤNG" Command="{Binding ApplyPromoCommand}"
+                                Height="34" Padding="10,0" Margin="4,0,0,0"
+                                Style="{StaticResource PrimaryButton}"/>
+                        <Button Content="X" Command="{Binding ClearPromoCommand}"
+                                Width="34" Height="34" Margin="4,0,0,0"
+                                Style="{StaticResource MaterialDesignFlatButton}"
+                                BorderThickness="1" BorderBrush="#DDD"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
+                        <Button Content="IN HÓA ĐƠN" Command="{Binding PrintReceiptCommand}"
+                                Style="{StaticResource PrimaryButton}" Height="40" Padding="16,0" Margin="0,0,8,0"/>
+                        <Button Content="THANH TOÁN" Command="{Binding CheckoutCommand}"
+                                Style="{StaticResource SuccessButton}" Height="48" FontSize="16" 
+                                FontWeight="Bold" Padding="24,0"/>
+                    </StackPanel>
                 </Grid>
             </md:Card>
         </Grid>

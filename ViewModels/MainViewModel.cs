@@ -58,14 +58,38 @@ namespace WpfAppMobileShop.ViewModels
                 case "Products":
                     newVM = new ProductViewModel();
                     break;
+                case "Inventory":
+                    newVM = new InventoryViewModel();
+                    break;
                 case "Categories":
                     newVM = new CategoryViewModel();
                     break;
                 case "Customers":
                     newVM = new CustomerViewModel();
                     break;
+                case "Orders":
+                    newVM = new OrderViewModel();
+                    break;
                 case "Sales":
                     newVM = new SalesViewModel();
+                    break;
+                case "Suppliers":
+                    newVM = new SupplierViewModel();
+                    break;
+                case "Promos":
+                    newVM = new PromoViewModel();
+                    break;
+                case "Reports":
+                    newVM = new ReportViewModel();
+                    break;
+                case "Warranty":
+                    newVM = new WarrantyViewModel();
+                    break;
+                case "Backup":
+                    newVM = new BackupViewModel();
+                    break;
+                case "Settings":
+                    newVM = new SettingsViewModel();
                     break;
                 case "Users":
                     newVM = new UserViewModel();

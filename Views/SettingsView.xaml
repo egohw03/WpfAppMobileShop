@@ -1,0 +1,55 @@
+<UserControl x:Class="WpfAppMobileShop.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="600">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextStyle}"/>
+
+        <md:Card Grid.Row="1" Padding="24" UniformCornerRadius="8" Margin="0,16,0,0">
+            <StackPanel>
+                <TextBlock Text="Thong tin cua hang" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,16"/>
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="140"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <TextBlock Text="Ten cua hang:" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding StoreName}" Style="{StaticResource SearchBoxStyle}"/>
+                </Grid>
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="140"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <TextBlock Text="Dia chi:" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding StoreAddress}" Style="{StaticResource SearchBoxStyle}"/>
+                </Grid>
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="140"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <TextBlock Text="So dien thoai:" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding StorePhone}" Style="{StaticResource SearchBoxStyle}"/>
+                </Grid>
+
+                <TextBlock Text="Cau hinh he thong" FontSize="16" FontWeight="SemiBold" Margin="0,16,0,16"/>
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="140"/><ColumnDefinition Width="200"/></Grid.ColumnDefinitions>
+                    <TextBlock Text="VAT (%):" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding VatPercent}" Style="{StaticResource SearchBoxStyle}"/>
+                </Grid>
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="140"/><ColumnDefinition Width="200"/></Grid.ColumnDefinitions>
+                    <TextBlock Text="Nguong ton kho:" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding LowStockThreshold}" Style="{StaticResource SearchBoxStyle}"/>
+                </Grid>
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="140"/><ColumnDefinition Width="200"/></Grid.ColumnDefinitions>
+                    <TextBlock Text="Bao hanh (thang):" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding WarrantyMonths}" Style="{StaticResource SearchBoxStyle}"/>
+                </Grid>
+            </StackPanel>
+        </md:Card>
+
+        <Button Grid.Row="2" Content="LUU CAI DAT" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Right" Margin="0,12,0,0"/>
+    </Grid>
+</UserControl>

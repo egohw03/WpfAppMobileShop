@@ -115,7 +115,100 @@
                 </md:Card>
             </Grid>
 
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2" Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <md:Card Grid.Column="0" Margin="6" Padding="20" UniformCornerRadius="8">
+                    <md:Card.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#9C27B0" Offset="0"/>
+                            <GradientStop Color="#7B1FA2" Offset="1"/>
+                        </LinearGradientBrush>
+                    </md:Card.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#33FFFFFF" CornerRadius="8" Width="48" Height="48">
+                            <md:PackIcon Kind="ClockOutline" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding PendingOrders}" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Đơn chờ" FontSize="12" Foreground="#B3FFFFFF" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </md:Card>
+                <md:Card Grid.Column="1" Margin="6" Padding="20" UniformCornerRadius="8">
+                    <md:Card.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#F44336" Offset="0"/>
+                            <GradientStop Color="#D32F2F" Offset="1"/>
+                        </LinearGradientBrush>
+                    </md:Card.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#33FFFFFF" CornerRadius="8" Width="48" Height="48">
+                            <md:PackIcon Kind="AlertCircleOutline" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding LowStockProducts}" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Sắp hết hàng" FontSize="12" Foreground="#B3FFFFFF" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </md:Card>
+                <md:Card Grid.Column="2" Margin="6" Padding="20" UniformCornerRadius="8">
+                    <md:Card.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#FF9800" Offset="0"/>
+                            <GradientStop Color="#F57C00" Offset="1"/>
+                        </LinearGradientBrush>
+                    </md:Card.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#33FFFFFF" CornerRadius="8" Width="48" Height="48">
+                            <md:PackIcon Kind="CalendarMonthOutline" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding MonthlyRevenue, StringFormat=N0}" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Doanh thu tháng" FontSize="12" Foreground="#B3FFFFFF" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </md:Card>
+                <md:Card Grid.Column="3" Margin="6" Padding="20" UniformCornerRadius="8">
+                    <md:Card.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#00BCD4" Offset="0"/>
+                            <GradientStop Color="#0097A7" Offset="1"/>
+                        </LinearGradientBrush>
+                    </md:Card.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#33FFFFFF" CornerRadius="8" Width="48" Height="48">
+                            <md:PackIcon Kind="AccountStarOutline" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding TopCustomerName}" FontSize="20" FontWeight="Bold" Foreground="White" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Text="{Binding TopCustomerTotal, StringFormat='KH tốt: {0:N0}'}" FontSize="12" Foreground="#B3FFFFFF" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </md:Card>
+            </Grid>
+
+            <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>

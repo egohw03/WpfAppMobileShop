@@ -1,0 +1,107 @@
+<UserControl x:Class="WpfAppMobileShop.Views.OrderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helpers="clr-namespace:WpfAppMobileShop.Helpers"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:models="clr-namespace:WpfAppMobileShop.Models"
+             mc:Ignorable="d"
+             d:DesignHeight="500" d:DesignWidth="900">
+    <UserControl.Resources>
+        <helpers:BoolToVisibilityConverter x:Key="BoolToVis"/>
+    </UserControl.Resources>
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextStyle}"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,12">
+            <DatePicker SelectedDate="{Binding FromDate}" Width="140" Height="34"/>
+            <TextBlock Text="đến" VerticalAlignment="Center" Margin="8,0"/>
+            <DatePicker SelectedDate="{Binding ToDate}" Width="140" Height="34"/>
+            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                     Width="250" Height="34" Margin="16,0,0,0"
+                     md:TextFieldAssist.HasFilledTextField="True"
+                     md:TextFieldAssist.CharacterCounterVisibility="Collapsed"
+                     ToolTip="Tìm theo tên KH, SĐT hoặc mã đơn"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="2" ItemsSource="{Binding Orders}"
+                  SelectedItem="{Binding SelectedOrder}"
+                  AutoGenerateColumns="False" IsReadOnly="True"
+                  AlternatingRowBackground="#F5F5F5" RowHeight="36"
+                  BorderThickness="0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Mã đơn" Binding="{Binding OrderId}" Width="70"/>
+                <DataGridTextColumn Header="Ngày" Binding="{Binding OrderDate, StringFormat=dd/MM/yyyy HH:mm}" Width="140"/>
+                <DataGridTextColumn Header="Khách hàng" Binding="{Binding Customer.FullName}" Width="160"/>
+                <DataGridTextColumn Header="Tổng tiền" Binding="{Binding TotalAmount, StringFormat=N0}" Width="120"/>
+                <DataGridTextColumn Header="Giảm giá" Binding="{Binding DiscountAmount, StringFormat=N0}" Width="100"/>
+                <DataGridTextColumn Header="Thành tiền" Binding="{Binding FinalAmount, StringFormat=N0}" Width="120"/>
+                <DataGridTextColumn Header="NV bán" Binding="{Binding User.FullName}" Width="120"/>
+                <DataGridTemplateColumn Header="Trạng thái" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Status}" FontWeight="SemiBold">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="Pending">
+                                                <Setter Property="Foreground" Value="{StaticResource WarningBrush}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}" Value="Completed">
+                                                <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}" Value="Cancelled">
+                                                <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <md:Card Grid.Row="3" Margin="0,12,0,0" Padding="16" UniformCornerRadius="8"
+                 Visibility="{Binding SelectedOrder, Converter={StaticResource BoolToVis}}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Chi tiết đơn hàng" FontSize="16" FontWeight="SemiBold"
+                               Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
+                    <Button Grid.Column="1" Content="HUỶ ĐƠN" Command="{Binding CancelOrderCommand}"
+                            Style="{StaticResource DangerButton}" HorizontalAlignment="Right"/>
+                </Grid>
+                <DataGrid Grid.Row="1" ItemsSource="{Binding OrderDetails}"
+                          AutoGenerateColumns="False" IsReadOnly="True" Margin="0,10,0,0"
+                          RowHeight="30" BorderThickness="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Sản phẩm" Binding="{Binding Product.ProductName}" Width="*"/>
+                        <DataGridTextColumn Header="Đơn giá" Binding="{Binding UnitPrice, StringFormat=N0}" Width="120"/>
+                        <DataGridTextColumn Header="SL" Binding="{Binding Quantity}" Width="60"/>
+                        <DataGridTextColumn Header="Thành tiền" Binding="{Binding Total, StringFormat=N0}" Width="120"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </md:Card>
+
+        <StackPanel Grid.Row="4" Visibility="Collapsed"/>
+    </Grid>
+</UserControl>

@@ -66,8 +66,35 @@ namespace WpfAppMobileShop
                             OrderId INTEGER PRIMARY KEY AUTOINCREMENT,
                             OrderDate TEXT NOT NULL,
                             TotalAmount REAL NOT NULL,
+                            DiscountAmount REAL NOT NULL DEFAULT 0,
+                            FinalAmount REAL NOT NULL DEFAULT 0,
+                            Status TEXT DEFAULT 'Completed',
+                            Notes TEXT,
                             CustomerId INTEGER,
                             UserId INTEGER NOT NULL
+                        );
+                        CREATE TABLE IF NOT EXISTS PromoCodes (
+                            PromoCodeId INTEGER PRIMARY KEY AUTOINCREMENT,
+                            Code TEXT NOT NULL,
+                            DiscountType TEXT NOT NULL,
+                            DiscountValue REAL NOT NULL,
+                            MinOrderAmount REAL NOT NULL DEFAULT 0,
+                            ExpiryDate TEXT,
+                            IsActive INTEGER NOT NULL DEFAULT 1
+                        );
+                        CREATE TABLE IF NOT EXISTS Warranties (
+                            WarrantyId INTEGER PRIMARY KEY AUTOINCREMENT,
+                            OrderDetailId INTEGER NOT NULL,
+                            ProductId INTEGER NOT NULL,
+                            CustomerId INTEGER NOT NULL,
+                            StartDate TEXT NOT NULL,
+                            EndDate TEXT NOT NULL,
+                            Status TEXT DEFAULT 'Active',
+                            Notes TEXT
+                        );
+                        CREATE TABLE IF NOT EXISTS Settings (
+                            Key TEXT PRIMARY KEY,
+                            Value TEXT
                         );
                         CREATE TABLE IF NOT EXISTS OrderDetails (
                             OrderDetailId INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -76,8 +103,42 @@ namespace WpfAppMobileShop
                             Quantity INTEGER NOT NULL,
                             UnitPrice REAL NOT NULL
                         );
+                        CREATE TABLE IF NOT EXISTS Suppliers (
+                            SupplierId INTEGER PRIMARY KEY AUTOINCREMENT,
+                            SupplierName TEXT NOT NULL,
+                            Phone TEXT,
+                            Email TEXT,
+                            Address TEXT,
+                            Notes TEXT
+                        );
+                        CREATE TABLE IF NOT EXISTS StockTransactions (
+                            StockTransactionId INTEGER PRIMARY KEY AUTOINCREMENT,
+                            ProductId INTEGER NOT NULL,
+                            Quantity INTEGER NOT NULL,
+                            Type TEXT NOT NULL,
+                            Date TEXT NOT NULL,
+                            Notes TEXT,
+                            UserId INTEGER NOT NULL,
+                            SupplierId INTEGER
+                        );
                     ";
                     cmd.ExecuteNonQuery();
+                }
+            }
+
+            using (var conn2 = new System.Data.SQLite.SQLiteConnection("Data Source=" + dbPath))
+            {
+                conn2.Open();
+                using (var cmd = conn2.CreateCommand())
+                {
+                    cmd.CommandText = "ALTER TABLE Orders ADD COLUMN DiscountAmount REAL NOT NULL DEFAULT 0";
+                    try { cmd.ExecuteNonQuery(); } catch { }
+                    cmd.CommandText = "ALTER TABLE Orders ADD COLUMN FinalAmount REAL NOT NULL DEFAULT 0";
+                    try { cmd.ExecuteNonQuery(); } catch { }
+                    cmd.CommandText = "ALTER TABLE Orders ADD COLUMN Status TEXT DEFAULT 'Completed'";
+                    try { cmd.ExecuteNonQuery(); } catch { }
+                    cmd.CommandText = "ALTER TABLE Orders ADD COLUMN Notes TEXT";
+                    try { cmd.ExecuteNonQuery(); } catch { }
                 }
             }
 
@@ -86,6 +147,16 @@ namespace WpfAppMobileShop
                 if (!context.Users.Any())
                 {
                     SeedDatabase(context);
+                }
+                if (!context.Settings.Any())
+                {
+                    context.Settings.Add(new Setting { Key = "StoreName", Value = "MobileShop" });
+                    context.Settings.Add(new Setting { Key = "StoreAddress", Value = "" });
+                    context.Settings.Add(new Setting { Key = "StorePhone", Value = "" });
+                    context.Settings.Add(new Setting { Key = "VatPercent", Value = "10" });
+                    context.Settings.Add(new Setting { Key = "LowStockThreshold", Value = "10" });
+                    context.Settings.Add(new Setting { Key = "WarrantyMonths", Value = "12" });
+                    context.SaveChanges();
                 }
             }
 
@@ -147,13 +218,13 @@ namespace WpfAppMobileShop
             var today = DateTime.Today;
             var orders = new[]
             {
-                new Order { OrderDate = today.AddDays(-6), TotalAmount = 30500000, CustomerId = customers[0].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today.AddDays(-5), TotalAmount = 18500000, CustomerId = customers[1].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today.AddDays(-4), TotalAmount = 500000, CustomerId = customers[2].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today.AddDays(-3), TotalAmount = 12500000, CustomerId = customers[0].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today.AddDays(-2), TotalAmount = 26000000, CustomerId = customers[3].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today.AddDays(-1), TotalAmount = 800000, CustomerId = customers[4].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today, TotalAmount = 35500000, CustomerId = customers[1].CustomerId, UserId = admin.UserId }
+                new Order { OrderDate = today.AddDays(-6), TotalAmount = 30500000, DiscountAmount = 0, FinalAmount = 30500000, Status = OrderStatus.Completed, CustomerId = customers[0].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today.AddDays(-5), TotalAmount = 18500000, DiscountAmount = 0, FinalAmount = 18500000, Status = OrderStatus.Completed, CustomerId = customers[1].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today.AddDays(-4), TotalAmount = 500000, DiscountAmount = 0, FinalAmount = 500000, Status = OrderStatus.Completed, CustomerId = customers[2].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today.AddDays(-3), TotalAmount = 12500000, DiscountAmount = 0, FinalAmount = 12500000, Status = OrderStatus.Completed, CustomerId = customers[0].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today.AddDays(-2), TotalAmount = 26000000, DiscountAmount = 0, FinalAmount = 26000000, Status = OrderStatus.Completed, CustomerId = customers[3].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today.AddDays(-1), TotalAmount = 800000, DiscountAmount = 0, FinalAmount = 800000, Status = OrderStatus.Completed, CustomerId = customers[4].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today, TotalAmount = 35500000, DiscountAmount = 0, FinalAmount = 35500000, Status = OrderStatus.Completed, CustomerId = customers[1].CustomerId, UserId = admin.UserId }
             };
             context.Orders.AddRange(orders);
             context.SaveChanges();

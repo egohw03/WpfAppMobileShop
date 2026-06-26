@@ -27,6 +27,11 @@ namespace WpfAppMobileShop.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<StockTransaction> StockTransactions { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<PromoCode> PromoCodes { get; set; }
+        public DbSet<Warranty> Warranties { get; set; }
+        public DbSet<Setting> Settings { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

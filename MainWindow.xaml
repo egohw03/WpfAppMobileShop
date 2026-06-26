@@ -47,43 +47,89 @@
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                     <StackPanel Margin="0,8,0,0">
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Dashboard"
-                                Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Dashboard" Style="{StaticResource SidebarButtonStyle}">
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="ViewDashboardOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Bảng điều khiển" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Products"
-                                Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Products" Style="{StaticResource SidebarButtonStyle}">
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="PackageVariantClosed" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Sản phẩm" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Categories"
-                                Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Inventory" Style="{StaticResource SidebarButtonStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="WarehouseOutline" FontSize="20" Margin="0,0,14,0"/>
+                                <TextBlock Text="Tồn kho" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Categories" Style="{StaticResource SidebarButtonStyle}">
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="TagMultipleOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Danh mục" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Customers"
-                                Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Customers" Style="{StaticResource SidebarButtonStyle}">
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="AccountGroupOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Khách hàng" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Sales"
-                                Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Orders" Style="{StaticResource SidebarButtonStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="ReceiptTextOutline" FontSize="20" Margin="0,0,14,0"/>
+                                <TextBlock Text="Đơn hàng" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Sales" Style="{StaticResource SidebarButtonStyle}">
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="CashRegister" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Bán hàng" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Users"
-                                Style="{StaticResource SidebarButtonStyle}"
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Suppliers" Style="{StaticResource SidebarButtonStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="TruckOutline" FontSize="20" Margin="0,0,14,0"/>
+                                <TextBlock Text="Nhà cung cấp" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Promos" Style="{StaticResource SidebarButtonStyle}"
+                                Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="PercentOutline" FontSize="20" Margin="0,0,14,0"/>
+                                <TextBlock Text="Khuyến mãi" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Reports" Style="{StaticResource SidebarButtonStyle}"
+                                Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="ChartBoxOutline" FontSize="20" Margin="0,0,14,0"/>
+                                <TextBlock Text="Báo cáo" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Warranty" Style="{StaticResource SidebarButtonStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="ShieldCheckOutline" FontSize="20" Margin="0,0,14,0"/>
+                                <TextBlock Text="Bảo hành" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Backup" Style="{StaticResource SidebarButtonStyle}"
+                                Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="DatabaseExportOutline" FontSize="20" Margin="0,0,14,0"/>
+                                <TextBlock Text="Sao lưu" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Settings" Style="{StaticResource SidebarButtonStyle}"
+                                Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="CogOutline" FontSize="20" Margin="0,0,14,0"/>
+                                <TextBlock Text="Cài đặt" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Users" Style="{StaticResource SidebarButtonStyle}"
                                 Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="AccountCogOutline" FontSize="20" Margin="0,0,14,0"/>

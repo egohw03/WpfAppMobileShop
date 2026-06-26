@@ -18,6 +18,9 @@ namespace WpfAppMobileShop.Models
         [Required]
         public decimal UnitPrice { get; set; }
 
+        [NotMapped]
+        public decimal Total => Quantity * UnitPrice;
+
         [ForeignKey("OrderId")]
         public virtual Order Order { get; set; }
 

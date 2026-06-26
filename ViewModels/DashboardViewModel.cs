@@ -1,9 +1,13 @@
 using System;
+using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
+using System.Windows.Input;
 using LiveCharts;
 using LiveCharts.Wpf;
 using WpfAppMobileShop.Data;
 using WpfAppMobileShop.Helpers;
+using WpfAppMobileShop.Models;
 
 namespace WpfAppMobileShop.ViewModels
 {
@@ -23,8 +27,13 @@ namespace WpfAppMobileShop.ViewModels
         private decimal _monthlyRevenue;
         private string _topCustomerName;
         private decimal _topCustomerTotal;
+        private ObservableCollection<Order> _recentOrders;
+        private bool _isLoading;
+        private string _revenueTrend;
 
         public string Title => "Bảng điều khiển";
+
+        public event Action<string> NavigateRequest;
 
         public SeriesCollection RevenueSeries
         {
@@ -104,11 +113,38 @@ namespace WpfAppMobileShop.ViewModels
             set => SetProperty(ref _topCustomerTotal, value);
         }
 
+        public ObservableCollection<Order> RecentOrders
+        {
+            get => _recentOrders;
+            set => SetProperty(ref _recentOrders, value);
+        }
+
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set => SetProperty(ref _isLoading, value);
+        }
+
+        public string RevenueTrend
+        {
+            get => _revenueTrend;
+            set => SetProperty(ref _revenueTrend, value);
+        }
+
+        public ICommand GoToSalesCommand { get; }
+        public ICommand GoToProductsCommand { get; }
+        public ICommand GoToReportsCommand { get; }
+
         public DashboardViewModel()
         {
+            _context = new StoreDbContext();
+            GoToSalesCommand = new RelayCommand(() => NavigateRequest?.Invoke("Sales"));
+            GoToProductsCommand = new RelayCommand(() => NavigateRequest?.Invoke("Products"));
+            GoToReportsCommand = new RelayCommand(() => NavigateRequest?.Invoke("Reports"));
+
+            IsLoading = true;
             try
             {
-                _context = new StoreDbContext();
                 LoadStatistics();
             }
             catch
@@ -119,6 +155,10 @@ namespace WpfAppMobileShop.ViewModels
                 TopProductsSeries = new SeriesCollection();
                 RevenueLabels = new string[0];
                 TopProductLabels = new string[0];
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
 
@@ -203,6 +243,24 @@ namespace WpfAppMobileShop.ViewModels
                 .FirstOrDefault();
             TopCustomerName = topCustomer?.Name ?? "N/A";
             TopCustomerTotal = topCustomer?.Total ?? 0;
+
+            RecentOrders = new ObservableCollection<Order>(
+                _context.Orders.Include(o => o.Customer).Include(o => o.User)
+                    .OrderByDescending(o => o.OrderDate)
+                    .Take(5).ToList());
+
+            var yesterdayRevenue = _context.Orders
+                .Where(o => o.OrderDate >= today.AddDays(-1) && o.OrderDate < today && o.Status != "Cancelled")
+                .Sum(o => (decimal?)o.FinalAmount) ?? 0;
+            if (yesterdayRevenue > 0 && TodayRevenue > 0)
+            {
+                var change = ((TodayRevenue - yesterdayRevenue) / yesterdayRevenue) * 100;
+                RevenueTrend = change >= 0 ? $"+{change:F1}%" : $"{change:F1}%";
+            }
+            else
+            {
+                RevenueTrend = "Mới";
+            }
         }
     }
 }

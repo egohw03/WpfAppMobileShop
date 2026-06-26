@@ -55,7 +55,9 @@ namespace WpfAppMobileShop.ViewModels
             switch (target)
             {
                 case "Dashboard":
-                    newVM = new DashboardViewModel();
+                    var dash = new DashboardViewModel();
+                    dash.NavigateRequest += (page) => Navigate(page);
+                    newVM = dash;
                     break;
                 case "Products":
                     newVM = new ProductViewModel();

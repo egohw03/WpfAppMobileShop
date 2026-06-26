@@ -11,7 +11,11 @@ namespace WpfAppMobileShop.Helpers
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool boolValue = (bool)value;
+            bool boolValue;
+            if (value is bool b)
+                boolValue = b;
+            else
+                boolValue = value != null;
             if (Invert) boolValue = !boolValue;
             return boolValue ? Visibility.Visible : Visibility.Collapsed;
         }

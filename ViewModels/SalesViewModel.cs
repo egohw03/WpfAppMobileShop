@@ -7,6 +7,7 @@ using WpfAppMobileShop.Data;
 using WpfAppMobileShop.Helpers;
 using WpfAppMobileShop.Models;
 
+
 namespace WpfAppMobileShop.ViewModels
 {
     public class SalesViewModel : ViewModelBase
@@ -237,7 +238,7 @@ namespace WpfAppMobileShop.ViewModels
                         OrderDate = DateTime.Now,
                         TotalAmount = TotalAmount,
                         CustomerId = SelectedCustomer?.CustomerId,
-                        UserId = 1,
+                        UserId = UserSession.CurrentUser.UserId,
                         OrderDetails = new ObservableCollection<OrderDetail>()
                     };
 

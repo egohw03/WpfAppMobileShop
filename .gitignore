@@ -28,6 +28,9 @@ packages/
 ## LiveCharts
 ## (no specific ignores)
 
+## Markdown (plan documents - not for github)
+*.md
+
 ## Temp files
 *.log
 *.tmp

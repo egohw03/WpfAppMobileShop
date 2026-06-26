@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Data.Entity;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using WpfAppMobileShop.Data;
 using WpfAppMobileShop.Models;
+using WpfAppMobileShop.Views;
 
 namespace WpfAppMobileShop
 {
@@ -11,21 +13,14 @@ namespace WpfAppMobileShop
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            Database.SetInitializer<StoreDbContext>(null);
+
             var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "StoreDB.sqlite");
             var dbDir = Path.GetDirectoryName(dbPath) ?? "";
 
             System.Data.SQLite.SQLiteConnection.ClearAllPools();
             GC.Collect();
             GC.WaitForPendingFinalizers();
-
-            foreach (var f in Directory.GetFiles(dbDir, "StoreDB.sqlite*"))
-            {
-                for (int retry = 0; retry < 5; retry++)
-                {
-                    try { File.Delete(f); break; }
-                    catch { System.Threading.Thread.Sleep(200); }
-                }
-            }
 
             using (var conn = new System.Data.SQLite.SQLiteConnection("Data Source=" + dbPath))
             {
@@ -88,7 +83,10 @@ namespace WpfAppMobileShop
 
             using (var context = new StoreDbContext())
             {
-                SeedDatabase(context);
+                if (!context.Users.Any())
+                {
+                    SeedDatabase(context);
+                }
             }
 
             base.OnStartup(e);

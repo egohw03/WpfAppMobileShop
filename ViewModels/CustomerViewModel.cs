@@ -1,0 +1,159 @@
+using System;
+using System.Collections.ObjectModel;
+using System.Data.Entity;
+using System.Linq;
+using System.Windows.Input;
+using WpfAppMobileShop.Data;
+using WpfAppMobileShop.Helpers;
+using WpfAppMobileShop.Models;
+
+namespace WpfAppMobileShop.ViewModels
+{
+    public class CustomerViewModel : ViewModelBase
+    {
+        private readonly StoreDbContext _context;
+        private ObservableCollection<Customer> _customers;
+        private Customer _selectedCustomer;
+        private Customer _editingCustomer;
+        private string _searchText;
+        private bool _isEditing;
+
+        public string Title => "Quản lý khách hàng";
+
+        public ObservableCollection<Customer> Customers
+        {
+            get => _customers;
+            set => SetProperty(ref _customers, value);
+        }
+
+        public Customer SelectedCustomer
+        {
+            get => _selectedCustomer;
+            set
+            {
+                SetProperty(ref _selectedCustomer, value);
+                if (value != null && !_isEditing)
+                {
+                    EditingCustomer = new Customer
+                    {
+                        CustomerId = value.CustomerId,
+                        FullName = value.FullName,
+                        Phone = value.Phone,
+                        Email = value.Email,
+                        Address = value.Address,
+                        CreatedDate = value.CreatedDate
+                    };
+                }
+            }
+        }
+
+        public Customer EditingCustomer
+        {
+            get => _editingCustomer;
+            set => SetProperty(ref _editingCustomer, value);
+        }
+
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                SetProperty(ref _searchText, value);
+                Search();
+            }
+        }
+
+        public bool IsEditing
+        {
+            get => _isEditing;
+            set => SetProperty(ref _isEditing, value);
+        }
+
+        public ICommand AddCommand { get; }
+        public ICommand SaveCommand { get; }
+        public ICommand DeleteCommand { get; }
+        public ICommand CancelCommand { get; }
+
+        public CustomerViewModel()
+        {
+            _context = new StoreDbContext();
+            AddCommand = new RelayCommand(Add);
+            SaveCommand = new RelayCommand(Save, () => IsEditing);
+            DeleteCommand = new RelayCommand(Delete, () => SelectedCustomer != null);
+            CancelCommand = new RelayCommand(Cancel);
+            try { LoadData(); } catch { Customers = new ObservableCollection<Customer>(); }
+        }
+
+        public override void Dispose()
+        {
+            _context?.Dispose();
+            base.Dispose();
+        }
+
+        private void LoadData()
+        {
+            Customers = new ObservableCollection<Customer>(_context.Customers.ToList());
+        }
+
+        private void Search()
+        {
+            var query = _context.Customers.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                query = query.Where(c => c.FullName.Contains(SearchText)
+                    || c.Phone.Contains(SearchText)
+                    || c.Email.Contains(SearchText));
+            }
+            Customers = new ObservableCollection<Customer>(query.ToList());
+        }
+
+        private void Add()
+        {
+            EditingCustomer = new Customer { CreatedDate = DateTime.Now };
+            IsEditing = true;
+        }
+
+        private void Save()
+        {
+            if (EditingCustomer.CustomerId == 0)
+            {
+                _context.Customers.Add(EditingCustomer);
+            }
+            else
+            {
+                var existing = _context.Customers.Find(EditingCustomer.CustomerId);
+                if (existing != null)
+                {
+                    existing.FullName = EditingCustomer.FullName;
+                    existing.Phone = EditingCustomer.Phone;
+                    existing.Email = EditingCustomer.Email;
+                    existing.Address = EditingCustomer.Address;
+                }
+            }
+            _context.SaveChanges();
+            LoadData();
+            IsEditing = false;
+            EditingCustomer = null;
+        }
+
+        private void Delete()
+        {
+            if (SelectedCustomer != null)
+            {
+                var entity = _context.Customers.Find(SelectedCustomer.CustomerId);
+                if (entity != null)
+                {
+                    _context.Customers.Remove(entity);
+                    _context.SaveChanges();
+                }
+                LoadData();
+            }
+        }
+
+        private void Cancel()
+        {
+            IsEditing = false;
+            EditingCustomer = null;
+        }
+    }
+}

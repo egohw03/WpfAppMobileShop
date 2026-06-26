@@ -1,0 +1,33 @@
+## .NET
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+## VS
+.vs/
+*.csproj.user
+*.dbmdl
+*.jfm
+
+## NuGet
+packages/
+*.nupkg
+
+## SQLite
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+
+## LiveCharts
+## (no specific ignores)
+
+## Temp files
+*.log
+*.tmp

@@ -95,23 +95,25 @@
 
             <Style x:Key="SearchBoxStyle" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFilledTextBox}">
                 <Setter Property="Height" Value="36"/>
-                <Setter Property="Padding" Value="10,4"/>
+                <Setter Property="Padding" Value="10,2,10,0"/>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="FontSize" Value="14"/>
                 <Setter Property="md:TextFieldAssist.CharacterCounterVisibility" Value="Collapsed"/>
                 <Setter Property="md:TextFieldAssist.HasFilledTextField" Value="True"/>
+
             </Style>
 
             <Style x:Key="ComboBoxFilledStyle" TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignFilledComboBox}">
                 <Setter Property="Height" Value="36"/>
-                <Setter Property="Padding" Value="10,4"/>
+                <Setter Property="Padding" Value="10,2,10,0"/>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="FontSize" Value="14"/>
             </Style>
 
             <Style x:Key="DatePickerFilledStyle" TargetType="DatePicker">
                 <Setter Property="Height" Value="36"/>
-                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
             </Style>
 
             <DataTemplate DataType="{x:Type viewmodels:DashboardViewModel}">

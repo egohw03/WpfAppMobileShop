@@ -33,7 +33,7 @@ namespace WpfAppMobileShop.ViewModels
         {
             _context = new StoreDbContext();
             SaveCommand = new RelayCommand(Save);
-            LoadSettings();
+            try { LoadSettings(); } catch { }
         }
 
         public override void Dispose() { _context?.Dispose(); base.Dispose(); }
@@ -43,9 +43,12 @@ namespace WpfAppMobileShop.ViewModels
             StoreName = GetSetting("StoreName", "MobileShop");
             StoreAddress = GetSetting("StoreAddress", "");
             StorePhone = GetSetting("StorePhone", "");
-            VatPercent = decimal.Parse(GetSetting("VatPercent", "10"));
-            LowStockThreshold = int.Parse(GetSetting("LowStockThreshold", "10"));
-            WarrantyMonths = int.Parse(GetSetting("WarrantyMonths", "12"));
+            decimal.TryParse(GetSetting("VatPercent", "10"), out var vat);
+            VatPercent = vat;
+            int.TryParse(GetSetting("LowStockThreshold", "10"), out var threshold);
+            LowStockThreshold = threshold;
+            int.TryParse(GetSetting("WarrantyMonths", "12"), out var months);
+            WarrantyMonths = months;
         }
 
         private string GetSetting(string key, string defaultValue)
@@ -56,15 +59,23 @@ namespace WpfAppMobileShop.ViewModels
 
         private void Save()
         {
-            SetSetting("StoreName", StoreName);
-            SetSetting("StoreAddress", StoreAddress);
-            SetSetting("StorePhone", StorePhone);
-            SetSetting("VatPercent", VatPercent.ToString());
-            SetSetting("LowStockThreshold", LowStockThreshold.ToString());
-            SetSetting("WarrantyMonths", WarrantyMonths.ToString());
-            _context.SaveChanges();
-            System.Windows.MessageBox.Show("Da luu cai dat.", "Thong bao",
-                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+            try
+            {
+                SetSetting("StoreName", StoreName);
+                SetSetting("StoreAddress", StoreAddress);
+                SetSetting("StorePhone", StorePhone);
+                SetSetting("VatPercent", VatPercent.ToString());
+                SetSetting("LowStockThreshold", LowStockThreshold.ToString());
+                SetSetting("WarrantyMonths", WarrantyMonths.ToString());
+                _context.SaveChanges();
+                System.Windows.MessageBox.Show("Da luu cai dat.", "Thong bao",
+                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Loi luu cai dat: {ex.Message}", "Loi",
+                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
 
         private void SetSetting(string key, string value)

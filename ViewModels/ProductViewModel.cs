@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
@@ -111,8 +112,8 @@ namespace WpfAppMobileShop.ViewModels
             if (!string.IsNullOrWhiteSpace(SearchText))
             {
                 query = query.Where(p => p.ProductName.Contains(SearchText)
-                    || p.Brand.Contains(SearchText)
-                    || p.Model.Contains(SearchText));
+                    || (p.Brand ?? "").Contains(SearchText)
+                    || (p.Model ?? "").Contains(SearchText));
             }
             Products = new ObservableCollection<Product>(query.ToList());
         }
@@ -125,42 +126,57 @@ namespace WpfAppMobileShop.ViewModels
 
         private void Save()
         {
-            if (EditingProduct.ProductId == 0)
+            if (string.IsNullOrWhiteSpace(EditingProduct.ProductName))
+            { System.Windows.MessageBox.Show("Vui lòng nhập tên sản phẩm!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (EditingProduct.ProductName.Length > 200)
+            { System.Windows.MessageBox.Show("Tên sản phẩm không quá 200 ký tự!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (EditingProduct.Price < 0)
+            { System.Windows.MessageBox.Show("Giá sản phẩm không hợp lệ!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (EditingProduct.CategoryId <= 0)
+            { System.Windows.MessageBox.Show("Vui lòng chọn danh mục!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            try
             {
-                _context.Products.Add(EditingProduct);
-            }
-            else
-            {
-                var existing = _context.Products.Find(EditingProduct.ProductId);
-                if (existing != null)
+                if (EditingProduct.ProductId == 0) _context.Products.Add(EditingProduct);
+                else
                 {
-                    existing.ProductName = EditingProduct.ProductName;
-                    existing.CategoryId = EditingProduct.CategoryId;
-                    existing.Brand = EditingProduct.Brand;
-                    existing.Model = EditingProduct.Model;
-                    existing.Price = EditingProduct.Price;
-                    existing.StockQuantity = EditingProduct.StockQuantity;
-                    existing.Description = EditingProduct.Description;
-                    existing.ImageUrl = EditingProduct.ImageUrl;
+                    var existing = _context.Products.Find(EditingProduct.ProductId);
+                    if (existing != null)
+                    {
+                        existing.ProductName = EditingProduct.ProductName;
+                        existing.CategoryId = EditingProduct.CategoryId;
+                        existing.Brand = EditingProduct.Brand;
+                        existing.Model = EditingProduct.Model;
+                        existing.Price = EditingProduct.Price;
+                        existing.StockQuantity = EditingProduct.StockQuantity;
+                        existing.Description = EditingProduct.Description;
+                        existing.ImageUrl = EditingProduct.ImageUrl;
+                    }
                 }
+                _context.SaveChanges();
+                LoadData();
+                IsEditing = false;
+                EditingProduct = null;
             }
-            _context.SaveChanges();
-            LoadData();
-            IsEditing = false;
-            EditingProduct = null;
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Lỗi lưu: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
 
         private void Delete()
         {
-            if (SelectedProduct != null)
+            if (SelectedProduct == null) return;
+            if (_context.OrderDetails.Any(od => od.ProductId == SelectedProduct.ProductId))
+            { System.Windows.MessageBox.Show("Không thể xóa sản phẩm đã có trong đơn hàng!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            try
             {
                 var entity = _context.Products.Find(SelectedProduct.ProductId);
-                if (entity != null)
-                {
-                    _context.Products.Remove(entity);
-                    _context.SaveChanges();
-                }
+                if (entity != null) { _context.Products.Remove(entity); _context.SaveChanges(); }
                 LoadData();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Lỗi xóa: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 

@@ -104,8 +104,8 @@ namespace WpfAppMobileShop.ViewModels
             {
                 query = query.Where(u => u.FullName.Contains(SearchText)
                     || u.Username.Contains(SearchText)
-                    || u.Phone.Contains(SearchText)
-                    || u.Email.Contains(SearchText));
+                    || (u.Phone ?? "").Contains(SearchText)
+                    || (u.Email ?? "").Contains(SearchText));
             }
             Users = new ObservableCollection<User>(query.ToList());
         }
@@ -118,52 +118,63 @@ namespace WpfAppMobileShop.ViewModels
 
         private void Save()
         {
-            if (string.IsNullOrWhiteSpace(EditingUser.Username) || string.IsNullOrWhiteSpace(EditingUser.FullName))
-            {
-                System.Windows.MessageBox.Show("Tên đăng nhập và họ tên không được để trống!", "Lỗi",
-                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
-                return;
-            }
+            if (string.IsNullOrWhiteSpace(EditingUser.Username))
+            { System.Windows.MessageBox.Show("Tên đăng nhập không được để trống!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (EditingUser.Username.Length > 50)
+            { System.Windows.MessageBox.Show("Tên đăng nhập không quá 50 ký tự!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (string.IsNullOrWhiteSpace(EditingUser.FullName))
+            { System.Windows.MessageBox.Show("Họ tên không được để trống!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (EditingUser.FullName.Length > 200)
+            { System.Windows.MessageBox.Show("Họ tên không quá 200 ký tự!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
 
-            if (EditingUser.UserId == 0)
+            try
             {
-                if (string.IsNullOrWhiteSpace(EditingUser.Password))
+                if (EditingUser.UserId == 0)
                 {
-                    System.Windows.MessageBox.Show("Vui lòng nhập mật khẩu cho người dùng mới!", "Lỗi",
-                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
-                    return;
+                    if (string.IsNullOrWhiteSpace(EditingUser.Password))
+                    { System.Windows.MessageBox.Show("Vui lòng nhập mật khẩu!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+                    _context.Users.Add(EditingUser);
                 }
-                _context.Users.Add(EditingUser);
+                else
+                {
+                    var existing = _context.Users.Find(EditingUser.UserId);
+                    if (existing != null)
+                    {
+                        existing.Username = EditingUser.Username;
+                        if (!string.IsNullOrWhiteSpace(EditingUser.Password))
+                            existing.Password = EditingUser.Password;
+                        existing.FullName = EditingUser.FullName;
+                        existing.Role = EditingUser.Role;
+                        existing.Phone = EditingUser.Phone;
+                        existing.Email = EditingUser.Email;
+                        existing.IsActive = EditingUser.IsActive;
+                    }
+                }
+                _context.SaveChanges();
+                LoadData();
+                IsEditing = false;
+                EditingUser = null;
             }
-            else
+            catch (Exception ex)
             {
-                var existing = _context.Users.Find(EditingUser.UserId);
-                if (existing != null)
-                {
-                    existing.Username = EditingUser.Username;
-                    if (!string.IsNullOrWhiteSpace(EditingUser.Password))
-                        existing.Password = EditingUser.Password;
-                    existing.FullName = EditingUser.FullName;
-                    existing.Role = EditingUser.Role;
-                    existing.Phone = EditingUser.Phone;
-                    existing.Email = EditingUser.Email;
-                    existing.IsActive = EditingUser.IsActive;
-                }
+                System.Windows.MessageBox.Show($"Lỗi lưu: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
-
-            _context.SaveChanges();
-            LoadData();
-            IsEditing = false;
-            EditingUser = null;
         }
 
         private void Delete()
         {
             if (SelectedUser == null) return;
 
-            if (SelectedUser.UserId == UserSession.CurrentUser.UserId)
+            if (UserSession.CurrentUser == null || SelectedUser.UserId == UserSession.CurrentUser.UserId)
             {
                 System.Windows.MessageBox.Show("Không thể xóa chính mình!", "Lỗi",
+                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                return;
+            }
+
+            if (_context.Orders.Any(o => o.UserId == SelectedUser.UserId))
+            {
+                System.Windows.MessageBox.Show("Không thể xóa người dùng đã có đơn hàng!", "Lỗi",
                     System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
                 return;
             }
@@ -172,13 +183,16 @@ namespace WpfAppMobileShop.ViewModels
                 System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
             if (result != System.Windows.MessageBoxResult.Yes) return;
 
-            var entity = _context.Users.Find(SelectedUser.UserId);
-            if (entity != null)
+            try
             {
-                _context.Users.Remove(entity);
-                _context.SaveChanges();
+                var entity = _context.Users.Find(SelectedUser.UserId);
+                if (entity != null) { _context.Users.Remove(entity); _context.SaveChanges(); }
+                LoadData();
             }
-            LoadData();
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Lỗi xóa: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
 
         private void Cancel()

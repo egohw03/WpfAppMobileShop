@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helpers="clr-namespace:WpfAppMobileShop.Helpers"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:models="clr-namespace:WpfAppMobileShop.Models"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="900">
     <UserControl.Resources>

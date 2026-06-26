@@ -17,7 +17,7 @@
         <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextStyle}"/>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,12">
             <TextBlock Text="Loc:" VerticalAlignment="Center" Margin="0,0,8,0"/>
-            <ComboBox SelectedValue="{Binding FilterStatus}" Width="160" Style="{StaticResource ComboBoxFilledStyle}">
+            <ComboBox SelectedValue="{Binding FilterStatus}" SelectedValuePath="Content" Width="160" Style="{StaticResource ComboBoxFilledStyle}">
                 <ComboBoxItem Content="Tất cả" IsSelected="True"/>
                 <ComboBoxItem Content="Active"/>
                 <ComboBoxItem Content="Expired"/>

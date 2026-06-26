@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
@@ -71,26 +72,44 @@ namespace WpfAppMobileShop.ViewModels
         {
             var q = _context.Suppliers.AsQueryable();
             if (!string.IsNullOrWhiteSpace(SearchText))
-                q = q.Where(s => s.SupplierName.Contains(SearchText) || s.Phone.Contains(SearchText) || s.Email.Contains(SearchText));
+                q = q.Where(s => s.SupplierName.Contains(SearchText) || (s.Phone ?? "").Contains(SearchText) || (s.Email ?? "").Contains(SearchText));
             Suppliers = new ObservableCollection<Supplier>(q.ToList());
         }
         private void Add() { EditingSupplier = new Supplier(); IsEditing = true; }
         private void Save()
         {
-            if (EditingSupplier.SupplierId == 0) _context.Suppliers.Add(EditingSupplier);
-            else
+            if (string.IsNullOrWhiteSpace(EditingSupplier.SupplierName))
+            { System.Windows.MessageBox.Show("Vui lòng nhập tên nhà cung cấp!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (EditingSupplier.SupplierName.Length > 200)
+            { System.Windows.MessageBox.Show("Tên nhà cung cấp không quá 200 ký tự!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            try
             {
-                var e = _context.Suppliers.Find(EditingSupplier.SupplierId);
-                if (e != null) { e.SupplierName = EditingSupplier.SupplierName; e.Phone = EditingSupplier.Phone; e.Email = EditingSupplier.Email; e.Address = EditingSupplier.Address; e.Notes = EditingSupplier.Notes; }
+                if (EditingSupplier.SupplierId == 0) _context.Suppliers.Add(EditingSupplier);
+                else
+                {
+                    var e = _context.Suppliers.Find(EditingSupplier.SupplierId);
+                    if (e != null) { e.SupplierName = EditingSupplier.SupplierName; e.Phone = EditingSupplier.Phone; e.Email = EditingSupplier.Email; e.Address = EditingSupplier.Address; e.Notes = EditingSupplier.Notes; }
+                }
+                _context.SaveChanges(); LoadData(); IsEditing = false; EditingSupplier = null;
             }
-            _context.SaveChanges(); LoadData(); IsEditing = false; EditingSupplier = null;
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Lỗi lưu: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
         private void Delete()
         {
             if (SelectedSupplier == null) return;
-            var e = _context.Suppliers.Find(SelectedSupplier.SupplierId);
-            if (e != null) { _context.Suppliers.Remove(e); _context.SaveChanges(); }
-            LoadData();
+            try
+            {
+                var e = _context.Suppliers.Find(SelectedSupplier.SupplierId);
+                if (e != null) { _context.Suppliers.Remove(e); _context.SaveChanges(); }
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Lỗi xóa: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
         private void Cancel() { IsEditing = false; EditingSupplier = null; }
     }

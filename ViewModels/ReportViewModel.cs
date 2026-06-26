@@ -89,12 +89,16 @@ namespace WpfAppMobileShop.ViewModels
                 var sb = new StringBuilder();
                 sb.AppendLine("Ma don,Ngay,Khach hang,Tong tien,Giam gia,Thanh tien,Trang thai,NV ban");
                 foreach (var o in Orders)
-                    sb.AppendLine($"{o.OrderId},{o.OrderDate:dd/MM/yyyy HH:mm},{o.Customer?.FullName},{o.TotalAmount},{o.DiscountAmount},{o.FinalAmount},{o.Status},{o.User?.FullName}");
+                {
+                    var custName = (o.Customer?.FullName ?? "").Replace(",", " ");
+                    var userName = (o.User?.FullName ?? "").Replace(",", " ");
+                    sb.AppendLine($"{o.OrderId},{o.OrderDate:dd/MM/yyyy HH:mm},{custName},{o.TotalAmount},{o.DiscountAmount},{o.FinalAmount},{o.Status},{userName}");
+                }
                 sb.AppendLine();
                 sb.AppendLine("Top san pham ban chay");
                 sb.AppendLine("San pham,So luong,Doanh thu");
                 foreach (dynamic t in TopProducts)
-                    sb.AppendLine($"{t.SanPham},{t.SL},{t.DoanhThu}");
+                    sb.AppendLine($"{(t.SanPham ?? "").Replace(",", " ")},{t.SL},{t.DoanhThu}");
                 File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
                 System.Windows.MessageBox.Show($"Da xuat bao cao: {path}", "Thanh cong",
                     System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);

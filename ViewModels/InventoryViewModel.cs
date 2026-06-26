@@ -94,7 +94,7 @@ namespace WpfAppMobileShop.ViewModels
         public InventoryViewModel()
         {
             _context = new StoreDbContext();
-            _filterType = "All";
+            _filterType = "Tất cả";
             ImportCommand = new RelayCommand(() => StartAdjust("Import"));
             ExportCommand = new RelayCommand(() => StartAdjust("Export"));
             SaveAdjustCommand = new RelayCommand(SaveAdjust, CanSaveAdjust);
@@ -126,7 +126,7 @@ namespace WpfAppMobileShop.ViewModels
         {
             var query = _context.Products.Include(p => p.Category).AsQueryable();
             if (!string.IsNullOrWhiteSpace(SearchText))
-                query = query.Where(p => p.ProductName.Contains(SearchText) || p.Brand.Contains(SearchText));
+                query = query.Where(p => p.ProductName.Contains(SearchText) || (p.Brand ?? "").Contains(SearchText));
             Products = new ObservableCollection<Product>(query.OrderBy(p => p.StockQuantity).ToList());
         }
 
@@ -137,7 +137,7 @@ namespace WpfAppMobileShop.ViewModels
                 .Include(t => t.User)
                 .AsQueryable();
 
-            if (_filterType != "All")
+            if (_filterType != "Tất cả")
                 query = query.Where(t => t.Type == _filterType);
 
             Transactions = new ObservableCollection<StockTransaction>(query.OrderByDescending(t => t.Date).Take(100).ToList());
@@ -189,7 +189,7 @@ namespace WpfAppMobileShop.ViewModels
                         Type = AdjustType,
                         Date = DateTime.Now,
                         Notes = AdjustNotes,
-                        UserId = UserSession.CurrentUser.UserId
+                        UserId = UserSession.CurrentUser?.UserId ?? 0
                     });
 
                     _context.SaveChanges();

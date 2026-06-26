@@ -64,22 +64,28 @@
                                     <TextBlock FontWeight="SemiBold">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
-                                                <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
+                                                <Setter Property="Text" Value="Bình thường"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding StockQuantity}" Value="0">
                                                         <Setter Property="Text" Value="Hết hàng"/>
+                                                        <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding StockQuantity}" Value="1">
                                                         <Setter Property="Text" Value="Cực thấp"/>
+                                                        <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding StockQuantity}" Value="2">
                                                         <Setter Property="Text" Value="Cực thấp"/>
+                                                        <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding StockQuantity}" Value="3">
                                                         <Setter Property="Text" Value="Cực thấp"/>
+                                                        <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding StockQuantity}" Value="4">
                                                         <Setter Property="Text" Value="Cực thấp"/>
+                                                        <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding StockQuantity}" Value="5">
                                                         <Setter Property="Text" Value="Rất thấp"/>
@@ -163,7 +169,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Lịch sử giao dịch" FontSize="16" FontWeight="SemiBold"
                                Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Column="1" SelectedValue="{Binding FilterType}" Margin="20,0,0,0"
+                    <ComboBox Grid.Column="1" SelectedValue="{Binding FilterType}" SelectedValuePath="Content" Margin="20,0,0,0"
                               Width="140" Style="{StaticResource ComboBoxFilledStyle}">
                         <ComboBoxItem Content="Tất cả" IsSelected="True"/>
                         <ComboBoxItem Content="Import"/>

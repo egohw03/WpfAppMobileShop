@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
@@ -96,7 +97,7 @@ namespace WpfAppMobileShop.ViewModels
             var query = _context.Categories.AsQueryable();
             if (!string.IsNullOrWhiteSpace(SearchText))
             {
-                query = query.Where(c => c.CategoryName.Contains(SearchText) || c.Description.Contains(SearchText));
+                query = query.Where(c => c.CategoryName.Contains(SearchText) || (c.Description ?? "").Contains(SearchText));
             }
             Categories = new ObservableCollection<Category>(query.ToList());
         }
@@ -109,36 +110,47 @@ namespace WpfAppMobileShop.ViewModels
 
         private void Save()
         {
-            if (EditingCategory.CategoryId == 0)
+            if (string.IsNullOrWhiteSpace(EditingCategory.CategoryName))
+            { System.Windows.MessageBox.Show("Vui lòng nhập tên danh mục!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (EditingCategory.CategoryName.Length > 100)
+            { System.Windows.MessageBox.Show("Tên danh mục không quá 100 ký tự!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            try
             {
-                _context.Categories.Add(EditingCategory);
-            }
-            else
-            {
-                var existing = _context.Categories.Find(EditingCategory.CategoryId);
-                if (existing != null)
+                if (EditingCategory.CategoryId == 0) _context.Categories.Add(EditingCategory);
+                else
                 {
-                    existing.CategoryName = EditingCategory.CategoryName;
-                    existing.Description = EditingCategory.Description;
+                    var existing = _context.Categories.Find(EditingCategory.CategoryId);
+                    if (existing != null)
+                    {
+                        existing.CategoryName = EditingCategory.CategoryName;
+                        existing.Description = EditingCategory.Description;
+                    }
                 }
+                _context.SaveChanges();
+                LoadData();
+                IsEditing = false;
+                EditingCategory = null;
             }
-            _context.SaveChanges();
-            LoadData();
-            IsEditing = false;
-            EditingCategory = null;
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Lỗi lưu: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
 
         private void Delete()
         {
-            if (SelectedCategory != null)
+            if (SelectedCategory == null) return;
+            if (_context.Products.Any(p => p.CategoryId == SelectedCategory.CategoryId))
+            { System.Windows.MessageBox.Show("Không thể xóa danh mục đang có sản phẩm!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            try
             {
                 var entity = _context.Categories.Find(SelectedCategory.CategoryId);
-                if (entity != null)
-                {
-                    _context.Categories.Remove(entity);
-                    _context.SaveChanges();
-                }
+                if (entity != null) { _context.Categories.Remove(entity); _context.SaveChanges(); }
                 LoadData();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Lỗi xóa: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 

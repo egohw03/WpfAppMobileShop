@@ -175,7 +175,7 @@ namespace WpfAppMobileShop.ViewModels
             var today = DateTime.Today;
             var sevenDaysAgo = today.AddDays(-6);
             var firstOfMonth = new DateTime(today.Year, today.Month, 1);
-            var lowStockThreshold = int.Parse(_context.Settings.Find("LowStockThreshold")?.Value ?? "10");
+            int.TryParse(_context.Settings.Find("LowStockThreshold")?.Value ?? "10", out var lowStockThreshold);
 
             TotalOrders = _context.Orders.Count();
             TotalProducts = _context.Products.Sum(p => p.StockQuantity);

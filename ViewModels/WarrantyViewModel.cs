@@ -45,7 +45,7 @@ namespace WpfAppMobileShop.ViewModels
         public WarrantyViewModel()
         {
             _context = new StoreDbContext();
-            _filterStatus = "All";
+            _filterStatus = "Tất cả";
             RecordClaimCommand = new RelayCommand(RecordClaim, () => SelectedWarranty != null && SelectedWarranty.Status == "Active");
             try { LoadData(); } catch { Warranties = new ObservableCollection<Warranty>(); }
         }
@@ -55,7 +55,7 @@ namespace WpfAppMobileShop.ViewModels
         private void LoadData()
         {
             var q = _context.Warranties.Include(w => w.Product).Include(w => w.Customer).Include(w => w.OrderDetail).AsQueryable();
-            if (_filterStatus != "All")
+            if (_filterStatus != "Tất cả")
                 q = q.Where(w => w.Status == _filterStatus);
             Warranties = new ObservableCollection<Warranty>(q.OrderByDescending(w => w.StartDate).ToList());
         }
@@ -63,15 +63,23 @@ namespace WpfAppMobileShop.ViewModels
         private void RecordClaim()
         {
             if (SelectedWarranty == null) return;
-            var w = _context.Warranties.Find(SelectedWarranty.WarrantyId);
-            if (w == null) return;
-            w.Status = "Used";
-            w.Notes = WarrantyNotes;
-            _context.SaveChanges();
-            LoadData();
-            WarrantyNotes = "";
-            System.Windows.MessageBox.Show("Da ghi nhan bao hanh.", "Thong bao",
-                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+            try
+            {
+                var w = _context.Warranties.Find(SelectedWarranty.WarrantyId);
+                if (w == null) return;
+                w.Status = "Used";
+                w.Notes = WarrantyNotes;
+                _context.SaveChanges();
+                LoadData();
+                WarrantyNotes = "";
+                System.Windows.MessageBox.Show("Da ghi nhan bao hanh.", "Thong bao",
+                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi",
+                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
     }
 }

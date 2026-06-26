@@ -87,7 +87,7 @@ namespace WpfAppMobileShop.ViewModels
             set
             {
                 SetProperty(ref _paymentAmount, value);
-                ChangeAmount = value - FinalAmount;
+                ChangeAmount = Math.Max(0, value - FinalAmount);
             }
         }
         public decimal ChangeAmount
@@ -161,7 +161,7 @@ namespace WpfAppMobileShop.ViewModels
         {
             var query = _context.Products.Include(p => p.Category).AsQueryable();
             if (!string.IsNullOrWhiteSpace(SearchText))
-                query = query.Where(p => p.ProductName.Contains(SearchText) || p.Brand.Contains(SearchText) || p.Model.Contains(SearchText));
+                query = query.Where(p => p.ProductName.Contains(SearchText) || (p.Brand ?? "").Contains(SearchText) || (p.Model ?? "").Contains(SearchText));
             Products = new ObservableCollection<Product>(query.ToList());
         }
 
@@ -203,7 +203,7 @@ namespace WpfAppMobileShop.ViewModels
             TotalAmount = Cart.Sum(c => c.Quantity * c.UnitPrice);
             FinalAmount = TotalAmount - DiscountAmount;
             if (FinalAmount < 0) FinalAmount = 0;
-            ChangeAmount = PaymentAmount - FinalAmount;
+            ChangeAmount = Math.Max(0, PaymentAmount - FinalAmount);
         }
 
         private bool CanCheckout() => Cart.Any();
@@ -264,7 +264,7 @@ namespace WpfAppMobileShop.ViewModels
                         FinalAmount = FinalAmount,
                         Status = OrderStatus.Completed,
                         CustomerId = SelectedCustomer?.CustomerId,
-                        UserId = UserSession.CurrentUser.UserId,
+                        UserId = UserSession.CurrentUser?.UserId ?? 0,
                         OrderDetails = new ObservableCollection<OrderDetail>()
                     };
 

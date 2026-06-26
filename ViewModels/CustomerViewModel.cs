@@ -102,7 +102,7 @@ namespace WpfAppMobileShop.ViewModels
             {
                 query = query.Where(c => c.FullName.Contains(SearchText)
                     || c.Phone.Contains(SearchText)
-                    || c.Email.Contains(SearchText));
+                    || (c.Email ?? "").Contains(SearchText));
             }
             Customers = new ObservableCollection<Customer>(query.ToList());
         }
@@ -115,38 +115,51 @@ namespace WpfAppMobileShop.ViewModels
 
         private void Save()
         {
-            if (EditingCustomer.CustomerId == 0)
+            if (string.IsNullOrWhiteSpace(EditingCustomer.FullName))
+            { System.Windows.MessageBox.Show("Vui lòng nhập tên khách hàng!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (EditingCustomer.FullName.Length > 200)
+            { System.Windows.MessageBox.Show("Tên khách hàng không quá 200 ký tự!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (string.IsNullOrWhiteSpace(EditingCustomer.Phone))
+            { System.Windows.MessageBox.Show("Vui lòng nhập số điện thoại!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (EditingCustomer.Phone.Length > 20)
+            { System.Windows.MessageBox.Show("Số điện thoại không quá 20 ký tự!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            try
             {
-                _context.Customers.Add(EditingCustomer);
-            }
-            else
-            {
-                var existing = _context.Customers.Find(EditingCustomer.CustomerId);
-                if (existing != null)
+                if (EditingCustomer.CustomerId == 0) _context.Customers.Add(EditingCustomer);
+                else
                 {
-                    existing.FullName = EditingCustomer.FullName;
-                    existing.Phone = EditingCustomer.Phone;
-                    existing.Email = EditingCustomer.Email;
-                    existing.Address = EditingCustomer.Address;
+                    var existing = _context.Customers.Find(EditingCustomer.CustomerId);
+                    if (existing != null)
+                    {
+                        existing.FullName = EditingCustomer.FullName;
+                        existing.Phone = EditingCustomer.Phone;
+                        existing.Email = EditingCustomer.Email;
+                        existing.Address = EditingCustomer.Address;
+                    }
                 }
+                _context.SaveChanges();
+                LoadData();
+                IsEditing = false;
+                EditingCustomer = null;
             }
-            _context.SaveChanges();
-            LoadData();
-            IsEditing = false;
-            EditingCustomer = null;
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Lỗi lưu: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
 
         private void Delete()
         {
-            if (SelectedCustomer != null)
+            if (SelectedCustomer == null) return;
+            try
             {
                 var entity = _context.Customers.Find(SelectedCustomer.CustomerId);
-                if (entity != null)
-                {
-                    _context.Customers.Remove(entity);
-                    _context.SaveChanges();
-                }
+                if (entity != null) { _context.Customers.Remove(entity); _context.SaveChanges(); }
                 LoadData();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Lỗi xóa: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 

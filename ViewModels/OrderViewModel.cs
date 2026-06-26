@@ -113,8 +113,8 @@ namespace WpfAppMobileShop.ViewModels
 
             if (!string.IsNullOrWhiteSpace(SearchText))
             {
-                query = query.Where(o => o.Customer.FullName.Contains(SearchText)
-                    || o.Customer.Phone.Contains(SearchText)
+                query = query.Where(o => (o.Customer != null && o.Customer.FullName.Contains(SearchText))
+                    || (o.Customer != null && o.Customer.Phone.Contains(SearchText))
                     || o.OrderId.ToString() == SearchText);
             }
 

@@ -33,10 +33,13 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                             Width="300"
-                             Style="{StaticResource SearchBoxStyle}"
-                             ToolTip="Tìm sản phẩm..."/>
+                    <Border Width="300" CornerRadius="4" BorderBrush="#DDD" BorderThickness="1" Padding="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <md:PackIcon Kind="Magnify" FontSize="16" Foreground="#999" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBox Grid.Column="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SearchBoxStyle}" BorderThickness="0" ToolTip="Tìm sản phẩm..."/>
+                        </Grid>
+                    </Border>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Button Content="NHẬP HÀNG" Command="{Binding ImportCommand}"
                                 Style="{StaticResource PrimaryButton}" Margin="8,0,0,0"/>

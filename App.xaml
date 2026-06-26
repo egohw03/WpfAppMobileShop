@@ -132,6 +132,19 @@
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
             </Style>
 
+            <Style TargetType="DataGridRow">
+                <Setter Property="Background" Value="Transparent"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource HoverRowBrush}"/>
+                    </Trigger>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="{StaticResource AccentLightBrush}"/>
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryDarkBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
             <DataTemplate DataType="{x:Type viewmodels:DashboardViewModel}">
                 <views:DashboardView/>
             </DataTemplate>

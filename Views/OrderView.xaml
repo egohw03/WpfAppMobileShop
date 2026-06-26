@@ -26,10 +26,13 @@
             <DatePicker SelectedDate="{Binding FromDate}" Width="140" Style="{StaticResource DatePickerFilledStyle}"/>
             <TextBlock Text="đến" VerticalAlignment="Center" Margin="8,0"/>
             <DatePicker SelectedDate="{Binding ToDate}" Width="140" Style="{StaticResource DatePickerFilledStyle}"/>
-            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                     Width="250" Margin="16,0,0,0"
-                     Style="{StaticResource SearchBoxStyle}"
-                     ToolTip="Tìm theo tên KH, SĐT hoặc mã đơn"/>
+            <Border Width="250" Margin="16,0,0,0" CornerRadius="4" BorderBrush="#DDD" BorderThickness="1" Padding="0">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <md:PackIcon Kind="Magnify" FontSize="16" Foreground="#999" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SearchBoxStyle}" BorderThickness="0" ToolTip="Tìm theo tên KH, SĐT hoặc mã đơn"/>
+                </Grid>
+            </Border>
         </StackPanel>
 
         <DataGrid Grid.Row="2" ItemsSource="{Binding Orders}"

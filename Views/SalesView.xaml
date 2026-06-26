@@ -26,9 +26,13 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
-                             Style="{StaticResource SearchBoxStyle}"
-                             ToolTip="Tìm kiếm sản phẩm..." Margin="0,0,0,12"/>
+                    <Border CornerRadius="4" BorderBrush="#DDD" BorderThickness="1" Padding="0" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <md:PackIcon Kind="Magnify" FontSize="16" Foreground="#999" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBox Grid.Column="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SearchBoxStyle}" BorderThickness="0" ToolTip="Tìm kiếm sản phẩm..."/>
+                        </Grid>
+                    </Border>
                     <DataGrid Grid.Row="1" ItemsSource="{Binding Products}"
                               SelectedItem="{Binding SelectedProduct}"
                               AutoGenerateColumns="False" IsReadOnly="True"

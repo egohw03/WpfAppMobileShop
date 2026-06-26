@@ -69,10 +69,13 @@
                                Foreground="{StaticResource AccentBrush}" Margin="0,0,0,12"/>
 
                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,12">
-                        <TextBox Text="{Binding CustomerPhone, UpdateSourceTrigger=PropertyChanged}" 
-                                 Width="180"
-                                 Style="{StaticResource SearchBoxStyle}"
-                                 ToolTip="Nhập SĐT khách hàng..."/>
+                        <Border Width="180" CornerRadius="4" BorderBrush="#DDD" BorderThickness="1" Padding="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <md:PackIcon Kind="PhoneOutline" FontSize="16" Foreground="#999" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding CustomerPhone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SearchBoxStyle}" BorderThickness="0" ToolTip="Nhập SĐT khách hàng..."/>
+                            </Grid>
+                        </Border>
                         <TextBlock Text="{Binding SelectedCustomer.FullName, StringFormat='KH: {0}'}" 
                                    VerticalAlignment="Center" Margin="12,0,0,0" FontSize="13" FontWeight="SemiBold"/>
                     </StackPanel>
@@ -136,10 +139,13 @@
                     </md:Card>
 
                     <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,8,0,0">
-                        <TextBox Text="{Binding PromoCodeInput, UpdateSourceTrigger=PropertyChanged}"
-                                 Width="120"
-                                 Style="{StaticResource SearchBoxStyle}"
-                                 ToolTip="Mã giảm giá"/>
+                        <Border Width="130" CornerRadius="4" BorderBrush="#DDD" BorderThickness="1" Padding="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="30"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <md:PackIcon Kind="PercentOutline" FontSize="14" Foreground="#999" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding PromoCodeInput, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SearchBoxStyle}" BorderThickness="0" ToolTip="Mã giảm giá"/>
+                            </Grid>
+                        </Border>
                         <Button Content="ÁP DỤNG" Command="{Binding ApplyPromoCommand}"
                                 Height="34" Padding="10,0" Margin="4,0,0,0"
                                 Style="{StaticResource PrimaryButton}"/>
@@ -148,12 +154,12 @@
                                 Style="{StaticResource MaterialDesignFlatButton}"
                                 BorderThickness="1" BorderBrush="#DDD"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
+                    <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="0,8,0,0">
                         <Button Content="IN HÓA ĐƠN" Command="{Binding PrintReceiptCommand}"
-                                Style="{StaticResource PrimaryButton}" Height="40" Padding="16,0" Margin="0,0,8,0"/>
-                        <Button Content="THANH TOÁN" Command="{Binding CheckoutCommand}"
+                                Style="{StaticResource PrimaryButton}" Height="42" Padding="14,0" Margin="0,0,8,0"/>
+                        <Button Content="THANH TOÁN (F2)" Command="{Binding CheckoutCommand}"
                                 Style="{StaticResource SuccessButton}" Height="48" FontSize="16" 
-                                FontWeight="Bold" Padding="24,0"/>
+                                FontWeight="Bold" HorizontalAlignment="Stretch" MinWidth="200"/>
                     </StackPanel>
                 </Grid>
             </md:Card>

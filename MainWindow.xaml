@@ -61,7 +61,7 @@
                         </Button>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Inventory" Style="{StaticResource SidebarButtonStyle}">
                             <StackPanel Orientation="Horizontal">
-                                <md:PackIcon Kind="WarehouseOutline" FontSize="20" Margin="0,0,14,0"/>
+                                <md:PackIcon Kind="Warehouse" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Tồn kho" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>

@@ -23,13 +23,12 @@
         <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextStyle}"/>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,12">
-            <DatePicker SelectedDate="{Binding FromDate}" Width="140" Height="34"/>
+            <DatePicker SelectedDate="{Binding FromDate}" Width="140" Style="{StaticResource DatePickerFilledStyle}"/>
             <TextBlock Text="đến" VerticalAlignment="Center" Margin="8,0"/>
-            <DatePicker SelectedDate="{Binding ToDate}" Width="140" Height="34"/>
+            <DatePicker SelectedDate="{Binding ToDate}" Width="140" Style="{StaticResource DatePickerFilledStyle}"/>
             <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                     Width="250" Height="34" Margin="16,0,0,0"
-                     md:TextFieldAssist.HasFilledTextField="True"
-                     md:TextFieldAssist.CharacterCounterVisibility="Collapsed"
+                     Width="250" Margin="16,0,0,0"
+                     Style="{StaticResource SearchBoxStyle}"
                      ToolTip="Tìm theo tên KH, SĐT hoặc mã đơn"/>
         </StackPanel>
 

@@ -34,9 +34,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                             Width="300" Height="34"
-                             md:TextFieldAssist.HasFilledTextField="True"
-                             md:TextFieldAssist.CharacterCounterVisibility="Collapsed"
+                             Width="300"
+                             Style="{StaticResource SearchBoxStyle}"
                              ToolTip="Tìm sản phẩm..."/>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Button Content="NHẬP HÀNG" Command="{Binding ImportCommand}"
@@ -132,14 +131,12 @@
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                     <TextBlock Text="SL:" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                    <TextBox Text="{Binding AdjustQuantity}" Width="120" Height="34"
-                             md:TextFieldAssist.HasFilledTextField="True"
-                             md:TextFieldAssist.CharacterCounterVisibility="Collapsed"/>
+                    <TextBox Text="{Binding AdjustQuantity}" Width="120"
+                             Style="{StaticResource SearchBoxStyle}"/>
                 </StackPanel>
                 <TextBlock Grid.Column="3" Text="Ghi chú:" VerticalAlignment="Center"/>
-                <TextBox Grid.Column="4" Text="{Binding AdjustNotes}" Height="34" Margin="8,0"
-                         md:TextFieldAssist.HasFilledTextField="True"
-                         md:TextFieldAssist.CharacterCounterVisibility="Collapsed"/>
+                <TextBox Grid.Column="4" Text="{Binding AdjustNotes}" Margin="8,0"
+                         Style="{StaticResource SearchBoxStyle}"/>
                 <StackPanel Grid.Column="5" Orientation="Horizontal">
                     <Button Content="LƯU" Command="{Binding SaveAdjustCommand}"
                             Style="{StaticResource PrimaryButton}"/>
@@ -164,7 +161,7 @@
                     <TextBlock Text="Lịch sử giao dịch" FontSize="16" FontWeight="SemiBold"
                                Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
                     <ComboBox Grid.Column="1" SelectedValue="{Binding FilterType}" Margin="20,0,0,0"
-                              Width="140" Height="30">
+                              Width="140" Style="{StaticResource ComboBoxFilledStyle}">
                         <ComboBoxItem Content="Tất cả" IsSelected="True"/>
                         <ComboBoxItem Content="Import"/>
                         <ComboBoxItem Content="Export"/>

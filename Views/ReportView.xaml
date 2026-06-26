@@ -13,9 +13,9 @@
         <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextStyle}"/>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,12">
-            <DatePicker SelectedDate="{Binding FromDate}" Width="140" Height="34"/>
-            <TextBlock Text="den" VerticalAlignment="Center" Margin="8,0"/>
-            <DatePicker SelectedDate="{Binding ToDate}" Width="140" Height="34"/>
+            <DatePicker SelectedDate="{Binding FromDate}" Width="140" Style="{StaticResource DatePickerFilledStyle}"/>
+            <TextBlock Text="đến" VerticalAlignment="Center" Margin="8,0"/>
+            <DatePicker SelectedDate="{Binding ToDate}" Width="140" Style="{StaticResource DatePickerFilledStyle}"/>
         </StackPanel>
 
         <md:Card Grid.Row="2" Padding="16" UniformCornerRadius="8" Margin="0,0,0,12">

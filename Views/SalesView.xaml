@@ -27,9 +27,8 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
-                             md:TextFieldAssist.HasFilledTextField="True"
-                             Height="36" ToolTip="Tìm kiếm sản phẩm..." Margin="0,0,0,12"
-                             md:TextFieldAssist.CharacterCounterVisibility="Collapsed"/>
+                             Style="{StaticResource SearchBoxStyle}"
+                             ToolTip="Tìm kiếm sản phẩm..." Margin="0,0,0,12"/>
                     <DataGrid Grid.Row="1" ItemsSource="{Binding Products}"
                               SelectedItem="{Binding SelectedProduct}"
                               AutoGenerateColumns="False" IsReadOnly="True"
@@ -67,9 +66,8 @@
 
                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,12">
                         <TextBox Text="{Binding CustomerPhone, UpdateSourceTrigger=PropertyChanged}" 
-                                 Width="180" Height="34"
-                                 md:TextFieldAssist.HasFilledTextField="True"
-                                 md:TextFieldAssist.CharacterCounterVisibility="Collapsed"
+                                 Width="180"
+                                 Style="{StaticResource SearchBoxStyle}"
                                  ToolTip="Nhập SĐT khách hàng..."/>
                         <TextBlock Text="{Binding SelectedCustomer.FullName, StringFormat='KH: {0}'}" 
                                    VerticalAlignment="Center" Margin="12,0,0,0" FontSize="13" FontWeight="SemiBold"/>
@@ -118,9 +116,8 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Khách đưa:" FontSize="13" VerticalAlignment="Center"/>
                                 <TextBox Grid.Column="1" Text="{Binding PaymentAmount, UpdateSourceTrigger=PropertyChanged}" 
-                                         Width="130" Height="32" TextAlignment="Right"
-                                         md:TextFieldAssist.HasFilledTextField="True"
-                                         md:TextFieldAssist.CharacterCounterVisibility="Collapsed"/>
+                                         Width="130" TextAlignment="Right"
+                                         Style="{StaticResource SearchBoxStyle}"/>
                             </Grid>
                             <Grid Margin="0,6,0,0">
                                 <Grid.ColumnDefinitions>
@@ -136,9 +133,8 @@
 
                     <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,8,0,0">
                         <TextBox Text="{Binding PromoCodeInput, UpdateSourceTrigger=PropertyChanged}"
-                                 Width="120" Height="34"
-                                 md:TextFieldAssist.HasFilledTextField="True"
-                                 md:TextFieldAssist.CharacterCounterVisibility="Collapsed"
+                                 Width="120"
+                                 Style="{StaticResource SearchBoxStyle}"
                                  ToolTip="Mã giảm giá"/>
                         <Button Content="ÁP DỤNG" Command="{Binding ApplyPromoCommand}"
                                 Height="34" Padding="10,0" Margin="4,0,0,0"

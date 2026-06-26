@@ -36,7 +36,7 @@
                     <TextBlock Text="Mã:" VerticalAlignment="Center"/>
                     <TextBox Grid.Column="1" Text="{Binding EditingPromo.Code}" Style="{StaticResource SearchBoxStyle}"/>
                     <TextBlock Grid.Column="3" Text="Loại:" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Column="4" SelectedValue="{Binding EditingPromo.DiscountType}" Height="36">
+                    <ComboBox Grid.Column="4" SelectedValue="{Binding EditingPromo.DiscountType}" Style="{StaticResource ComboBoxFilledStyle}">
                         <ComboBoxItem Content="Percent"/><ComboBoxItem Content="Fixed"/>
                     </ComboBox>
                 </Grid>
@@ -50,7 +50,7 @@
                 <Grid Margin="0,0,0,10">
                     <Grid.ColumnDefinitions><ColumnDefinition Width="100"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/><ColumnDefinition Width="100"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <TextBlock Text="Hạn dùng:" VerticalAlignment="Center"/>
-                    <DatePicker Grid.Column="1" SelectedDate="{Binding EditingPromo.ExpiryDate}" Height="34"/>
+                    <DatePicker Grid.Column="1" SelectedDate="{Binding EditingPromo.ExpiryDate}" Style="{StaticResource DatePickerFilledStyle}"/>
                     <TextBlock Grid.Column="3" Text="Kích hoạt:" VerticalAlignment="Center"/>
                     <CheckBox Grid.Column="4" IsChecked="{Binding EditingPromo.IsActive}" VerticalAlignment="Center" Margin="8,0"/>
                 </Grid>

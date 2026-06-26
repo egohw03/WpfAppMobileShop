@@ -17,8 +17,8 @@
         <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextStyle}"/>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,12">
             <TextBlock Text="Loc:" VerticalAlignment="Center" Margin="0,0,8,0"/>
-            <ComboBox SelectedValue="{Binding FilterStatus}" Width="160" Height="34">
-                <ComboBoxItem Content="Tat ca" IsSelected="True"/>
+            <ComboBox SelectedValue="{Binding FilterStatus}" Width="160" Style="{StaticResource ComboBoxFilledStyle}">
+                <ComboBoxItem Content="Tất cả" IsSelected="True"/>
                 <ComboBoxItem Content="Active"/>
                 <ComboBoxItem Content="Expired"/>
                 <ComboBoxItem Content="Used"/>
@@ -38,8 +38,8 @@
             <Grid>
                 <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                 <TextBlock Text="Ghi chu bao hanh:" VerticalAlignment="Center"/>
-                <TextBox Grid.Column="1" Text="{Binding WarrantyNotes}" Height="34" Margin="12,0" Width="400"
-                         md:TextFieldAssist.HasFilledTextField="True" md:TextFieldAssist.CharacterCounterVisibility="Collapsed"/>
+                <TextBox Grid.Column="1" Text="{Binding WarrantyNotes}" Margin="12,0" Width="400"
+                         Style="{StaticResource SearchBoxStyle}"/>
                 <Button Grid.Column="2" Content="GHI NHAN" Command="{Binding RecordClaimCommand}" Style="{StaticResource PrimaryButton}"/>
             </Grid>
         </md:Card>

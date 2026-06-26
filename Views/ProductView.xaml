@@ -74,7 +74,8 @@
                     <TextBlock Grid.Column="3" Text="Danh mục:" VerticalAlignment="Center"/>
                     <ComboBox Grid.Column="4" ItemsSource="{Binding Categories}" 
                               SelectedValue="{Binding EditingProduct.CategoryId}"
-                              SelectedValuePath="CategoryId" DisplayMemberPath="CategoryName" Height="36"/>
+                              SelectedValuePath="CategoryId" DisplayMemberPath="CategoryName" 
+                              Style="{StaticResource ComboBoxFilledStyle}"/>
                 </Grid>
                 <Grid Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>

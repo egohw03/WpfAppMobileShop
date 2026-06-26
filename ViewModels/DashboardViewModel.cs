@@ -131,6 +131,8 @@ namespace WpfAppMobileShop.ViewModels
             set => SetProperty(ref _revenueTrend, value);
         }
 
+        public Func<double, string> RevenueFormatter => value => value.ToString("N0");
+
         public ICommand GoToSalesCommand { get; }
         public ICommand GoToProductsCommand { get; }
         public ICommand GoToReportsCommand { get; }
@@ -218,14 +220,20 @@ namespace WpfAppMobileShop.ViewModels
                 .Take(5)
                 .ToList();
 
-            TopProductsSeries = new SeriesCollection
+            var topValues = new ChartValues<int>(topProducts.Select(p => p.Total));
+            TopProductsSeries = new SeriesCollection();
+            var pieSeries = new PieSeries
             {
-                new PieSeries
+                Title = "Sản phẩm",
+                Values = topValues,
+                DataLabels = true,
+                LabelPoint = point =>
                 {
-                    Title = "Sản phẩm",
-                    Values = new ChartValues<int>(topProducts.Select(p => p.Total))
+                    var idx = point.SeriesView.Values.IndexOf(point.Instance);
+                    return idx >= 0 && idx < topProducts.Count ? $"{topProducts[idx].Name}: {point.Y}" : point.Y.ToString();
                 }
             };
+            TopProductsSeries.Add(pieSeries);
 
             TopProductLabels = topProducts.Select(p => p.Name).ToArray();
 
@@ -245,14 +253,14 @@ namespace WpfAppMobileShop.ViewModels
             TopCustomerTotal = topCustomer?.Total ?? 0;
 
             RecentOrders = new ObservableCollection<Order>(
-                _context.Orders.Include(o => o.Customer).Include(o => o.User)
+                _context.Orders.Include(o => o.User)
                     .OrderByDescending(o => o.OrderDate)
                     .Take(5).ToList());
 
             var yesterdayRevenue = _context.Orders
                 .Where(o => o.OrderDate >= today.AddDays(-1) && o.OrderDate < today && o.Status != "Cancelled")
                 .Sum(o => (decimal?)o.FinalAmount) ?? 0;
-            if (yesterdayRevenue > 0 && TodayRevenue > 0)
+            if (yesterdayRevenue > 0)
             {
                 var change = ((TodayRevenue - yesterdayRevenue) / yesterdayRevenue) * 100;
                 RevenueTrend = change >= 0 ? $"+{change:F1}%" : $"{change:F1}%";

@@ -16,12 +16,17 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <TextBlock Text="Bảng điều khiển" Style="{StaticResource TitleTextStyle}" Margin="0,0,0,4"/>
             <TextBlock Text="Tổng quan hoạt động cửa hàng" FontSize="13" Foreground="#888" Margin="0,0,0,8"/>
 
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,16">
+            <ProgressBar Grid.Row="1" IsIndeterminate="True" Height="3"
+                         Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}"
+                         Foreground="{StaticResource AccentBrush}" Margin="0,0,0,8"/>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,16">
                 <Button Command="{Binding GoToSalesCommand}" ToolTip="Tạo đơn hàng mới"
                         Style="{StaticResource PrimaryButton}" Height="38" Padding="16,0" Margin="0,0,8,0">
                     <StackPanel Orientation="Horizontal">
@@ -147,7 +152,7 @@
                 </md:Card>
             </Grid>
 
-            <Grid Grid.Row="3" Margin="0,0,0,12">
+            <Grid Grid.Row="4" Margin="0,0,0,12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -240,12 +245,12 @@
                 </md:Card>
             </Grid>
 
-            <Grid Grid.Row="4">
+            <Grid Grid.Row="5" Margin="0,0,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <md:Card Grid.Column="0" Margin="6" Padding="20" UniformCornerRadius="8">
+                <md:Card Grid.Column="0" Margin="6" Padding="20" UniformCornerRadius="8" MinHeight="280">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -257,17 +262,18 @@
                         </StackPanel>
                         <lvc:CartesianChart Grid.Row="1" Series="{Binding RevenueSeries}" 
                                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                            Hoverable="True">
+                                            Hoverable="True"
+                                            DisableAnimations="True">
                             <lvc:CartesianChart.AxisX>
-                                <lvc:Axis Labels="{Binding RevenueLabels}" FontSize="10"/>
+                                <lvc:Axis Labels="{Binding RevenueLabels}" FontSize="10" Separator="{x:Null}"/>
                             </lvc:CartesianChart.AxisX>
                             <lvc:CartesianChart.AxisY>
-                                <lvc:Axis Title="Doanh thu" FontSize="10"/>
+                                <lvc:Axis Title="Doanh thu" FontSize="10" LabelFormatter="{Binding RevenueFormatter}"/>
                             </lvc:CartesianChart.AxisY>
                         </lvc:CartesianChart>
                     </Grid>
                 </md:Card>
-                <md:Card Grid.Column="1" Margin="6" Padding="20" UniformCornerRadius="8">
+                <md:Card Grid.Column="1" Margin="6" Padding="20" UniformCornerRadius="8" MinHeight="280">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -279,12 +285,12 @@
                         </StackPanel>
                         <lvc:PieChart Grid.Row="1" Series="{Binding TopProductsSeries}" 
                                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                      Hoverable="True"/>
+                                      Hoverable="True" DisableAnimations="True"/>
                     </Grid>
                 </md:Card>
             </Grid>
 
-            <md:Card Grid.Row="5" Margin="6,16,6,0" Padding="16" UniformCornerRadius="8">
+            <md:Card Grid.Row="6" Margin="6,16,6,0" Padding="16" UniformCornerRadius="8">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

@@ -269,10 +269,10 @@
                                             Hoverable="True"
                                             DisableAnimations="True">
                             <lvc:CartesianChart.AxisX>
-                                <lvc:Axis Labels="{Binding RevenueLabels}" FontSize="10" Separator="{x:Null}"/>
+                                <lvc:Axis Labels="{Binding RevenueLabels}" FontSize="10"/>
                             </lvc:CartesianChart.AxisX>
                             <lvc:CartesianChart.AxisY>
-                                <lvc:Axis Title="Doanh thu" FontSize="10" LabelFormatter="{Binding RevenueFormatter}"/>
+                                <lvc:Axis Title="Doanh thu" FontSize="10"/>
                             </lvc:CartesianChart.AxisY>
                         </lvc:CartesianChart>
                     </Grid>

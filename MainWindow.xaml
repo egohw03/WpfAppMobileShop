@@ -13,6 +13,7 @@
         FontFamily="Segoe UI">
     <Window.Resources>
         <helpers:BoolToVisibilityConverter x:Key="BoolToVis"/>
+        <helpers:BoolToVisibilityConverter x:Key="InverseBoolToVis" Invert="True"/>
         <helpers:EqualityConverter x:Key="Equality"/>
     </Window.Resources>
     <Grid>
@@ -29,19 +30,27 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" Height="120" VerticalAlignment="Top">
+                <Border Grid.Row="0" Height="100" VerticalAlignment="Top">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                             <GradientStop Color="#1976D2" Offset="0"/>
                             <GradientStop Color="#1565C0" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
-                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Border Background="White" CornerRadius="25" Width="50" Height="50" HorizontalAlignment="Center" Margin="0,0,0,8">
-                            <TextBlock Text="MS" FontSize="18" FontWeight="Bold" Foreground="#1976D2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <TextBlock Text="MobileShop" FontSize="15" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Center"/>
-                    </StackPanel>
+                    <Grid>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Border Background="White" CornerRadius="20" Width="40" Height="40" HorizontalAlignment="Center" Margin="0,0,0,4">
+                                <TextBlock Text="MS" FontSize="15" FontWeight="Bold" Foreground="#1976D2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="MobileShop" FontSize="13" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Center"
+                                       Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
+                        </StackPanel>
+                        <Button Command="{Binding ToggleSidebarCommand}" Width="28" Height="28"
+                                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,6,6,0"
+                                Background="Transparent" BorderThickness="0" Cursor="Hand">
+                            <md:PackIcon Kind="Menu" FontSize="16" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Button>
+                    </Grid>
                 </Border>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
@@ -54,7 +63,8 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="ViewDashboardOutline" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Bảng điều khiển" VerticalAlignment="Center"/>
+                                <TextBlock Text="Bảng điều khiển" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Products" ToolTip="Quản lý sản phẩm">
@@ -65,7 +75,8 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="PackageVariantClosed" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Sản phẩm" VerticalAlignment="Center"/>
+                                <TextBlock Text="Sản phẩm" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Inventory" ToolTip="Quản lý tồn kho">
@@ -76,7 +87,8 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="Warehouse" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Tồn kho" VerticalAlignment="Center"/>
+                                <TextBlock Text="Tồn kho" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Categories" ToolTip="Quản lý danh mục">
@@ -87,7 +99,8 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="TagMultipleOutline" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Danh mục" VerticalAlignment="Center"/>
+                                <TextBlock Text="Danh mục" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Customers" ToolTip="Quản lý khách hàng">
@@ -98,7 +111,8 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="AccountGroupOutline" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Khách hàng" VerticalAlignment="Center"/>
+                                <TextBlock Text="Khách hàng" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Orders" ToolTip="Lịch sử đơn hàng">
@@ -109,7 +123,8 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="ReceiptTextOutline" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Đơn hàng" VerticalAlignment="Center"/>
+                                <TextBlock Text="Đơn hàng" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Sales" ToolTip="Bán hàng tại quầy">
@@ -120,7 +135,8 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="CashRegister" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Bán hàng" VerticalAlignment="Center"/>
+                                <TextBlock Text="Bán hàng" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Suppliers" ToolTip="Quản lý nhà cung cấp">
@@ -131,11 +147,13 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="TruckOutline" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Nhà cung cấp" VerticalAlignment="Center"/>
+                                <TextBlock Text="Nhà cung cấp" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                         <Border Background="#2A2A3E" Height="1" Margin="14,4"/>
-                        <TextBlock Text="QUAN TRI" Foreground="#555" FontSize="11" FontWeight="Bold" Margin="20,6,0,4"/>
+                        <TextBlock Text="QUAN TRI" Foreground="#555" FontSize="11" FontWeight="Bold" Margin="20,6,0,4"
+                                   Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Promos" ToolTip="Quản lý khuyến mãi"
                                 Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
                             <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
@@ -145,7 +163,8 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="PercentOutline" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Khuyến mãi" VerticalAlignment="Center"/>
+                                <TextBlock Text="Khuyến mãi" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Reports" ToolTip="Báo cáo doanh thu"
@@ -157,7 +176,8 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="ChartBoxOutline" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Báo cáo" VerticalAlignment="Center"/>
+                                <TextBlock Text="Báo cáo" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Warranty" ToolTip="Quản lý bảo hành">
@@ -168,7 +188,8 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="ShieldCheckOutline" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Bảo hành" VerticalAlignment="Center"/>
+                                <TextBlock Text="Bảo hành" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Backup" ToolTip="Sao lưu &amp; phục hồi"
@@ -180,7 +201,8 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="DatabaseExportOutline" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Sao lưu" VerticalAlignment="Center"/>
+                                <TextBlock Text="Sao lưu" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Settings" ToolTip="Cài đặt hệ thống"
@@ -192,7 +214,8 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="CogOutline" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Cài đặt" VerticalAlignment="Center"/>
+                                <TextBlock Text="Cài đặt" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding NavigateCommand}" CommandParameter="Users" ToolTip="Quản lý người dùng"
@@ -204,7 +227,8 @@
                             </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="AccountCogOutline" FontSize="20" Margin="0,0,14,0"/>
-                                <TextBlock Text="Người dùng" VerticalAlignment="Center"/>
+                                <TextBlock Text="Người dùng" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                             </StackPanel>
                         </Button>
                     </StackPanel>
@@ -221,7 +245,8 @@
                                 <TextBlock Text="{Binding CurrentUserInitial}" FontSize="14" FontWeight="Bold"
                                            Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center"
+                                        Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}">
                                 <TextBlock Text="{Binding CurrentUserDisplay}" Foreground="White" FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
                                 <TextBlock Text="{Binding CurrentUserRole}" Foreground="{StaticResource SidebarTextBrush}" FontSize="10" Margin="0,1,0,0"/>
                             </StackPanel>
@@ -230,7 +255,8 @@
                     <Button Command="{Binding LogoutCommand}" Style="{StaticResource SidebarLogoutStyle}">
                         <StackPanel Orientation="Horizontal">
                             <md:PackIcon Kind="Logout" FontSize="18" Margin="0,0,14,0"/>
-                            <TextBlock Text="Đăng xuất" VerticalAlignment="Center"/>
+                            <TextBlock Text="Đăng xuất" VerticalAlignment="Center"
+                                       Visibility="{Binding IsSidebarExpanded, Converter={StaticResource BoolToVis}}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>

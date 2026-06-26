@@ -24,6 +24,9 @@
             <SolidColorBrush x:Key="WarningBrush" Color="#FF9800"/>
             <SolidColorBrush x:Key="PageBgBrush" Color="#F0F2F5"/>
             <SolidColorBrush x:Key="CardBgBrush" Color="White"/>
+            <SolidColorBrush x:Key="SidebarActiveBgBrush" Color="#1976D2"/>
+            <SolidColorBrush x:Key="HoverRowBrush" Color="#E3F2FD"/>
+            <SolidColorBrush x:Key="SkeletonBrush" Color="#E0E0E0"/>
 
             <Style x:Key="SidebarBaseStyle" TargetType="Button">
                 <Setter Property="Background" Value="Transparent"/>
@@ -91,6 +94,18 @@
                 <Setter Property="Height" Value="38"/>
                 <Setter Property="Padding" Value="15,0"/>
                 <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+
+            <Style x:Key="PrimaryButtonRounded" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Height" Value="46"/>
+                <Setter Property="Padding" Value="24,0"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="md:ButtonAssist.CornerRadius" Value="8"/>
             </Style>
 
             <Style x:Key="SearchBoxStyle" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">

@@ -11,7 +11,6 @@ namespace WpfAppMobileShop.ViewModels
         private object _currentViewModel;
         private bool _isSidebarExpanded = true;
         private string _currentPage = "Dashboard";
-
         public object CurrentViewModel
         {
             get => _currentViewModel;
@@ -31,6 +30,9 @@ namespace WpfAppMobileShop.ViewModels
         }
 
         public string CurrentUserDisplay => $"Xin chào, {UserSession.CurrentUser?.FullName}";
+        public string CurrentUserInitial => UserSession.CurrentUser?.FullName?.Length > 0
+            ? UserSession.CurrentUser.FullName[0].ToString()
+            : "?";
         public string CurrentUserRole => UserSession.CurrentUser?.Role;
         public bool IsAdmin => UserSession.IsAdmin;
 

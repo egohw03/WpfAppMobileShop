@@ -42,6 +42,17 @@ namespace WpfAppMobileShop.Views
             }
         }
 
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed) DragMove();
+        }
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if (e.Key == Key.Escape)

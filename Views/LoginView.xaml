@@ -8,81 +8,115 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
-        Width="400" Height="520"
-        FontFamily="Segoe UI">
+        Width="380" Height="500"
+        FontFamily="Segoe UI"
+        MouseLeftButtonDown="Window_MouseDown">
     <Window.Resources>
         <helpers:BoolToVisibilityConverter x:Key="BoolToVis"/>
     </Window.Resources>
-    <Border CornerRadius="12" Background="White" BorderBrush="#E0E0E0" BorderThickness="1">
-        <Border.Effect>
-            <DropShadowEffect BlurRadius="30" ShadowDepth="0" Color="#40000000"/>
-        </Border.Effect>
-        <Grid Margin="32">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <Border Grid.Row="0" Width="80" Height="80" HorizontalAlignment="Center" Margin="0,8,0,20">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="#1976D2" Offset="0"/>
-                        <GradientStop Color="#1565C0" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-                <Border.CornerRadius>
-                    <CornerRadius>40</CornerRadius>
-                </Border.CornerRadius>
-                <TextBlock Text="MS" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Border>
-
-            <TextBlock Grid.Row="1" Text="ĐĂNG NHẬP" FontSize="22" FontWeight="Bold" Foreground="#1E1E2D" HorizontalAlignment="Center" Margin="0,0,0,4"/>
-            <TextBlock Grid.Row="2" Text="Phần mềm quản lý cửa hàng di động" FontSize="12" Foreground="#888" HorizontalAlignment="Center" Margin="0,0,0,28"/>
-
-            <StackPanel Grid.Row="3" Margin="0,0,0,16">
-                <TextBlock Text="Tên đăng nhập" FontSize="13" Foreground="#555" Margin="0,0,0,6"/>
-                <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Height="44" FontSize="14"
-                         Padding="12,0" BorderBrush="#DDD" BorderThickness="1"
-                         md:TextFieldAssist.HasFilledTextField="True"
-                         md:TextFieldAssist.CharacterCounterVisibility="Collapsed"/>
-            </StackPanel>
-
-            <StackPanel Grid.Row="4" Margin="0,0,0,20">
-                <TextBlock Text="Mật khẩu" FontSize="13" Foreground="#555" Margin="0,0,0,6"/>
-                <PasswordBox x:Name="PasswordBox" Height="44" FontSize="14"
-                             Padding="12,0" BorderBrush="#DDD" BorderThickness="1"
-                             Background="#F9F9F9" KeyDown="PasswordBox_KeyDown"
-                             md:TextFieldAssist.HasFilledTextField="True"/>
-            </StackPanel>
-
-            <TextBlock Grid.Row="5" Text="{Binding ErrorMessage}" Foreground="{StaticResource DangerBrush}" FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,12"/>
-
-            <Button Grid.Row="6" Height="46" FontSize="15" FontWeight="Bold"
-                    BorderThickness="0" Cursor="Hand" Click="LoginButton_Click">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
-                        <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="Content" Value="ĐĂNG NHẬP"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                                <Setter Property="Content" Value="ĐANG XỬ LÝ..."/>
-                                <Setter Property="IsEnabled" Value="False"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
+    <Border Background="#F0F2F5" CornerRadius="0">
+        <Grid>
+            <Button Width="36" Height="36" HorizontalAlignment="Right" VerticalAlignment="Top"
+                    Margin="0,8,8,0" Background="Transparent" BorderThickness="0"
+                    Cursor="Hand" Click="CloseButton_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="18">
+                            <md:PackIcon Kind="Close" FontSize="18" Foreground="#666"
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
             </Button>
 
-            <ProgressBar Grid.Row="6" Value="0" IsIndeterminate="True" 
-                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}"
-                            Foreground="{StaticResource AccentBrush}"
-                            Height="3" Margin="0,56,0,0"/>
+            <Border Width="340" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    CornerRadius="12" Background="White" BorderBrush="#E0E0E0" BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" ShadowDepth="4" Color="#25000000" Direction="-90"/>
+                </Border.Effect>
+                <Grid Margin="28,32">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Width="72" Height="72" HorizontalAlignment="Center" Margin="0,0,0,16">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#1976D2" Offset="0"/>
+                                <GradientStop Color="#1565C0" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Border.CornerRadius>
+                            <CornerRadius>36</CornerRadius>
+                        </Border.CornerRadius>
+                        <md:PackIcon Kind="Cellphone" FontSize="30" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <TextBlock Grid.Row="1" Text="ĐĂNG NHẬP" FontSize="20" FontWeight="Bold" Foreground="#1E1E2D" HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                    <TextBlock Grid.Row="2" Text="Phần mềm quản lý cửa hàng di động" FontSize="12" Foreground="#888" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                    <Grid Grid.Row="3" Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Width="40" Height="40" Background="#F5F5F5" CornerRadius="8,0,0,8"
+                                BorderBrush="#DDD" BorderThickness="1,1,0,1">
+                            <md:PackIcon Kind="AccountOutline" FontSize="18" Foreground="#888" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBox Grid.Column="1" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="40" FontSize="14" Padding="10,0"
+                                 BorderBrush="#DDD" BorderThickness="0,1,1,1"
+                                 md:HintAssist.Hint="Tên đăng nhập"
+                                 md:TextFieldAssist.HasFilledTextField="False"
+                                 md:TextFieldAssist.CharacterCounterVisibility="Collapsed"/>
+                    </Grid>
+
+                    <Grid Grid.Row="4" Margin="0,0,0,18">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Width="40" Height="40" Background="#F5F5F5" CornerRadius="8,0,0,8"
+                                BorderBrush="#DDD" BorderThickness="1,1,0,1">
+                            <md:PackIcon Kind="LockOutline" FontSize="18" Foreground="#888" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <PasswordBox Grid.Column="1" x:Name="PasswordBox" Height="40" FontSize="14"
+                                     Padding="10,0" BorderBrush="#DDD" BorderThickness="0,1,1,1"
+                                     Background="White" KeyDown="PasswordBox_KeyDown"
+                                     md:HintAssist.Hint="Mật khẩu"
+                                     md:TextFieldAssist.HasFilledTextField="False"/>
+                    </Grid>
+
+                    <TextBlock Grid.Row="5" Text="{Binding ErrorMessage}" Foreground="{StaticResource DangerBrush}" FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+
+                    <Button Grid.Row="6" Height="42" FontSize="14" FontWeight="Bold"
+                            BorderThickness="0" Cursor="Hand" Click="LoginButton_Click">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource PrimaryButtonRounded}">
+                                <Setter Property="Content" Value="ĐĂNG NHẬP"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                        <Setter Property="Content" Value="ĐANG XỬ LÝ..."/>
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <ProgressBar Grid.Row="6" Value="0" IsIndeterminate="True" 
+                                 Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}"
+                                 Foreground="{StaticResource AccentBrush}"
+                                 Height="3" Margin="0,52,0,0"/>
+                </Grid>
+            </Border>
         </Grid>
     </Border>
 </Window>

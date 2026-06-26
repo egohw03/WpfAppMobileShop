@@ -217,22 +217,19 @@ namespace WpfAppMobileShop.ViewModels
                 return;
             }
             var promo = _context.PromoCodes.FirstOrDefault(p => p.Code == PromoCodeInput && p.IsActive);
-            if (promo == null)
+                    if (promo == null)
             {
-                System.Windows.MessageBox.Show("Mã giảm giá không hợp lệ!", "Lỗi",
-                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                NotificationService.ShowError("Mã giảm giá không hợp lệ!");
                 return;
             }
             if (promo.ExpiryDate.HasValue && promo.ExpiryDate.Value < DateTime.Today)
             {
-                System.Windows.MessageBox.Show("Mã giảm giá đã hết hạn!", "Lỗi",
-                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                NotificationService.ShowError("Mã giảm giá đã hết hạn!");
                 return;
             }
             if (TotalAmount < promo.MinOrderAmount)
             {
-                System.Windows.MessageBox.Show($"Đơn tối thiểu {promo.MinOrderAmount:N0}đ để áp dụng mã này!", "Lỗi",
-                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                NotificationService.ShowError($"Đơn tối thiểu {promo.MinOrderAmount:N0}đ để áp dụng mã này!");
                 return;
             }
             if (promo.DiscountType == "Percent")

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using WpfAppMobileShop.ViewModels;
 using WpfAppMobileShop.Views;
 
@@ -21,6 +22,15 @@ namespace WpfAppMobileShop
                 return;
             }
             DataContext = new MainViewModel();
+        }
+
+        private void SidebarHeader_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var vm = DataContext as MainViewModel;
+                vm?.ToggleSidebarCommand.Execute(null);
+            }
         }
     }
 }

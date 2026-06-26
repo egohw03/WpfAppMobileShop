@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:WpfAppMobileShop.ViewModels"
-        xmlns:views="clr-namespace:WpfAppMobileShop.Views"
         xmlns:helpers="clr-namespace:WpfAppMobileShop.Helpers"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
@@ -47,90 +46,162 @@
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                     <StackPanel Margin="0,8,0,0">
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Dashboard" Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Dashboard" ToolTip="Bảng điều khiển">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Dashboard}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="ViewDashboardOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Bảng điều khiển" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Products" Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Products" ToolTip="Quản lý sản phẩm">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Products}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="PackageVariantClosed" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Sản phẩm" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Inventory" Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Inventory" ToolTip="Quản lý tồn kho">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Inventory}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="Warehouse" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Tồn kho" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Categories" Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Categories" ToolTip="Quản lý danh mục">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Categories}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="TagMultipleOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Danh mục" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Customers" Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Customers" ToolTip="Quản lý khách hàng">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Customers}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="AccountGroupOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Khách hàng" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Orders" Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Orders" ToolTip="Lịch sử đơn hàng">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Orders}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="ReceiptTextOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Đơn hàng" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Sales" Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Sales" ToolTip="Bán hàng tại quầy">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Sales}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="CashRegister" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Bán hàng" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Suppliers" Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Suppliers" ToolTip="Quản lý nhà cung cấp">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Suppliers}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="TruckOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Nhà cung cấp" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Promos" Style="{StaticResource SidebarButtonStyle}"
+                        <Border Background="#2A2A3E" Height="1" Margin="14,4"/>
+                        <TextBlock Text="QUAN TRI" Foreground="#555" FontSize="11" FontWeight="Bold" Margin="20,6,0,4"/>
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Promos" ToolTip="Quản lý khuyến mãi"
                                 Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Promos}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="PercentOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Khuyến mãi" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Reports" Style="{StaticResource SidebarButtonStyle}"
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Reports" ToolTip="Báo cáo doanh thu"
                                 Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Reports}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="ChartBoxOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Báo cáo" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Warranty" Style="{StaticResource SidebarButtonStyle}">
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Warranty" ToolTip="Quản lý bảo hành">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Warranty}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="ShieldCheckOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Bảo hành" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Backup" Style="{StaticResource SidebarButtonStyle}"
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Backup" ToolTip="Sao lưu &amp; phục hồi"
                                 Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Backup}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="DatabaseExportOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Sao lưu" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Settings" Style="{StaticResource SidebarButtonStyle}"
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Settings" ToolTip="Cài đặt hệ thống"
                                 Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Settings}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="CogOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Cài đặt" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding NavigateCommand}" CommandParameter="Users" Style="{StaticResource SidebarButtonStyle}"
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Users" ToolTip="Quản lý người dùng"
                                 Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
+                            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarBaseStyle}">
+                                <Style.Triggers><DataTrigger Binding="{Binding CurrentPage, Converter={StaticResource Equality}, ConverterParameter=Users}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource SidebarActiveBgBrush}"/><Setter Property="Foreground" Value="White"/>
+                                </DataTrigger></Style.Triggers>
+                            </Style></Button.Style>
                             <StackPanel Orientation="Horizontal">
                                 <md:PackIcon Kind="AccountCogOutline" FontSize="20" Margin="0,0,14,0"/>
                                 <TextBlock Text="Người dùng" VerticalAlignment="Center"/>
@@ -140,11 +211,21 @@
                 </ScrollViewer>
 
                 <StackPanel Grid.Row="2" Margin="14">
-                    <Border Background="{StaticResource SidebarHoverBrush}" CornerRadius="8" Padding="12" Margin="0,0,0,8">
-                        <StackPanel>
-                            <TextBlock Text="{Binding CurrentUserDisplay}" Foreground="White" FontSize="13" FontWeight="SemiBold"/>
-                            <TextBlock Text="{Binding CurrentUserRole}" Foreground="{StaticResource SidebarTextBrush}" FontSize="11" Margin="0,2,0,0"/>
-                        </StackPanel>
+                    <Border Background="{StaticResource SidebarHoverBrush}" CornerRadius="8" Padding="10" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Width="32" Height="32" CornerRadius="16" Background="{StaticResource AccentBrush}">
+                                <TextBlock Text="{Binding CurrentUserInitial}" FontSize="14" FontWeight="Bold"
+                                           Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding CurrentUserDisplay}" Foreground="White" FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="{Binding CurrentUserRole}" Foreground="{StaticResource SidebarTextBrush}" FontSize="10" Margin="0,1,0,0"/>
+                            </StackPanel>
+                        </Grid>
                     </Border>
                     <Button Command="{Binding LogoutCommand}" Style="{StaticResource SidebarLogoutStyle}">
                         <StackPanel Orientation="Horizontal">
@@ -157,7 +238,17 @@
         </Border>
 
         <Border Grid.Column="1" Background="{StaticResource PageBgBrush}">
-            <ContentControl Content="{Binding CurrentViewModel}" Margin="12"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ContentControl Content="{Binding CurrentViewModel}" Margin="12"/>
+                <md:Snackbar Grid.Row="1"
+                             MessageQueue="{x:Static helpers:NotificationService.MessageQueue}"
+                             HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                             Margin="0,0,16,16"/>
+            </Grid>
         </Border>
     </Grid>
 </Window>

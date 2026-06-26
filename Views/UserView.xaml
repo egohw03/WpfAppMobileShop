@@ -69,7 +69,7 @@
                     <TextBox Grid.Column="1" Text="{Binding EditingUser.FullName}" Style="{StaticResource SearchBoxStyle}"/>
                     <TextBlock Grid.Column="2"/>
                     <TextBlock Grid.Column="3" Text="Vai trò:" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Column="4" SelectedValue="{Binding EditingUser.Role}" Height="36">
+                    <ComboBox Grid.Column="4" SelectedValue="{Binding EditingUser.Role}" Style="{StaticResource ComboBoxFilledStyle}">
                         <ComboBoxItem Content="Admin"/>
                         <ComboBoxItem Content="Staff"/>
                     </ComboBox>

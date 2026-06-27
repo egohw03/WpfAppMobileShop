@@ -19,6 +19,8 @@ obj/
 packages/
 *.nupkg
 
+
+
 ## SQLite
 *.sqlite
 *.sqlite-wal

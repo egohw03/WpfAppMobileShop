@@ -289,7 +289,8 @@ namespace WpfAppMobileShop.ViewModels
                     _context.SaveChanges();
 
                     var warrantyMonthsStr = _context.Settings.Find("WarrantyMonths")?.Value ?? "12";
-                    var warrantyMonths = int.Parse(warrantyMonthsStr);
+                    if (!int.TryParse(warrantyMonthsStr, out var warrantyMonths))
+                        warrantyMonths = 12;
                     foreach (var od in order.OrderDetails)
                     {
                         if (SelectedCustomer != null)
@@ -309,11 +310,12 @@ namespace WpfAppMobileShop.ViewModels
                     _context.SaveChanges();
                     transaction.Commit();
 
+                    var savedOrderId = order.OrderId;
                     _lastPaymentAmount = PaymentAmount;
                     _lastChangeAmount = ChangeAmount;
-                    LastOrderId = order.OrderId;
 
                     NewOrder();
+                    LastOrderId = savedOrderId;
                 }
                 catch (Exception ex)
                 {

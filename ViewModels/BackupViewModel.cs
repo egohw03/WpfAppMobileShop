@@ -127,7 +127,7 @@ namespace WpfAppMobileShop.ViewModels
             {
                 if (Size < 1024) return $"{Size} B";
                 if (Size < 1024 * 1024) return $"{Size / 1024} KB";
-                return $"{Size / (1024 * 1024):F1} MB";
+                return $"{(double)Size / (1024 * 1024):F1} MB";
             }
         }
         public string DateDisplay => Date.ToString("dd/MM/yyyy HH:mm");

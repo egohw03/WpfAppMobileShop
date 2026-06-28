@@ -61,20 +61,27 @@ namespace WpfAppMobileShop.ViewModels
             IsLoading = true;
             ErrorMessage = null;
 
-            using (var context = new StoreDbContext())
+            try
             {
-                var user = context.Users
-                    .FirstOrDefault(u => u.Username == Username && u.Password == Password && u.IsActive);
+                using (var context = new StoreDbContext())
+                {
+                    var user = context.Users
+                        .FirstOrDefault(u => u.Username == Username && u.Password == Password && u.IsActive);
 
-                if (user != null)
-                {
-                    UserSession.CurrentUser = user;
-                    IsLoginSuccess = true;
+                    if (user != null)
+                    {
+                        UserSession.CurrentUser = user;
+                        IsLoginSuccess = true;
+                    }
+                    else
+                    {
+                        ErrorMessage = "Tên đăng nhập hoặc mật khẩu không đúng!";
+                    }
                 }
-                else
-                {
-                    ErrorMessage = "Tên đăng nhập hoặc mật khẩu không đúng!";
-                }
+            }
+            catch
+            {
+                ErrorMessage = "Lỗi kết nối cơ sở dữ liệu!";
             }
 
             IsLoading = false;

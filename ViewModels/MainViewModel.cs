@@ -132,6 +132,7 @@ namespace WpfAppMobileShop.ViewModels
             {
                 CurrentViewModel = new DashboardViewModel();
                 OnPropertyChanged(nameof(CurrentUserDisplay));
+                OnPropertyChanged(nameof(CurrentUserInitial));
                 OnPropertyChanged(nameof(CurrentUserRole));
                 OnPropertyChanged(nameof(IsAdmin));
             }

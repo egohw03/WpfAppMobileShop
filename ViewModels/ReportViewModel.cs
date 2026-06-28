@@ -71,7 +71,7 @@ namespace WpfAppMobileShop.ViewModels
             OrderCount = q.Count;
 
             var top = _context.OrderDetails
-                .Where(od => od.Order.OrderDate >= _fromDate && od.Order.OrderDate <= _toDate)
+                .Where(od => od.Order.OrderDate >= _fromDate && od.Order.OrderDate <= _toDate && od.Product != null)
                 .GroupBy(od => od.Product.ProductName)
                 .Select(g => new { SanPham = g.Key, SL = g.Sum(od => od.Quantity), DoanhThu = g.Sum(od => od.Quantity * od.UnitPrice) })
                 .OrderByDescending(x => x.DoanhThu)

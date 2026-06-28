@@ -175,7 +175,9 @@ namespace WpfAppMobileShop.ViewModels
             var today = DateTime.Today;
             var sevenDaysAgo = today.AddDays(-6);
             var firstOfMonth = new DateTime(today.Year, today.Month, 1);
-            int.TryParse(_context.Settings.Find("LowStockThreshold")?.Value ?? "10", out var lowStockThreshold);
+            var lowThresholdStr = _context.Settings.Find("LowStockThreshold")?.Value ?? "10";
+            if (!int.TryParse(lowThresholdStr, out var lowStockThreshold))
+                lowStockThreshold = 10;
 
             TotalOrders = _context.Orders.Count();
             TotalProducts = _context.Products.Sum(p => p.StockQuantity);
@@ -244,17 +246,26 @@ namespace WpfAppMobileShop.ViewModels
                 .Where(o => o.OrderDate >= firstOfMonth && o.Status != "Cancelled")
                 .Sum(o => (decimal?)o.FinalAmount) ?? 0;
 
-            var topCustomer = _context.Orders
-                .Where(o => o.Customer != null && o.Status != "Cancelled")
-                .GroupBy(o => o.Customer)
-                .Select(g => new { Name = g.Key.FullName, Total = g.Sum(o => o.FinalAmount) })
+            var topCustomerData = _context.Orders
+                .Where(o => o.CustomerId != null && o.Status != "Cancelled")
+                .GroupBy(o => o.CustomerId.Value)
+                .Select(g => new { CustomerId = g.Key, Total = g.Sum(o => o.FinalAmount) })
                 .OrderByDescending(c => c.Total)
                 .FirstOrDefault();
-            TopCustomerName = topCustomer?.Name ?? "N/A";
-            TopCustomerTotal = topCustomer?.Total ?? 0;
+            if (topCustomerData != null)
+            {
+                var customer = _context.Customers.Find(topCustomerData.CustomerId);
+                TopCustomerName = customer?.FullName ?? "N/A";
+                TopCustomerTotal = topCustomerData.Total;
+            }
+            else
+            {
+                TopCustomerName = "N/A";
+                TopCustomerTotal = 0;
+            }
 
             RecentOrders = new ObservableCollection<Order>(
-                _context.Orders.Include(o => o.User)
+                _context.Orders.Include(o => o.User).Include(o => o.Customer)
                     .OrderByDescending(o => o.OrderDate)
                     .Take(5).ToList());
 

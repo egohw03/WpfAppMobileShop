@@ -80,9 +80,9 @@ namespace WpfAppMobileShop.ViewModels
             _context = new StoreDbContext();
             AddCommand = new RelayCommand(Add);
             SaveCommand = new RelayCommand(Save, () => IsEditing);
-            DeleteCommand = new RelayCommand(Delete, () => SelectedCustomer != null);
+            DeleteCommand = new RelayCommand(Delete, () => SelectedCustomer != null && !IsEditing);
             CancelCommand = new RelayCommand(Cancel);
-            EditCommand = new RelayCommand(Edit, () => SelectedCustomer != null);
+            EditCommand = new RelayCommand(Edit, () => SelectedCustomer != null && !IsEditing);
             try { LoadData(); } catch { Customers = new ObservableCollection<Customer>(); }
         }
 
@@ -152,6 +152,7 @@ namespace WpfAppMobileShop.ViewModels
                         existing.Phone = EditingCustomer.Phone;
                         existing.Email = EditingCustomer.Email;
                         existing.Address = EditingCustomer.Address;
+                        existing.CreatedDate = EditingCustomer.CreatedDate;
                     }
                 }
                 _context.SaveChanges();

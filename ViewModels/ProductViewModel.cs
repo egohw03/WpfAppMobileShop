@@ -90,9 +90,9 @@ namespace WpfAppMobileShop.ViewModels
             _context = new StoreDbContext();
             AddCommand = new RelayCommand(Add);
             SaveCommand = new RelayCommand(Save, () => IsEditing);
-            DeleteCommand = new RelayCommand(Delete, () => SelectedProduct != null);
+            DeleteCommand = new RelayCommand(Delete, () => SelectedProduct != null && !IsEditing);
             CancelCommand = new RelayCommand(Cancel);
-            EditCommand = new RelayCommand(Edit, () => SelectedProduct != null);
+            EditCommand = new RelayCommand(Edit, () => SelectedProduct != null && !IsEditing);
             try { LoadData(); } catch { Products = new ObservableCollection<Product>(); Categories = new ObservableCollection<Category>(); }
         }
 

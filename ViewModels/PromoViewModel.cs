@@ -72,10 +72,17 @@ namespace WpfAppMobileShop.ViewModels
         private void LoadData() { PromoCodes = new ObservableCollection<PromoCode>(_context.PromoCodes.ToList()); }
         private void Search()
         {
-            var q = _context.PromoCodes.AsQueryable();
-            if (!string.IsNullOrWhiteSpace(SearchText))
-                q = q.Where(p => p.Code.Contains(SearchText));
-            PromoCodes = new ObservableCollection<PromoCode>(q.ToList());
+            try
+            {
+                var q = _context.PromoCodes.AsQueryable();
+                if (!string.IsNullOrWhiteSpace(SearchText))
+                    q = q.Where(p => p.Code.Contains(SearchText));
+                PromoCodes = new ObservableCollection<PromoCode>(q.ToList());
+            }
+            catch
+            {
+                PromoCodes = new ObservableCollection<PromoCode>();
+            }
         }
         private void Add() { EditingPromo = new PromoCode { DiscountType = "Percent", IsActive = true }; IsEditing = true; }
         private void Edit()

@@ -72,10 +72,17 @@ namespace WpfAppMobileShop.ViewModels
         private void LoadData() { Suppliers = new ObservableCollection<Supplier>(_context.Suppliers.ToList()); }
         private void Search()
         {
-            var q = _context.Suppliers.AsQueryable();
-            if (!string.IsNullOrWhiteSpace(SearchText))
-                q = q.Where(s => s.SupplierName.Contains(SearchText) || (s.Phone ?? "").Contains(SearchText) || (s.Email ?? "").Contains(SearchText));
-            Suppliers = new ObservableCollection<Supplier>(q.ToList());
+            try
+            {
+                var q = _context.Suppliers.AsQueryable();
+                if (!string.IsNullOrWhiteSpace(SearchText))
+                    q = q.Where(s => s.SupplierName.Contains(SearchText) || (s.Phone ?? "").Contains(SearchText) || (s.Email ?? "").Contains(SearchText));
+                Suppliers = new ObservableCollection<Supplier>(q.ToList());
+            }
+            catch
+            {
+                Suppliers = new ObservableCollection<Supplier>();
+            }
         }
         private void Add() { EditingSupplier = new Supplier(); IsEditing = true; }
         private void Edit()

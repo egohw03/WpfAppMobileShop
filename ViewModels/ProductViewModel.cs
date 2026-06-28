@@ -111,14 +111,21 @@ namespace WpfAppMobileShop.ViewModels
 
         private void Search()
         {
-            var query = _context.Products.Include(p => p.Category).AsQueryable();
-            if (!string.IsNullOrWhiteSpace(SearchText))
+            try
             {
-                query = query.Where(p => p.ProductName.Contains(SearchText)
-                    || (p.Brand ?? "").Contains(SearchText)
-                    || (p.Model ?? "").Contains(SearchText));
+                var query = _context.Products.Include(p => p.Category).AsQueryable();
+                if (!string.IsNullOrWhiteSpace(SearchText))
+                {
+                    query = query.Where(p => p.ProductName.Contains(SearchText)
+                        || (p.Brand ?? "").Contains(SearchText)
+                        || (p.Model ?? "").Contains(SearchText));
+                }
+                Products = new ObservableCollection<Product>(query.ToList());
             }
-            Products = new ObservableCollection<Product>(query.ToList());
+            catch
+            {
+                Products = new ObservableCollection<Product>();
+            }
         }
 
         private void Add()

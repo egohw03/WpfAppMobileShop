@@ -96,12 +96,19 @@ namespace WpfAppMobileShop.ViewModels
 
         private void Search()
         {
-            var query = _context.Categories.AsQueryable();
-            if (!string.IsNullOrWhiteSpace(SearchText))
+            try
             {
-                query = query.Where(c => c.CategoryName.Contains(SearchText) || (c.Description ?? "").Contains(SearchText));
+                var query = _context.Categories.AsQueryable();
+                if (!string.IsNullOrWhiteSpace(SearchText))
+                {
+                    query = query.Where(c => c.CategoryName.Contains(SearchText) || (c.Description ?? "").Contains(SearchText));
+                }
+                Categories = new ObservableCollection<Category>(query.ToList());
             }
-            Categories = new ObservableCollection<Category>(query.ToList());
+            catch
+            {
+                Categories = new ObservableCollection<Category>();
+            }
         }
 
         private void Add()

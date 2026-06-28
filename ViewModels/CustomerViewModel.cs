@@ -99,14 +99,21 @@ namespace WpfAppMobileShop.ViewModels
 
         private void Search()
         {
-            var query = _context.Customers.AsQueryable();
-            if (!string.IsNullOrWhiteSpace(SearchText))
+            try
             {
-                query = query.Where(c => c.FullName.Contains(SearchText)
-                    || c.Phone.Contains(SearchText)
-                    || (c.Email ?? "").Contains(SearchText));
+                var query = _context.Customers.AsQueryable();
+                if (!string.IsNullOrWhiteSpace(SearchText))
+                {
+                    query = query.Where(c => c.FullName.Contains(SearchText)
+                        || c.Phone.Contains(SearchText)
+                        || (c.Email ?? "").Contains(SearchText));
+                }
+                Customers = new ObservableCollection<Customer>(query.ToList());
             }
-            Customers = new ObservableCollection<Customer>(query.ToList());
+            catch
+            {
+                Customers = new ObservableCollection<Customer>();
+            }
         }
 
         private void Add()

@@ -114,22 +114,29 @@ namespace WpfAppMobileShop.ViewModels
 
         private void Search()
         {
-            var query = _context.Orders
-                .Include(o => o.Customer)
-                .Include(o => o.User)
-                .Where(o => o.OrderDate >= _fromDate && o.OrderDate <= _toDate);
-
-            if (_statusFilter != "Tất cả")
-                query = query.Where(o => o.Status == _statusFilter);
-
-            if (!string.IsNullOrWhiteSpace(SearchText))
+            try
             {
-                query = query.Where(o => (o.Customer != null && o.Customer.FullName.Contains(SearchText))
-                    || (o.Customer != null && o.Customer.Phone.Contains(SearchText))
-                    || o.OrderId.ToString() == SearchText);
-            }
+                var query = _context.Orders
+                    .Include(o => o.Customer)
+                    .Include(o => o.User)
+                    .Where(o => o.OrderDate >= _fromDate && o.OrderDate <= _toDate);
 
-            Orders = new ObservableCollection<Order>(query.OrderByDescending(o => o.OrderDate).ToList());
+                if (_statusFilter != "Tất cả")
+                    query = query.Where(o => o.Status == _statusFilter);
+
+                if (!string.IsNullOrWhiteSpace(SearchText))
+                {
+                    query = query.Where(o => (o.Customer != null && o.Customer.FullName.Contains(SearchText))
+                        || (o.Customer != null && o.Customer.Phone.Contains(SearchText))
+                        || o.OrderId.ToString() == SearchText);
+                }
+
+                Orders = new ObservableCollection<Order>(query.OrderByDescending(o => o.OrderDate).ToList());
+            }
+            catch
+            {
+                Orders = new ObservableCollection<Order>();
+            }
         }
 
         private void LoadOrderDetails(int orderId)

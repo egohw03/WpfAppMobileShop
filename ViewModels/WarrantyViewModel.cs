@@ -70,12 +70,19 @@ namespace WpfAppMobileShop.ViewModels
             }
             catch { }
 
-            var q = _context.Warranties.Include(w => w.Product).Include(w => w.Customer).Include(w => w.OrderDetail).AsQueryable();
-            if (_filterStatus != "Tất cả")
-                q = q.Where(w => w.Status == _filterStatus);
-            if (!string.IsNullOrWhiteSpace(SearchText))
-                q = q.Where(w => (w.Product != null && w.Product.ProductName.Contains(SearchText)) || (w.Customer != null && w.Customer.FullName.Contains(SearchText)));
-            Warranties = new ObservableCollection<Warranty>(q.OrderByDescending(w => w.StartDate).ToList());
+            try
+            {
+                var q = _context.Warranties.Include(w => w.Product).Include(w => w.Customer).Include(w => w.OrderDetail).AsQueryable();
+                if (_filterStatus != "Tất cả")
+                    q = q.Where(w => w.Status == _filterStatus);
+                if (!string.IsNullOrWhiteSpace(SearchText))
+                    q = q.Where(w => (w.Product != null && w.Product.ProductName.Contains(SearchText)) || (w.Customer != null && w.Customer.FullName.Contains(SearchText)));
+                Warranties = new ObservableCollection<Warranty>(q.OrderByDescending(w => w.StartDate).ToList());
+            }
+            catch
+            {
+                Warranties = new ObservableCollection<Warranty>();
+            }
         }
 
         private void RecordClaim()

@@ -185,26 +185,40 @@ namespace WpfAppMobileShop.ViewModels
 
         private void Search()
         {
-            var query = _context.Products.Include(p => p.Category).AsQueryable();
-            if (!string.IsNullOrWhiteSpace(SearchText))
-                query = query.Where(p => p.ProductName.Contains(SearchText) || (p.Brand ?? "").Contains(SearchText));
-            if (_filterCategory != "Tất cả")
-                query = query.Where(p => p.Category.CategoryName == _filterCategory);
-            Products = new ObservableCollection<Product>(query.OrderBy(p => p.StockQuantity).ToList());
-            UpdateLowStockCount();
+            try
+            {
+                var query = _context.Products.Include(p => p.Category).AsQueryable();
+                if (!string.IsNullOrWhiteSpace(SearchText))
+                    query = query.Where(p => p.ProductName.Contains(SearchText) || (p.Brand ?? "").Contains(SearchText));
+                if (_filterCategory != "Tất cả")
+                    query = query.Where(p => p.Category.CategoryName == _filterCategory);
+                Products = new ObservableCollection<Product>(query.OrderBy(p => p.StockQuantity).ToList());
+                UpdateLowStockCount();
+            }
+            catch
+            {
+                Products = new ObservableCollection<Product>();
+            }
         }
 
         private void LoadTransactions()
         {
-            var query = _context.StockTransactions
-                .Include(t => t.Product)
-                .Include(t => t.User)
-                .AsQueryable();
+            try
+            {
+                var query = _context.StockTransactions
+                    .Include(t => t.Product)
+                    .Include(t => t.User)
+                    .AsQueryable();
 
-            if (_filterType != "Tất cả")
-                query = query.Where(t => t.Type == _filterType);
+                if (_filterType != "Tất cả")
+                    query = query.Where(t => t.Type == _filterType);
 
-            Transactions = new ObservableCollection<StockTransaction>(query.OrderByDescending(t => t.Date).Take(100).ToList());
+                Transactions = new ObservableCollection<StockTransaction>(query.OrderByDescending(t => t.Date).Take(100).ToList());
+            }
+            catch
+            {
+                Transactions = new ObservableCollection<StockTransaction>();
+            }
         }
 
         private void StartAdjust(string type)

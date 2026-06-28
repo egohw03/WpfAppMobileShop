@@ -55,6 +55,7 @@ namespace WpfAppMobileShop.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand CancelCommand { get; }
+        public ICommand EditCommand { get; }
 
         public SupplierViewModel()
         {
@@ -63,6 +64,7 @@ namespace WpfAppMobileShop.ViewModels
             SaveCommand = new RelayCommand(Save, () => IsEditing);
             DeleteCommand = new RelayCommand(Delete, () => SelectedSupplier != null);
             CancelCommand = new RelayCommand(Cancel);
+            EditCommand = new RelayCommand(Edit, () => SelectedSupplier != null);
             try { LoadData(); } catch { Suppliers = new ObservableCollection<Supplier>(); }
         }
 
@@ -76,6 +78,20 @@ namespace WpfAppMobileShop.ViewModels
             Suppliers = new ObservableCollection<Supplier>(q.ToList());
         }
         private void Add() { EditingSupplier = new Supplier(); IsEditing = true; }
+        private void Edit()
+        {
+            if (SelectedSupplier == null) return;
+            EditingSupplier = new Supplier
+            {
+                SupplierId = SelectedSupplier.SupplierId,
+                SupplierName = SelectedSupplier.SupplierName,
+                Phone = SelectedSupplier.Phone,
+                Email = SelectedSupplier.Email,
+                Address = SelectedSupplier.Address,
+                Notes = SelectedSupplier.Notes
+            };
+            IsEditing = true;
+        }
         private void Save()
         {
             if (string.IsNullOrWhiteSpace(EditingSupplier.SupplierName))

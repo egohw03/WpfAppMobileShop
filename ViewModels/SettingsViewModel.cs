@@ -33,7 +33,12 @@ namespace WpfAppMobileShop.ViewModels
         {
             _context = new StoreDbContext();
             SaveCommand = new RelayCommand(Save);
-            try { LoadSettings(); } catch { }
+            try { LoadSettings(); }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Lỗi tải cài đặt: {ex.Message}", "Lỗi",
+                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
 
         public override void Dispose() { _context?.Dispose(); base.Dispose(); }

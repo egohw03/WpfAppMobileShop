@@ -42,6 +42,15 @@
                 <DataGridTextColumn Header="SĐT" Binding="{Binding Phone}" Width="120"/>
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
                 <DataGridCheckBoxColumn Header="Kích hoạt" Binding="{Binding IsActive}" Width="80"/>
+                <DataGridTemplateColumn Header="" Width="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" Style="{StaticResource IconButton}" ToolTip="Chỉnh sửa">
+                                <md:PackIcon Kind="Pencil" FontSize="16"/>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
         <md:Card Grid.Row="3" Padding="16" Margin="0,12,0,0" UniformCornerRadius="8"

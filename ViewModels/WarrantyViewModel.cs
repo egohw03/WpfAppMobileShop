@@ -64,7 +64,7 @@ namespace WpfAppMobileShop.ViewModels
             if (_filterStatus != "Tất cả")
                 q = q.Where(w => w.Status == _filterStatus);
             if (!string.IsNullOrWhiteSpace(SearchText))
-                q = q.Where(w => w.Product.ProductName.Contains(SearchText) || w.Customer.FullName.Contains(SearchText));
+                q = q.Where(w => (w.Product != null && w.Product.ProductName.Contains(SearchText)) || (w.Customer != null && w.Customer.FullName.Contains(SearchText)));
             Warranties = new ObservableCollection<Warranty>(q.OrderByDescending(w => w.StartDate).ToList());
         }
 

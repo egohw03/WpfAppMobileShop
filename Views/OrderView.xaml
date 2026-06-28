@@ -103,6 +103,5 @@
             </Grid>
         </md:Card>
 
-        <StackPanel Grid.Row="4" Visibility="Collapsed"/>
     </Grid>
 </UserControl>

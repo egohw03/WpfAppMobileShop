@@ -55,6 +55,7 @@ namespace WpfAppMobileShop.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand CancelCommand { get; }
+        public ICommand EditCommand { get; }
 
         public PromoViewModel()
         {
@@ -63,6 +64,7 @@ namespace WpfAppMobileShop.ViewModels
             SaveCommand = new RelayCommand(Save, () => IsEditing);
             DeleteCommand = new RelayCommand(Delete, () => SelectedPromo != null);
             CancelCommand = new RelayCommand(Cancel);
+            EditCommand = new RelayCommand(Edit, () => SelectedPromo != null);
             try { LoadData(); } catch { PromoCodes = new ObservableCollection<PromoCode>(); }
         }
 
@@ -76,6 +78,21 @@ namespace WpfAppMobileShop.ViewModels
             PromoCodes = new ObservableCollection<PromoCode>(q.ToList());
         }
         private void Add() { EditingPromo = new PromoCode { DiscountType = "Percent", IsActive = true }; IsEditing = true; }
+        private void Edit()
+        {
+            if (SelectedPromo == null) return;
+            EditingPromo = new PromoCode
+            {
+                PromoCodeId = SelectedPromo.PromoCodeId,
+                Code = SelectedPromo.Code,
+                DiscountType = SelectedPromo.DiscountType,
+                DiscountValue = SelectedPromo.DiscountValue,
+                MinOrderAmount = SelectedPromo.MinOrderAmount,
+                ExpiryDate = SelectedPromo.ExpiryDate,
+                IsActive = SelectedPromo.IsActive
+            };
+            IsEditing = true;
+        }
         private void Save()
         {
             if (string.IsNullOrWhiteSpace(EditingPromo.Code))

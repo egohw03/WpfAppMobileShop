@@ -70,6 +70,7 @@ namespace WpfAppMobileShop.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand CancelCommand { get; }
+        public ICommand EditCommand { get; }
 
         public CategoryViewModel()
         {
@@ -78,6 +79,7 @@ namespace WpfAppMobileShop.ViewModels
             SaveCommand = new RelayCommand(Save, () => IsEditing);
             DeleteCommand = new RelayCommand(Delete, () => SelectedCategory != null);
             CancelCommand = new RelayCommand(Cancel);
+            EditCommand = new RelayCommand(Edit, () => SelectedCategory != null);
             try { LoadData(); } catch { Categories = new ObservableCollection<Category>(); }
         }
 
@@ -105,6 +107,18 @@ namespace WpfAppMobileShop.ViewModels
         private void Add()
         {
             EditingCategory = new Category();
+            IsEditing = true;
+        }
+
+        private void Edit()
+        {
+            if (SelectedCategory == null) return;
+            EditingCategory = new Category
+            {
+                CategoryId = SelectedCategory.CategoryId,
+                CategoryName = SelectedCategory.CategoryName,
+                Description = SelectedCategory.Description
+            };
             IsEditing = true;
         }
 

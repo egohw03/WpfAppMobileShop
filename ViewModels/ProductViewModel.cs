@@ -83,6 +83,7 @@ namespace WpfAppMobileShop.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand CancelCommand { get; }
+        public ICommand EditCommand { get; }
 
         public ProductViewModel()
         {
@@ -91,6 +92,7 @@ namespace WpfAppMobileShop.ViewModels
             SaveCommand = new RelayCommand(Save, () => IsEditing);
             DeleteCommand = new RelayCommand(Delete, () => SelectedProduct != null);
             CancelCommand = new RelayCommand(Cancel);
+            EditCommand = new RelayCommand(Edit, () => SelectedProduct != null);
             try { LoadData(); } catch { Products = new ObservableCollection<Product>(); Categories = new ObservableCollection<Category>(); }
         }
 
@@ -121,6 +123,24 @@ namespace WpfAppMobileShop.ViewModels
         private void Add()
         {
             EditingProduct = new Product();
+            IsEditing = true;
+        }
+
+        private void Edit()
+        {
+            if (SelectedProduct == null) return;
+            EditingProduct = new Product
+            {
+                ProductId = SelectedProduct.ProductId,
+                ProductName = SelectedProduct.ProductName,
+                CategoryId = SelectedProduct.CategoryId,
+                Brand = SelectedProduct.Brand,
+                Model = SelectedProduct.Model,
+                Price = SelectedProduct.Price,
+                StockQuantity = SelectedProduct.StockQuantity,
+                Description = SelectedProduct.Description,
+                ImageUrl = SelectedProduct.ImageUrl
+            };
             IsEditing = true;
         }
 

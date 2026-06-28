@@ -75,6 +75,7 @@ namespace WpfAppMobileShop.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand CancelCommand { get; }
+        public ICommand EditCommand { get; }
 
         public UserViewModel()
         {
@@ -83,6 +84,7 @@ namespace WpfAppMobileShop.ViewModels
             SaveCommand = new RelayCommand(Save, () => IsEditing);
             DeleteCommand = new RelayCommand(Delete, () => SelectedUser != null);
             CancelCommand = new RelayCommand(Cancel);
+            EditCommand = new RelayCommand(Edit, () => SelectedUser != null);
             try { LoadData(); } catch { Users = new ObservableCollection<User>(); }
         }
 
@@ -113,6 +115,23 @@ namespace WpfAppMobileShop.ViewModels
         private void Add()
         {
             EditingUser = new User { IsActive = true, Role = "Staff" };
+            IsEditing = true;
+        }
+
+        private void Edit()
+        {
+            if (SelectedUser == null) return;
+            EditingUser = new User
+            {
+                UserId = SelectedUser.UserId,
+                Username = SelectedUser.Username,
+                Password = SelectedUser.Password,
+                FullName = SelectedUser.FullName,
+                Role = SelectedUser.Role,
+                Phone = SelectedUser.Phone,
+                Email = SelectedUser.Email,
+                IsActive = SelectedUser.IsActive
+            };
             IsEditing = true;
         }
 

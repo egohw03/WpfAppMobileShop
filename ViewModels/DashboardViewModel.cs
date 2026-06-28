@@ -214,6 +214,7 @@ namespace WpfAppMobileShop.ViewModels
                 .ToArray();
 
             var topProducts = _context.OrderDetails
+                .Where(od => od.Product != null)
                 .GroupBy(od => od.Product.ProductName)
                 .Select(g => new { Name = g.Key, Total = g.Sum(od => od.Quantity) })
                 .OrderByDescending(p => p.Total)
@@ -244,7 +245,7 @@ namespace WpfAppMobileShop.ViewModels
                 .Sum(o => (decimal?)o.FinalAmount) ?? 0;
 
             var topCustomer = _context.Orders
-                .Where(o => o.CustomerId != null && o.Status != "Cancelled")
+                .Where(o => o.Customer != null && o.Status != "Cancelled")
                 .GroupBy(o => o.Customer)
                 .Select(g => new { Name = g.Key.FullName, Total = g.Sum(o => o.FinalAmount) })
                 .OrderByDescending(c => c.Total)

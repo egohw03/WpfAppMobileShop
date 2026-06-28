@@ -47,6 +47,15 @@
                 <DataGridTextColumn Header="Danh mục" Binding="{Binding Category.CategoryName}" Width="130"/>
                 <DataGridTextColumn Header="Giá" Binding="{Binding Price, StringFormat=N0}" Width="120"/>
                 <DataGridTextColumn Header="Tồn kho" Binding="{Binding StockQuantity}" Width="80"/>
+                <DataGridTemplateColumn Header="" Width="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" Style="{StaticResource IconButton}" ToolTip="Chỉnh sửa">
+                                <md:PackIcon Kind="Pencil" FontSize="16"/>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
         <md:Card Grid.Row="3" Margin="0,12,0,0" Padding="16" UniformCornerRadius="8"

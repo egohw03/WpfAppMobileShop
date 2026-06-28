@@ -73,6 +73,7 @@ namespace WpfAppMobileShop.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand CancelCommand { get; }
+        public ICommand EditCommand { get; }
 
         public CustomerViewModel()
         {
@@ -81,6 +82,7 @@ namespace WpfAppMobileShop.ViewModels
             SaveCommand = new RelayCommand(Save, () => IsEditing);
             DeleteCommand = new RelayCommand(Delete, () => SelectedCustomer != null);
             CancelCommand = new RelayCommand(Cancel);
+            EditCommand = new RelayCommand(Edit, () => SelectedCustomer != null);
             try { LoadData(); } catch { Customers = new ObservableCollection<Customer>(); }
         }
 
@@ -110,6 +112,21 @@ namespace WpfAppMobileShop.ViewModels
         private void Add()
         {
             EditingCustomer = new Customer { CreatedDate = DateTime.Now };
+            IsEditing = true;
+        }
+
+        private void Edit()
+        {
+            if (SelectedCustomer == null) return;
+            EditingCustomer = new Customer
+            {
+                CustomerId = SelectedCustomer.CustomerId,
+                FullName = SelectedCustomer.FullName,
+                Phone = SelectedCustomer.Phone,
+                Email = SelectedCustomer.Email,
+                Address = SelectedCustomer.Address,
+                CreatedDate = SelectedCustomer.CreatedDate
+            };
             IsEditing = true;
         }
 

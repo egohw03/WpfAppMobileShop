@@ -45,7 +45,9 @@ namespace WpfAppMobileShop.ViewModels
             NavigateCommand = new RelayCommand(Navigate);
             ToggleSidebarCommand = new RelayCommand(() => IsSidebarExpanded = !IsSidebarExpanded);
             LogoutCommand = new RelayCommand(Logout);
-            CurrentViewModel = new DashboardViewModel();
+            var dash = new DashboardViewModel();
+            dash.NavigateRequest += (page) => Navigate(page);
+            CurrentViewModel = dash;
         }
 
         private void Navigate(object parameter)

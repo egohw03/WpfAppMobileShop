@@ -29,7 +29,7 @@ namespace WpfAppMobileShop.Models
         [StringLength(100)]
         public string Email { get; set; }
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public virtual ICollection<Order> Orders { get; set; }
     }

@@ -68,6 +68,7 @@ namespace WpfAppMobileShop
                             TotalAmount REAL NOT NULL,
                             DiscountAmount REAL NOT NULL DEFAULT 0,
                             FinalAmount REAL NOT NULL DEFAULT 0,
+                            VatAmount REAL NOT NULL DEFAULT 0,
                             Status TEXT DEFAULT 'Completed',
                             Notes TEXT,
                             CustomerId INTEGER,
@@ -131,20 +132,12 @@ namespace WpfAppMobileShop
                 conn2.Open();
                 using (var cmd = conn2.CreateCommand())
                 {
-                    cmd.CommandText = "ALTER TABLE Orders ADD COLUMN DiscountAmount REAL NOT NULL DEFAULT 0";
-                    try { cmd.ExecuteNonQuery(); } catch { }
-                    cmd.CommandText = "ALTER TABLE Orders ADD COLUMN FinalAmount REAL NOT NULL DEFAULT 0";
-                    try { cmd.ExecuteNonQuery(); } catch { }
-                    cmd.CommandText = "ALTER TABLE Orders ADD COLUMN Status TEXT DEFAULT 'Completed'";
-                    try { cmd.ExecuteNonQuery(); } catch { }
-                    cmd.CommandText = "ALTER TABLE Orders ADD COLUMN Notes TEXT";
-                    try { cmd.ExecuteNonQuery(); } catch { }
                     cmd.CommandText = "ALTER TABLE Orders ADD COLUMN VatAmount REAL NOT NULL DEFAULT 0";
-                    try { cmd.ExecuteNonQuery(); } catch { }
+                    try { cmd.ExecuteNonQuery(); } catch (System.Data.SQLite.SQLiteException ex) when (ex.Message.Contains("duplicate")) { }
                     cmd.CommandText = "ALTER TABLE Products ADD COLUMN CostPrice REAL NOT NULL DEFAULT 0";
-                    try { cmd.ExecuteNonQuery(); } catch { }
+                    try { cmd.ExecuteNonQuery(); } catch (System.Data.SQLite.SQLiteException ex) when (ex.Message.Contains("duplicate")) { }
                     cmd.CommandText = "UPDATE Products SET CostPrice = 0 WHERE CostPrice IS NULL";
-                    try { cmd.ExecuteNonQuery(); } catch { }
+                    try { cmd.ExecuteNonQuery(); } catch (System.Data.SQLite.SQLiteException ex) when (ex.Message.Contains("duplicate")) { }
                 }
             }
 
@@ -249,13 +242,13 @@ namespace WpfAppMobileShop
             var today = DateTime.Today;
             var orders = new[]
             {
-                new Order { OrderDate = today.AddDays(-6), TotalAmount = 30500000, DiscountAmount = 0, FinalAmount = 30500000, Status = OrderStatus.Completed, CustomerId = customers[0].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today.AddDays(-5), TotalAmount = 18500000, DiscountAmount = 0, FinalAmount = 18500000, Status = OrderStatus.Completed, CustomerId = customers[1].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today.AddDays(-4), TotalAmount = 500000, DiscountAmount = 0, FinalAmount = 500000, Status = OrderStatus.Completed, CustomerId = customers[2].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today.AddDays(-3), TotalAmount = 23050000, DiscountAmount = 0, FinalAmount = 23050000, Status = OrderStatus.Completed, CustomerId = customers[0].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today.AddDays(-2), TotalAmount = 25700000, DiscountAmount = 0, FinalAmount = 25700000, Status = OrderStatus.Completed, CustomerId = customers[3].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today.AddDays(-1), TotalAmount = 800000, DiscountAmount = 0, FinalAmount = 800000, Status = OrderStatus.Completed, CustomerId = customers[4].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today, TotalAmount = 31150000, DiscountAmount = 0, FinalAmount = 31150000, Status = OrderStatus.Completed, CustomerId = customers[1].CustomerId, UserId = admin.UserId }
+                new Order { OrderDate = today.AddDays(-6), TotalAmount = 30500000, DiscountAmount = 0, VatAmount = 3050000, FinalAmount = 33550000, Status = OrderStatus.Completed, CustomerId = customers[0].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today.AddDays(-5), TotalAmount = 18500000, DiscountAmount = 0, VatAmount = 1850000, FinalAmount = 20350000, Status = OrderStatus.Completed, CustomerId = customers[1].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today.AddDays(-4), TotalAmount = 500000, DiscountAmount = 0, VatAmount = 50000, FinalAmount = 550000, Status = OrderStatus.Completed, CustomerId = customers[2].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today.AddDays(-3), TotalAmount = 23050000, DiscountAmount = 0, VatAmount = 2305000, FinalAmount = 25355000, Status = OrderStatus.Completed, CustomerId = customers[0].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today.AddDays(-2), TotalAmount = 25700000, DiscountAmount = 0, VatAmount = 2570000, FinalAmount = 28270000, Status = OrderStatus.Completed, CustomerId = customers[3].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today.AddDays(-1), TotalAmount = 800000, DiscountAmount = 0, VatAmount = 80000, FinalAmount = 880000, Status = OrderStatus.Completed, CustomerId = customers[4].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today, TotalAmount = 31150000, DiscountAmount = 0, VatAmount = 3115000, FinalAmount = 34265000, Status = OrderStatus.Completed, CustomerId = customers[1].CustomerId, UserId = admin.UserId }
             };
             context.Orders.AddRange(orders);
             context.SaveChanges();

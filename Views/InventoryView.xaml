@@ -9,6 +9,8 @@
              d:DesignHeight="500" d:DesignWidth="900">
     <UserControl.Resources>
         <helpers:BoolToVisibilityConverter x:Key="BoolToVis"/>
+        <helpers:LowStockToVisibilityConverter x:Key="LowStockVis"/>
+        <helpers:AdjustTypeToVisibilityConverter x:Key="ImportVis"/>
     </UserControl.Resources>
     <Grid Margin="24">
         <Grid.RowDefinitions>
@@ -30,17 +32,35 @@
 
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Border Width="300" CornerRadius="4" BorderBrush="#DDD" BorderThickness="1" Padding="0">
+                    <Border CornerRadius="4" BorderBrush="#DDD" BorderThickness="1" Padding="0">
                         <Grid>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                             <md:PackIcon Kind="Magnify" FontSize="16" Foreground="#999" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             <TextBox Grid.Column="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SearchBoxStyle}" BorderThickness="0" ToolTip="Tìm sản phẩm..."/>
                         </Grid>
                     </Border>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <ComboBox Grid.Column="1" SelectedValue="{Binding FilterCategory}" SelectedValuePath="Content" Margin="8,0,0,0"
+                              Width="140" Style="{StaticResource ComboBoxFilledStyle}">
+                        <ComboBoxItem Content="Tất cả" IsSelected="True"/>
+                        <ComboBoxItem Content="Điện thoại thông minh"/>
+                        <ComboBoxItem Content="Điện thoại phổ thông"/>
+                        <ComboBoxItem Content="Phụ kiện"/>
+                    </ComboBox>
+                    <Border Grid.Column="2" Background="{StaticResource DangerBrush}" CornerRadius="4" Padding="8,4" Margin="12,0,0,0"
+                            Visibility="{Binding LowStockCount, Converter={StaticResource LowStockVis}}">
+                        <StackPanel Orientation="Horizontal">
+                            <md:PackIcon Kind="AlertCircle" FontSize="14" Foreground="White" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding LowStockCount, StringFormat=' {} {0} SP sắp hết'}" Foreground="White" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <StackPanel Grid.Column="5" Orientation="Horizontal">
                         <Button Content="NHẬP HÀNG" Command="{Binding ImportCommand}"
                                 Style="{StaticResource PrimaryButton}" Margin="8,0,0,0"/>
                         <Button Content="XUẤT HÀNG" Command="{Binding ExportCommand}"
@@ -125,34 +145,40 @@
 
         <md:Card Grid.Row="2" Padding="16" UniformCornerRadius="8" Margin="0,12,0,0"
                  Visibility="{Binding IsAdjusting, Converter={StaticResource BoolToVis}}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding AdjustType}"/>
-                    <TextBlock Text=": "/>
-                </StackPanel>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="SL:" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                    <TextBox Text="{Binding AdjustQuantity}" Width="120"
+            <StackPanel>
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding AdjustType}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding AdjustQuantity}" Width="100"
                              Style="{StaticResource SearchBoxStyle}"/>
-                </StackPanel>
-                <TextBlock Grid.Column="3" Text="Ghi chú:" VerticalAlignment="Center"/>
-                <TextBox Grid.Column="4" Text="{Binding AdjustNotes}" Margin="8,0"
-                         Style="{StaticResource SearchBoxStyle}"/>
-                <StackPanel Grid.Column="5" Orientation="Horizontal">
-                    <Button Content="LƯU" Command="{Binding SaveAdjustCommand}"
-                            Style="{StaticResource PrimaryButton}"/>
-                    <Button Content="HỦY" Command="{Binding CancelAdjustCommand}"
-                            Style="{StaticResource DangerButton}" Margin="8,0,0,0"/>
-                </StackPanel>
-            </Grid>
+                    <ComboBox Grid.Column="3" Grid.ColumnSpan="3" SelectedItem="{Binding SelectedSupplier}"
+                              DisplayMemberPath="SupplierName" Width="180"
+                              ItemsSource="{Binding Suppliers}"
+                              Style="{StaticResource ComboBoxFilledStyle}"
+                              Visibility="{Binding AdjustType, Converter={StaticResource ImportVis}}"/>
+                    <TextBlock Grid.Column="6" Text="Ghi chú:" VerticalAlignment="Center" Margin="4,0"/>
+                    <TextBox Grid.Column="7" Text="{Binding AdjustNotes}" Margin="4,0"
+                             Style="{StaticResource SearchBoxStyle}"/>
+                    <StackPanel Grid.Column="8" Orientation="Horizontal">
+                        <Button Content="LƯU" Command="{Binding SaveAdjustCommand}"
+                                Style="{StaticResource PrimaryButton}"/>
+                        <Button Content="HỦY" Command="{Binding CancelAdjustCommand}"
+                                Style="{StaticResource DangerButton}" Margin="8,0,0,0"/>
+                    </StackPanel>
+                </Grid>
+                <TextBlock FontSize="11" Foreground="#888" Text="{Binding SelectedSupplier.SupplierName, StringFormat='NCC: {0}'}"
+                           Visibility="{Binding SelectedSupplier, Converter={StaticResource BoolToVis}}"/>
+            </StackPanel>
         </md:Card>
 
         <md:Card Grid.Row="3" Padding="16" UniformCornerRadius="8" Margin="0,12,0,0">

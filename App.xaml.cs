@@ -139,6 +139,10 @@ namespace WpfAppMobileShop
                     try { cmd.ExecuteNonQuery(); } catch { }
                     cmd.CommandText = "ALTER TABLE Orders ADD COLUMN Notes TEXT";
                     try { cmd.ExecuteNonQuery(); } catch { }
+                    cmd.CommandText = "ALTER TABLE Orders ADD COLUMN VatAmount REAL NOT NULL DEFAULT 0";
+                    try { cmd.ExecuteNonQuery(); } catch { }
+                    cmd.CommandText = "ALTER TABLE Products ADD COLUMN CostPrice REAL NOT NULL DEFAULT 0";
+                    try { cmd.ExecuteNonQuery(); } catch { }
                 }
             }
 
@@ -161,6 +165,31 @@ namespace WpfAppMobileShop
             }
 
             base.OnStartup(e);
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            try
+            {
+                var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "StoreDB.sqlite");
+                if (!File.Exists(dbPath)) return;
+                var backupDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backups");
+                if (!Directory.Exists(backupDir)) Directory.CreateDirectory(backupDir);
+                var name = $"StoreDB_Auto_{DateTime.Now:yyyyMMdd_HHmmss}.sqlite";
+                var dest = Path.Combine(backupDir, name);
+                System.Data.SQLite.SQLiteConnection.ClearAllPools();
+                GC.Collect(); GC.WaitForPendingFinalizers();
+                File.Copy(dbPath, dest, true);
+                var backups = Directory.GetFiles(backupDir, "StoreDB_Auto_*.sqlite")
+                    .OrderByDescending(f => f).ToList();
+                while (backups.Count > 10)
+                {
+                    File.Delete(backups.Last());
+                    backups.RemoveAt(backups.Count - 1);
+                }
+            }
+            catch { }
+            base.OnExit(e);
         }
 
         private void SeedDatabase(StoreDbContext context)

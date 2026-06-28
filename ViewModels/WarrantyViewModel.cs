@@ -60,6 +60,16 @@ namespace WpfAppMobileShop.ViewModels
 
         private void LoadData()
         {
+            try
+            {
+                var expired = _context.Warranties.Where(w => w.Status == "Active" && w.EndDate < DateTime.Today).ToList();
+                foreach (var w in expired)
+                    w.Status = "Expired";
+                if (expired.Any())
+                    _context.SaveChanges();
+            }
+            catch { }
+
             var q = _context.Warranties.Include(w => w.Product).Include(w => w.Customer).Include(w => w.OrderDetail).AsQueryable();
             if (_filterStatus != "Tất cả")
                 q = q.Where(w => w.Status == _filterStatus);

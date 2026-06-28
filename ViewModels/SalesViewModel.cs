@@ -28,6 +28,8 @@ namespace WpfAppMobileShop.ViewModels
         private int? _lastOrderId;
         private decimal _lastPaymentAmount;
         private decimal _lastChangeAmount;
+        private decimal _vatPercent;
+        private decimal _vatAmount;
 
         public string Title => "Bán hàng";
 
@@ -95,6 +97,16 @@ namespace WpfAppMobileShop.ViewModels
             get => _changeAmount;
             set => SetProperty(ref _changeAmount, value);
         }
+        public decimal VatPercent
+        {
+            get => _vatPercent;
+            set => SetProperty(ref _vatPercent, value);
+        }
+        public decimal VatAmount
+        {
+            get => _vatAmount;
+            set => SetProperty(ref _vatAmount, value);
+        }
         public string PromoCodeInput
         {
             get => _promoCodeInput;
@@ -155,6 +167,9 @@ namespace WpfAppMobileShop.ViewModels
             Cart = new ObservableCollection<CartItem>();
             TotalAmount = 0; DiscountAmount = 0; FinalAmount = 0;
             PaymentAmount = 0; ChangeAmount = 0; LastOrderId = null;
+            var vatStr = _context.Settings.Find("VatPercent")?.Value ?? "10";
+            decimal.TryParse(vatStr, out _vatPercent);
+            OnPropertyChanged(nameof(VatPercent));
         }
 
         private void SearchProducts()
@@ -201,8 +216,10 @@ namespace WpfAppMobileShop.ViewModels
         private void RecalculateTotal()
         {
             TotalAmount = Cart.Sum(c => c.Quantity * c.UnitPrice);
-            FinalAmount = TotalAmount - DiscountAmount;
-            if (FinalAmount < 0) FinalAmount = 0;
+            var afterDiscount = TotalAmount - DiscountAmount;
+            if (afterDiscount < 0) afterDiscount = 0;
+            VatAmount = afterDiscount * _vatPercent / 100;
+            FinalAmount = afterDiscount + VatAmount;
             ChangeAmount = Math.Max(0, PaymentAmount - FinalAmount);
         }
 
@@ -261,6 +278,7 @@ namespace WpfAppMobileShop.ViewModels
                         OrderDate = DateTime.Now,
                         TotalAmount = TotalAmount,
                         DiscountAmount = DiscountAmount,
+                        VatAmount = VatAmount,
                         FinalAmount = FinalAmount,
                         Status = OrderStatus.Completed,
                         CustomerId = SelectedCustomer?.CustomerId,
@@ -333,6 +351,7 @@ namespace WpfAppMobileShop.ViewModels
             CustomerPhone = null;
             PromoCodeInput = "";
             DiscountAmount = 0;
+            VatAmount = 0;
             TotalAmount = 0; FinalAmount = 0;
             PaymentAmount = 0; ChangeAmount = 0;
             LoadData();

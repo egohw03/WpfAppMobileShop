@@ -16,12 +16,16 @@
             <DatePicker SelectedDate="{Binding FromDate}" Width="140" Style="{StaticResource DatePickerFilledStyle}"/>
             <TextBlock Text="đến" VerticalAlignment="Center" Margin="8,0"/>
             <DatePicker SelectedDate="{Binding ToDate}" Width="140" Style="{StaticResource DatePickerFilledStyle}"/>
+            <Button Content="Hôm nay" Command="{Binding TodayCommand}" Style="{StaticResource PrimaryButton}" Margin="12,0,0,0" Height="36" Padding="12,0" FontSize="13"/>
+            <Button Content="Tuần này" Command="{Binding ThisWeekCommand}" Style="{StaticResource PrimaryButton}" Margin="8,0,0,0" Height="36" Padding="12,0" FontSize="13"/>
+            <Button Content="Tháng này" Command="{Binding ThisMonthCommand}" Style="{StaticResource PrimaryButton}" Margin="8,0,0,0" Height="36" Padding="12,0" FontSize="13"/>
+            <Button Content="Năm nay" Command="{Binding ThisYearCommand}" Style="{StaticResource PrimaryButton}" Margin="8,0,0,0" Height="36" Padding="12,0" FontSize="13"/>
         </StackPanel>
 
         <md:Card Grid.Row="2" Padding="16" UniformCornerRadius="8" Margin="0,0,0,12">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/>
+                    <ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <StackPanel>
                     <TextBlock Text="Tong don" FontSize="13" Foreground="{StaticResource SidebarTextBrush}"/>
@@ -36,8 +40,16 @@
                     <TextBlock Text="{Binding TotalDiscount, StringFormat=N0}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource WarningBrush}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="3">
+                    <TextBlock Text="VAT" FontSize="13" Foreground="{StaticResource SidebarTextBrush}"/>
+                    <TextBlock Text="{Binding TotalVat, StringFormat=N0}" FontSize="24" FontWeight="Bold" Foreground="#666"/>
+                </StackPanel>
+                <StackPanel Grid.Column="4">
                     <TextBlock Text="Thanh tien" FontSize="13" Foreground="{StaticResource SidebarTextBrush}"/>
                     <TextBlock Text="{Binding TotalFinal, StringFormat=N0}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource SuccessBrush}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="5">
+                    <TextBlock Text="Loi nhuan" FontSize="13" Foreground="{StaticResource SidebarTextBrush}"/>
+                    <TextBlock Text="{Binding TotalProfit, StringFormat=N0}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
                 </StackPanel>
             </Grid>
         </md:Card>
@@ -59,6 +71,9 @@
             </TabItem>
             <TabItem Header="Top san pham">
                 <DataGrid ItemsSource="{Binding TopProducts}" AutoGenerateColumns="True" IsReadOnly="True" AlternatingRowBackground="#F5F5F5" RowHeight="32" BorderThickness="0" Margin="4"/>
+            </TabItem>
+            <TabItem Header="Khach hang">
+                <DataGrid ItemsSource="{Binding TopCustomers}" AutoGenerateColumns="True" IsReadOnly="True" AlternatingRowBackground="#F5F5F5" RowHeight="32" BorderThickness="0" Margin="4"/>
             </TabItem>
         </TabControl>
 

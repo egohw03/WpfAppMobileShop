@@ -18,6 +18,8 @@ namespace WpfAppMobileShop.Models
 
         public decimal DiscountAmount { get; set; }
 
+        public decimal VatAmount { get; set; }
+
         public decimal FinalAmount { get; set; }
 
         [StringLength(20)]

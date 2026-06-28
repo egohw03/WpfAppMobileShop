@@ -23,6 +23,8 @@ namespace WpfAppMobileShop.Models
         [Required]
         public decimal Price { get; set; }
 
+        public decimal CostPrice { get; set; }
+
         public int StockQuantity { get; set; }
 
         [StringLength(1000)]

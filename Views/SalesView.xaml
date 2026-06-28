@@ -4,9 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d"
-             d:DesignHeight="500" d:DesignWidth="900">
+              mc:Ignorable="d"
+              xmlns:helpers="clr-namespace:WpfAppMobileShop.Helpers"
+              d:DesignHeight="500" d:DesignWidth="900">
     <Grid Margin="16">
+        <Grid.Resources>
+            <helpers:BoolToVisibilityConverter x:Key="MoneyVis"/>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -106,13 +110,40 @@
 
                     <md:Card Grid.Row="4" Background="#F5F9FF" Padding="14" UniformCornerRadius="8" Margin="0,10">
                         <StackPanel>
-                            <Grid Margin="0,0,0,6">
+                            <Grid Margin="0,0,0,4">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Tổng tiền:" FontSize="16" FontWeight="SemiBold"/>
+                                <TextBlock Text="Tổng tiền:" FontSize="15" FontWeight="SemiBold"/>
                                 <TextBlock Grid.Column="1" Text="{Binding TotalAmount, StringFormat=N0}" 
+                                           FontSize="18" FontWeight="Bold" Foreground="{StaticResource DangerBrush}"/>
+                            </Grid>
+                            <Grid Margin="0,2,0,2" Visibility="{Binding DiscountAmount, Converter={StaticResource MoneyVis}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Giảm giá:" FontSize="12" Foreground="{StaticResource WarningBrush}"/>
+                                <TextBlock Grid.Column="1" Text="{Binding DiscountAmount, StringFormat=-N0}" 
+                                           FontSize="14" Foreground="{StaticResource WarningBrush}"/>
+                            </Grid>
+                            <Grid Margin="0,2,0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding VatPercent, StringFormat='VAT ({0}%):'}" FontSize="12" Foreground="#666"/>
+                                <TextBlock Grid.Column="1" Text="{Binding VatAmount, StringFormat=N0}" 
+                                           FontSize="14" Foreground="#666"/>
+                            </Grid>
+                            <Grid Margin="0,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Phải thanh toán:" FontSize="16" FontWeight="SemiBold"/>
+                                <TextBlock Grid.Column="1" Text="{Binding FinalAmount, StringFormat=N0}" 
                                            FontSize="22" FontWeight="Bold" Foreground="{StaticResource DangerBrush}"/>
                             </Grid>
                             <Grid Margin="0,6,0,0">

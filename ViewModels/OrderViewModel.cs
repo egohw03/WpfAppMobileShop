@@ -18,6 +18,7 @@ namespace WpfAppMobileShop.ViewModels
         private DateTime _fromDate;
         private DateTime _toDate;
         private string _searchText;
+        private string _statusFilter;
 
         public string Title => "Quản lý đơn hàng";
 
@@ -76,6 +77,12 @@ namespace WpfAppMobileShop.ViewModels
             }
         }
 
+        public string StatusFilter
+        {
+            get => _statusFilter;
+            set { SetProperty(ref _statusFilter, value); Search(); }
+        }
+
         public ICommand CancelOrderCommand { get; }
 
         public OrderViewModel()
@@ -83,6 +90,7 @@ namespace WpfAppMobileShop.ViewModels
             _context = new StoreDbContext();
             _fromDate = DateTime.Today.AddMonths(-1);
             _toDate = DateTime.Today.AddDays(1);
+            _statusFilter = "Tất cả";
             CancelOrderCommand = new RelayCommand(CancelOrder, CanCancelOrder);
             try { LoadData(); } catch { Orders = new ObservableCollection<Order>(); OrderDetails = new ObservableCollection<OrderDetail>(); }
         }
@@ -110,6 +118,9 @@ namespace WpfAppMobileShop.ViewModels
                 .Include(o => o.Customer)
                 .Include(o => o.User)
                 .Where(o => o.OrderDate >= _fromDate && o.OrderDate <= _toDate);
+
+            if (_statusFilter != "Tất cả")
+                query = query.Where(o => o.Status == _statusFilter);
 
             if (!string.IsNullOrWhiteSpace(SearchText))
             {

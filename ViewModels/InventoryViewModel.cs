@@ -21,8 +21,28 @@ namespace WpfAppMobileShop.ViewModels
         private string _adjustNotes;
         private bool _isAdjusting;
         private string _adjustType;
+        private int _lowStockThreshold = 10;
+        private int _lowStockCount;
+        private string _filterCategory;
+        private Supplier _selectedSupplier;
 
         public string Title => "Quản lý tồn kho";
+        public int LowStockThreshold
+        {
+            get => _lowStockThreshold;
+            set => SetProperty(ref _lowStockThreshold, value);
+        }
+        public int LowStockCount
+        {
+            get => _lowStockCount;
+            set => SetProperty(ref _lowStockCount, value);
+        }
+        public string FilterCategory
+        {
+            get => _filterCategory;
+            set { SetProperty(ref _filterCategory, value); Search(); }
+        }
+        public ObservableCollection<Category> Categories { get; set; }
 
         public ObservableCollection<Product> Products
         {
@@ -85,6 +105,12 @@ namespace WpfAppMobileShop.ViewModels
             get => _adjustType;
             set => SetProperty(ref _adjustType, value);
         }
+        public Supplier SelectedSupplier
+        {
+            get => _selectedSupplier;
+            set => SetProperty(ref _selectedSupplier, value);
+        }
+        public ObservableCollection<Supplier> Suppliers { get; set; }
 
         public ICommand ImportCommand { get; }
         public ICommand ExportCommand { get; }
@@ -95,12 +121,16 @@ namespace WpfAppMobileShop.ViewModels
         {
             _context = new StoreDbContext();
             _filterType = "Tất cả";
+            _filterCategory = "Tất cả";
             ImportCommand = new RelayCommand(() => StartAdjust("Import"));
             ExportCommand = new RelayCommand(() => StartAdjust("Export"));
             SaveAdjustCommand = new RelayCommand(SaveAdjust, CanSaveAdjust);
             CancelAdjustCommand = new RelayCommand(() => IsAdjusting = false);
             try
             {
+                LoadSettings();
+                LoadCategories();
+                LoadSuppliers();
                 LoadData();
                 LoadTransactions();
             }
@@ -117,9 +147,34 @@ namespace WpfAppMobileShop.ViewModels
             base.Dispose();
         }
 
+        private void LoadSettings()
+        {
+            var thresholdStr = _context.Settings.Find("LowStockThreshold")?.Value ?? "10";
+            int.TryParse(thresholdStr, out _lowStockThreshold);
+        }
+
+        private void LoadCategories()
+        {
+            var cats = _context.Categories.ToList();
+            Categories = new ObservableCollection<Category>(cats);
+        }
+
+        private void LoadSuppliers()
+        {
+            var sups = _context.Suppliers.ToList();
+            Suppliers = new ObservableCollection<Supplier>(sups);
+        }
+
         private void LoadData()
         {
-            Products = new ObservableCollection<Product>(_context.Products.Include(p => p.Category).OrderBy(p => p.StockQuantity).ToList());
+            var query = _context.Products.Include(p => p.Category).OrderBy(p => p.StockQuantity);
+            Products = new ObservableCollection<Product>(query.ToList());
+            UpdateLowStockCount();
+        }
+
+        private void UpdateLowStockCount()
+        {
+            LowStockCount = Products.Count(p => p.StockQuantity <= _lowStockThreshold);
         }
 
         private void Search()
@@ -127,7 +182,10 @@ namespace WpfAppMobileShop.ViewModels
             var query = _context.Products.Include(p => p.Category).AsQueryable();
             if (!string.IsNullOrWhiteSpace(SearchText))
                 query = query.Where(p => p.ProductName.Contains(SearchText) || (p.Brand ?? "").Contains(SearchText));
+            if (_filterCategory != "Tất cả")
+                query = query.Where(p => p.Category.CategoryName == _filterCategory);
             Products = new ObservableCollection<Product>(query.OrderBy(p => p.StockQuantity).ToList());
+            UpdateLowStockCount();
         }
 
         private void LoadTransactions()
@@ -154,6 +212,7 @@ namespace WpfAppMobileShop.ViewModels
             AdjustType = type;
             AdjustQuantity = 0;
             AdjustNotes = "";
+            SelectedSupplier = null;
             IsAdjusting = true;
         }
 
@@ -189,7 +248,8 @@ namespace WpfAppMobileShop.ViewModels
                         Type = AdjustType,
                         Date = DateTime.Now,
                         Notes = AdjustNotes,
-                        UserId = UserSession.CurrentUser?.UserId ?? 0
+                        UserId = UserSession.CurrentUser?.UserId ?? 0,
+                        SupplierId = SelectedSupplier?.SupplierId
                     });
 
                     _context.SaveChanges();
@@ -198,6 +258,7 @@ namespace WpfAppMobileShop.ViewModels
                     IsAdjusting = false;
                     LoadData();
                     LoadTransactions();
+                    UpdateLowStockCount();
 
                     System.Windows.MessageBox.Show(
                         AdjustType == "Import" ? "Nhập hàng thành công!" : "Xuất hàng thành công!",

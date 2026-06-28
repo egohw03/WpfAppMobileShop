@@ -49,6 +49,7 @@ namespace WpfAppMobileShop.ViewModels
                         Brand = value.Brand,
                         Model = value.Model,
                         Price = value.Price,
+                        CostPrice = value.CostPrice,
                         StockQuantity = value.StockQuantity,
                         Description = value.Description,
                         ImageUrl = value.ImageUrl
@@ -137,6 +138,7 @@ namespace WpfAppMobileShop.ViewModels
                 Brand = SelectedProduct.Brand,
                 Model = SelectedProduct.Model,
                 Price = SelectedProduct.Price,
+                CostPrice = SelectedProduct.CostPrice,
                 StockQuantity = SelectedProduct.StockQuantity,
                 Description = SelectedProduct.Description,
                 ImageUrl = SelectedProduct.ImageUrl
@@ -152,6 +154,8 @@ namespace WpfAppMobileShop.ViewModels
             { System.Windows.MessageBox.Show("Tên sản phẩm không quá 200 ký tự!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             if (EditingProduct.Price < 0)
             { System.Windows.MessageBox.Show("Giá sản phẩm không hợp lệ!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (EditingProduct.CostPrice < 0)
+            { System.Windows.MessageBox.Show("Giá vốn không hợp lệ!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             if (EditingProduct.CategoryId <= 0)
             { System.Windows.MessageBox.Show("Vui lòng chọn danh mục!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             try
@@ -167,6 +171,7 @@ namespace WpfAppMobileShop.ViewModels
                         existing.Brand = EditingProduct.Brand;
                         existing.Model = EditingProduct.Model;
                         existing.Price = EditingProduct.Price;
+                        existing.CostPrice = EditingProduct.CostPrice;
                         existing.StockQuantity = EditingProduct.StockQuantity;
                         existing.Description = EditingProduct.Description;
                         existing.ImageUrl = EditingProduct.ImageUrl;

@@ -28,7 +28,7 @@ namespace WpfAppMobileShop.ViewModels
         public Warranty SelectedWarranty
         {
             get => _selectedWarranty;
-            set => SetProperty(ref _selectedWarranty, value);
+            set { SetProperty(ref _selectedWarranty, value); WarrantyNotes = value?.Notes; }
         }
         public string FilterStatus
         {

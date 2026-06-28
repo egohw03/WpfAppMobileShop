@@ -36,12 +36,12 @@ namespace WpfAppMobileShop.ViewModels
         public DateTime FromDate
         {
             get => _fromDate;
-            set { SetProperty(ref _fromDate, value); LoadReport(); }
+            set { SetProperty(ref _fromDate, value); try { LoadReport(); } catch { InitEmpty(); } }
         }
         public DateTime ToDate
         {
             get => _toDate;
-            set { SetProperty(ref _toDate, value); LoadReport(); }
+            set { SetProperty(ref _toDate, value); try { LoadReport(); } catch { InitEmpty(); } }
         }
         public decimal TotalRevenue { get => _totalRevenue; set => SetProperty(ref _totalRevenue, value); }
         public decimal TotalDiscount { get => _totalDiscount; set => SetProperty(ref _totalDiscount, value); }
@@ -88,7 +88,8 @@ namespace WpfAppMobileShop.ViewModels
             var orderIds = q.Select(o => o.OrderId).ToList();
             var costSum = _context.OrderDetails
                 .Where(od => orderIds.Contains(od.OrderId) && od.Product != null)
-                .Sum(od => od.Quantity * od.Product.CostPrice);
+                .Select(od => (decimal?)(od.Quantity * od.Product.CostPrice))
+                .Sum() ?? 0;
             TotalProfit = _totalFinal - costSum;
 
             var top = _context.OrderDetails

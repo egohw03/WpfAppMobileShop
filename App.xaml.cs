@@ -143,6 +143,8 @@ namespace WpfAppMobileShop
                     try { cmd.ExecuteNonQuery(); } catch { }
                     cmd.CommandText = "ALTER TABLE Products ADD COLUMN CostPrice REAL NOT NULL DEFAULT 0";
                     try { cmd.ExecuteNonQuery(); } catch { }
+                    cmd.CommandText = "UPDATE Products SET CostPrice = 0 WHERE CostPrice IS NULL";
+                    try { cmd.ExecuteNonQuery(); } catch { }
                 }
             }
 

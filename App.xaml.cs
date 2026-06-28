@@ -221,10 +221,10 @@ namespace WpfAppMobileShop
                 new Order { OrderDate = today.AddDays(-6), TotalAmount = 30500000, DiscountAmount = 0, FinalAmount = 30500000, Status = OrderStatus.Completed, CustomerId = customers[0].CustomerId, UserId = admin.UserId },
                 new Order { OrderDate = today.AddDays(-5), TotalAmount = 18500000, DiscountAmount = 0, FinalAmount = 18500000, Status = OrderStatus.Completed, CustomerId = customers[1].CustomerId, UserId = admin.UserId },
                 new Order { OrderDate = today.AddDays(-4), TotalAmount = 500000, DiscountAmount = 0, FinalAmount = 500000, Status = OrderStatus.Completed, CustomerId = customers[2].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today.AddDays(-3), TotalAmount = 12500000, DiscountAmount = 0, FinalAmount = 12500000, Status = OrderStatus.Completed, CustomerId = customers[0].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today.AddDays(-2), TotalAmount = 26000000, DiscountAmount = 0, FinalAmount = 26000000, Status = OrderStatus.Completed, CustomerId = customers[3].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today.AddDays(-3), TotalAmount = 23050000, DiscountAmount = 0, FinalAmount = 23050000, Status = OrderStatus.Completed, CustomerId = customers[0].CustomerId, UserId = admin.UserId },
+                new Order { OrderDate = today.AddDays(-2), TotalAmount = 25700000, DiscountAmount = 0, FinalAmount = 25700000, Status = OrderStatus.Completed, CustomerId = customers[3].CustomerId, UserId = admin.UserId },
                 new Order { OrderDate = today.AddDays(-1), TotalAmount = 800000, DiscountAmount = 0, FinalAmount = 800000, Status = OrderStatus.Completed, CustomerId = customers[4].CustomerId, UserId = admin.UserId },
-                new Order { OrderDate = today, TotalAmount = 35500000, DiscountAmount = 0, FinalAmount = 35500000, Status = OrderStatus.Completed, CustomerId = customers[1].CustomerId, UserId = admin.UserId }
+                new Order { OrderDate = today, TotalAmount = 31150000, DiscountAmount = 0, FinalAmount = 31150000, Status = OrderStatus.Completed, CustomerId = customers[1].CustomerId, UserId = admin.UserId }
             };
             context.Orders.AddRange(orders);
             context.SaveChanges();

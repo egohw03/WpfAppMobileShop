@@ -147,6 +147,8 @@ namespace WpfAppMobileShop.ViewModels
             { System.Windows.MessageBox.Show("Vui lòng nhập số điện thoại!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             if (EditingCustomer.Phone.Length > 20)
             { System.Windows.MessageBox.Show("Số điện thoại không quá 20 ký tự!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (_context.Customers.Any(c => c.Phone == EditingCustomer.Phone && c.CustomerId != EditingCustomer.CustomerId))
+            { System.Windows.MessageBox.Show("Số điện thoại đã tồn tại!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             try
             {
                 if (EditingCustomer.CustomerId == 0) _context.Customers.Add(EditingCustomer);

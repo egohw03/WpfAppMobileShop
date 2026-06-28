@@ -105,6 +105,8 @@ namespace WpfAppMobileShop.ViewModels
             { System.Windows.MessageBox.Show("Vui lòng nhập tên nhà cung cấp!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             if (EditingSupplier.SupplierName.Length > 200)
             { System.Windows.MessageBox.Show("Tên nhà cung cấp không quá 200 ký tự!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (_context.Suppliers.Any(s => s.SupplierName == EditingSupplier.SupplierName && s.SupplierId != EditingSupplier.SupplierId))
+            { System.Windows.MessageBox.Show("Tên nhà cung cấp đã tồn tại!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             try
             {
                 if (EditingSupplier.SupplierId == 0) _context.Suppliers.Add(EditingSupplier);

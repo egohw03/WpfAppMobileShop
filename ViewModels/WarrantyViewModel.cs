@@ -15,6 +15,7 @@ namespace WpfAppMobileShop.ViewModels
         private ObservableCollection<Warranty> _warranties;
         private Warranty _selectedWarranty;
         private string _filterStatus;
+        private string _searchText;
         private string _warrantyNotes;
 
         public string Title => "Quản lý bảo hành";
@@ -33,6 +34,11 @@ namespace WpfAppMobileShop.ViewModels
         {
             get => _filterStatus;
             set { SetProperty(ref _filterStatus, value); LoadData(); }
+        }
+        public string SearchText
+        {
+            get => _searchText;
+            set { SetProperty(ref _searchText, value); LoadData(); }
         }
         public string WarrantyNotes
         {
@@ -57,6 +63,8 @@ namespace WpfAppMobileShop.ViewModels
             var q = _context.Warranties.Include(w => w.Product).Include(w => w.Customer).Include(w => w.OrderDetail).AsQueryable();
             if (_filterStatus != "Tất cả")
                 q = q.Where(w => w.Status == _filterStatus);
+            if (!string.IsNullOrWhiteSpace(SearchText))
+                q = q.Where(w => w.Product.ProductName.Contains(SearchText) || w.Customer.FullName.Contains(SearchText));
             Warranties = new ObservableCollection<Warranty>(q.OrderByDescending(w => w.StartDate).ToList());
         }
 

@@ -14,6 +14,7 @@ namespace WpfAppMobileShop.ViewModels
         private ObservableCollection<PromoCode> _promoCodes;
         private PromoCode _selectedPromo;
         private PromoCode _editingPromo;
+        private string _searchText;
         private bool _isEditing;
 
         public string Title => "Quản lý khuyến mãi";
@@ -38,6 +39,12 @@ namespace WpfAppMobileShop.ViewModels
             get => _editingPromo;
             set => SetProperty(ref _editingPromo, value);
         }
+        public string SearchText
+        {
+            get => _searchText;
+            set { SetProperty(ref _searchText, value); Search(); }
+        }
+
         public bool IsEditing
         {
             get => _isEditing;
@@ -61,6 +68,13 @@ namespace WpfAppMobileShop.ViewModels
 
         public override void Dispose() { _context?.Dispose(); base.Dispose(); }
         private void LoadData() { PromoCodes = new ObservableCollection<PromoCode>(_context.PromoCodes.ToList()); }
+        private void Search()
+        {
+            var q = _context.PromoCodes.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(SearchText))
+                q = q.Where(p => p.Code.Contains(SearchText));
+            PromoCodes = new ObservableCollection<PromoCode>(q.ToList());
+        }
         private void Add() { EditingPromo = new PromoCode { DiscountType = "Percent", IsActive = true }; IsEditing = true; }
         private void Save()
         {

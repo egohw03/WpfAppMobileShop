@@ -240,6 +240,23 @@ namespace WpfAppMobileShop
             context.SaveChanges();
 
             var today = DateTime.Today;
+
+            var suppliers = new[]
+            {
+                new Supplier { SupplierName = "Công ty TNHH Thương mại ABC", Phone = "02812345678", Email = "abc@example.com", Address = "TP HCM" },
+                new Supplier { SupplierName = "Công ty CP Đầu tư XYZ", Phone = "02498765432", Email = "xyz@example.com", Address = "Hà Nội" },
+                new Supplier { SupplierName = "DNTN Phân phối Điện tử", Phone = "02361112233", Email = "dientu@example.com", Address = "Đà Nẵng" }
+            };
+            context.Suppliers.AddRange(suppliers);
+            context.SaveChanges();
+
+            var promos = new[]
+            {
+                new PromoCode { Code = "WELCOME10", DiscountType = "Percent", DiscountValue = 10, MinOrderAmount = 0, ExpiryDate = today.AddMonths(3), IsActive = true },
+                new PromoCode { Code = "GIAM50K", DiscountType = "Fixed", DiscountValue = 50000, MinOrderAmount = 500000, ExpiryDate = today.AddMonths(1), IsActive = true }
+            };
+            context.PromoCodes.AddRange(promos);
+            context.SaveChanges();
             var orders = new[]
             {
                 new Order { OrderDate = today.AddDays(-6), TotalAmount = 30500000, DiscountAmount = 0, VatAmount = 3050000, FinalAmount = 33550000, Status = OrderStatus.Completed, CustomerId = customers[0].CustomerId, UserId = admin.UserId },

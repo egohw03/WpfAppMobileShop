@@ -114,6 +114,8 @@ namespace WpfAppMobileShop.ViewModels
             { System.Windows.MessageBox.Show("Giảm giá phần trăm không quá 100%!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             if (EditingPromo.MinOrderAmount < 0)
             { System.Windows.MessageBox.Show("Giá trị đơn tối thiểu không hợp lệ!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (EditingPromo.ExpiryDate.HasValue && EditingPromo.ExpiryDate.Value < DateTime.Today)
+            { System.Windows.MessageBox.Show("Ngày hết hạn phải từ hôm nay trở đi!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             if (_context.PromoCodes.Any(p => p.Code == EditingPromo.Code && p.PromoCodeId != EditingPromo.PromoCodeId))
             { System.Windows.MessageBox.Show("Mã giảm giá đã tồn tại!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             try

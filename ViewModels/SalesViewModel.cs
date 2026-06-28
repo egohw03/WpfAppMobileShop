@@ -276,6 +276,9 @@ namespace WpfAppMobileShop.ViewModels
 
         private void Checkout()
         {
+            if (System.Windows.MessageBox.Show("Xác nhận thanh toán?", "Xác nhận",
+                System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question) != System.Windows.MessageBoxResult.Yes)
+                return;
             using (var transaction = _context.Database.BeginTransaction())
             {
                 try

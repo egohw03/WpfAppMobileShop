@@ -42,6 +42,7 @@ namespace WpfAppMobileShop.ViewModels
             get => _filterCategory;
             set { SetProperty(ref _filterCategory, value); Search(); }
         }
+        public ObservableCollection<string> CategoryFilterOptions { get; set; }
         public ObservableCollection<Category> Categories { get; set; }
 
         public ObservableCollection<Product> Products
@@ -157,6 +158,11 @@ namespace WpfAppMobileShop.ViewModels
         {
             var cats = _context.Categories.ToList();
             Categories = new ObservableCollection<Category>(cats);
+            var options = new ObservableCollection<string>();
+            options.Add("Tất cả");
+            foreach (var c in cats)
+                options.Add(c.CategoryName);
+            CategoryFilterOptions = options;
         }
 
         private void LoadSuppliers()

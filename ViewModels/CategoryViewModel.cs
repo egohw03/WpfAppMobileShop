@@ -154,6 +154,8 @@ namespace WpfAppMobileShop.ViewModels
             }
             catch (Exception ex)
             {
+                if (EditingCategory != null && EditingCategory.CategoryId == 0)
+                    _context.Entry(EditingCategory).State = System.Data.Entity.EntityState.Detached;
                 System.Windows.MessageBox.Show($"Lỗi lưu: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
@@ -163,6 +165,9 @@ namespace WpfAppMobileShop.ViewModels
             if (SelectedCategory == null) return;
             if (_context.Products.Any(p => p.CategoryId == SelectedCategory.CategoryId))
             { System.Windows.MessageBox.Show("Không thể xóa danh mục đang có sản phẩm!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            var result = System.Windows.MessageBox.Show($"Xóa danh mục '{SelectedCategory.CategoryName}'?", "Xác nhận",
+                System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+            if (result != System.Windows.MessageBoxResult.Yes) return;
             try
             {
                 var entity = _context.Categories.Find(SelectedCategory.CategoryId);

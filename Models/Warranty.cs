@@ -22,7 +22,7 @@ namespace WpfAppMobileShop.Models
         public DateTime EndDate { get; set; }
 
         [StringLength(20)]
-        public string Status { get; set; }
+        public string Status { get; set; } = "Active";
 
         [StringLength(1000)]
         public string Notes { get; set; }

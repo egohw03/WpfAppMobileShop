@@ -110,6 +110,10 @@ namespace WpfAppMobileShop.ViewModels
             { System.Windows.MessageBox.Show("Vui lòng chọn loại giảm giá!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             if (EditingPromo.DiscountValue < 0)
             { System.Windows.MessageBox.Show("Giá trị giảm giá không hợp lệ!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (EditingPromo.DiscountType == "Percent" && EditingPromo.DiscountValue > 100)
+            { System.Windows.MessageBox.Show("Giảm giá phần trăm không quá 100%!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (EditingPromo.MinOrderAmount < 0)
+            { System.Windows.MessageBox.Show("Giá trị đơn tối thiểu không hợp lệ!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             try
             {
                 if (EditingPromo.PromoCodeId == 0) _context.PromoCodes.Add(EditingPromo);
@@ -122,12 +126,17 @@ namespace WpfAppMobileShop.ViewModels
             }
             catch (Exception ex)
             {
+                if (EditingPromo != null && EditingPromo.PromoCodeId == 0)
+                    _context.Entry(EditingPromo).State = System.Data.Entity.EntityState.Detached;
                 System.Windows.MessageBox.Show($"Lỗi lưu: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
         private void Delete()
         {
             if (SelectedPromo == null) return;
+            var result = System.Windows.MessageBox.Show($"Xóa mã giảm giá '{SelectedPromo.Code}'?", "Xác nhận",
+                System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+            if (result != System.Windows.MessageBoxResult.Yes) return;
             try
             {
                 var e = _context.PromoCodes.Find(SelectedPromo.PromoCodeId);

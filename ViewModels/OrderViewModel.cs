@@ -169,15 +169,34 @@ namespace WpfAppMobileShop.ViewModels
                 {
                     var order = _context.Orders.Find(SelectedOrder.OrderId);
                     if (order == null) return;
+                    if (order.Status == OrderStatus.Cancelled)
+                    {
+                        transaction.Rollback();
+                        System.Windows.MessageBox.Show("Đơn hàng đã được huỷ trước đó!", "Thông báo",
+                            System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                        return;
+                    }
 
+                    var wasCompleted = order.Status == OrderStatus.Completed;
                     order.Status = OrderStatus.Cancelled;
 
                     var details = _context.OrderDetails.Where(od => od.OrderId == order.OrderId).ToList();
                     foreach (var detail in details)
                     {
                         var product = _context.Products.Find(detail.ProductId);
-                        if (product != null)
+                        if (product != null && wasCompleted)
                             product.StockQuantity += detail.Quantity;
+
+                        if (product != null)
+                            _context.StockTransactions.Add(new StockTransaction
+                            {
+                                ProductId = product.ProductId,
+                                Quantity = detail.Quantity,
+                                Type = "Export",
+                                Date = DateTime.Now,
+                                Notes = $"Hoàn kho từ huỷ đơn #{order.OrderId}",
+                                UserId = UserSession.CurrentUser?.UserId ?? 0
+                            });
                     }
 
                     _context.SaveChanges();

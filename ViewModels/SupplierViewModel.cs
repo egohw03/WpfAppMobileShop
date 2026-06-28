@@ -117,12 +117,17 @@ namespace WpfAppMobileShop.ViewModels
             }
             catch (Exception ex)
             {
+                if (EditingSupplier != null && EditingSupplier.SupplierId == 0)
+                    _context.Entry(EditingSupplier).State = System.Data.Entity.EntityState.Detached;
                 System.Windows.MessageBox.Show($"Lỗi lưu: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
         private void Delete()
         {
             if (SelectedSupplier == null) return;
+            var result = System.Windows.MessageBox.Show($"Xóa nhà cung cấp '{SelectedSupplier.SupplierName}'?", "Xác nhận",
+                System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+            if (result != System.Windows.MessageBoxResult.Yes) return;
             try
             {
                 var e = _context.Suppliers.Find(SelectedSupplier.SupplierId);

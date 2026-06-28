@@ -289,7 +289,7 @@ namespace WpfAppMobileShop.ViewModels
                         FinalAmount = FinalAmount,
                         Status = OrderStatus.Completed,
                         CustomerId = SelectedCustomer?.CustomerId,
-                        UserId = UserSession.CurrentUser?.UserId ?? 0,
+                        UserId = UserSession.IsLoggedIn ? UserSession.CurrentUser.UserId : 0,
                         OrderDetails = new ObservableCollection<OrderDetail>()
                     };
 

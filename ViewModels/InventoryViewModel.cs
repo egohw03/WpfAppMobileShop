@@ -268,7 +268,7 @@ namespace WpfAppMobileShop.ViewModels
                         Type = AdjustType,
                         Date = DateTime.Now,
                         Notes = AdjustNotes,
-                        UserId = UserSession.CurrentUser?.UserId ?? 0,
+                        UserId = UserSession.IsLoggedIn ? UserSession.CurrentUser.UserId : 0,
                         SupplierId = SelectedSupplier?.SupplierId
                     });
 

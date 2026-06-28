@@ -191,6 +191,8 @@ namespace WpfAppMobileShop.ViewModels
             }
             catch (Exception ex)
             {
+                if (EditingProduct != null && EditingProduct.ProductId == 0)
+                    _context.Entry(EditingProduct).State = System.Data.Entity.EntityState.Detached;
                 System.Windows.MessageBox.Show($"Lỗi lưu: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
@@ -200,6 +202,9 @@ namespace WpfAppMobileShop.ViewModels
             if (SelectedProduct == null) return;
             if (_context.OrderDetails.Any(od => od.ProductId == SelectedProduct.ProductId))
             { System.Windows.MessageBox.Show("Không thể xóa sản phẩm đã có trong đơn hàng!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            var result = System.Windows.MessageBox.Show($"Xóa sản phẩm '{SelectedProduct.ProductName}'?", "Xác nhận",
+                System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+            if (result != System.Windows.MessageBoxResult.Yes) return;
             try
             {
                 var entity = _context.Products.Find(SelectedProduct.ProductId);

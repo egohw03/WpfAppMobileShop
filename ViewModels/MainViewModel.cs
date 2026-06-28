@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using WpfAppMobileShop.Helpers;
@@ -121,7 +122,8 @@ namespace WpfAppMobileShop.ViewModels
 
             UserSession.CurrentUser = null;
 
-            foreach (Window window in Application.Current.Windows)
+            var windows = Application.Current.Windows.Cast<Window>().ToList();
+            foreach (Window window in windows)
             {
                 if (window != Application.Current.MainWindow)
                 {
@@ -132,7 +134,9 @@ namespace WpfAppMobileShop.ViewModels
             var loginView = new LoginView();
             if (loginView.ShowDialog() == true)
             {
-                CurrentViewModel = new DashboardViewModel();
+                var dash = new DashboardViewModel();
+                dash.NavigateRequest += (page) => Navigate(page);
+                CurrentViewModel = dash;
                 OnPropertyChanged(nameof(CurrentUserDisplay));
                 OnPropertyChanged(nameof(CurrentUserInitial));
                 OnPropertyChanged(nameof(CurrentUserRole));

@@ -183,8 +183,8 @@ namespace WpfAppMobileShop.ViewModels
             TotalProducts = _context.Products.Sum(p => p.StockQuantity);
             TotalCustomers = _context.Customers.Count();
             TodayRevenue = _context.Orders
-                .Where(o => o.OrderDate >= today)
-                .Sum(o => (decimal?)o.TotalAmount) ?? 0;
+                .Where(o => o.OrderDate >= today && o.Status != "Cancelled")
+                .Sum(o => (decimal?)o.FinalAmount) ?? 0;
 
             var orders = _context.Orders
                 .Where(o => o.OrderDate >= sevenDaysAgo)

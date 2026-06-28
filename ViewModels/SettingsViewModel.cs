@@ -59,11 +59,17 @@ namespace WpfAppMobileShop.ViewModels
 
         private void Save()
         {
+            if (VatPercent < 0 || VatPercent > 100)
+            { System.Windows.MessageBox.Show("VAT phải từ 0-100%!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (LowStockThreshold < 1)
+            { System.Windows.MessageBox.Show("Ngưỡng tồn kho tối thiểu phải lớn hơn 0!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (WarrantyMonths < 1)
+            { System.Windows.MessageBox.Show("Thời gian bảo hành phải lớn hơn 0!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             try
             {
-                SetSetting("StoreName", StoreName);
-                SetSetting("StoreAddress", StoreAddress);
-                SetSetting("StorePhone", StorePhone);
+                SetSetting("StoreName", StoreName ?? "");
+                SetSetting("StoreAddress", StoreAddress ?? "");
+                SetSetting("StorePhone", StorePhone ?? "");
                 SetSetting("VatPercent", VatPercent.ToString());
                 SetSetting("LowStockThreshold", LowStockThreshold.ToString());
                 SetSetting("WarrantyMonths", WarrantyMonths.ToString());

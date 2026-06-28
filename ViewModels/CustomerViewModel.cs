@@ -169,6 +169,8 @@ namespace WpfAppMobileShop.ViewModels
             }
             catch (Exception ex)
             {
+                if (EditingCustomer != null && EditingCustomer.CustomerId == 0)
+                    _context.Entry(EditingCustomer).State = System.Data.Entity.EntityState.Detached;
                 System.Windows.MessageBox.Show($"Lỗi lưu: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
@@ -176,6 +178,15 @@ namespace WpfAppMobileShop.ViewModels
         private void Delete()
         {
             if (SelectedCustomer == null) return;
+            if (_context.Orders.Any(o => o.CustomerId == SelectedCustomer.CustomerId))
+            {
+                System.Windows.MessageBox.Show("Không thể xóa khách hàng đã có đơn hàng!", "Lỗi",
+                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                return;
+            }
+            var result = System.Windows.MessageBox.Show($"Xóa khách hàng '{SelectedCustomer.FullName}'?", "Xác nhận",
+                System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+            if (result != System.Windows.MessageBoxResult.Yes) return;
             try
             {
                 var entity = _context.Customers.Find(SelectedCustomer.CustomerId);

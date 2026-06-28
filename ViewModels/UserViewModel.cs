@@ -153,6 +153,10 @@ namespace WpfAppMobileShop.ViewModels
             if (EditingUser.FullName.Length > 200)
             { System.Windows.MessageBox.Show("Họ tên không quá 200 ký tự!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
 
+            if (EditingUser.UserId == UserSession.CurrentUser?.UserId && !EditingUser.IsActive)
+            { System.Windows.MessageBox.Show("Không thể vô hiệu hóa tài khoản đang đăng nhập!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
+            if (_context.Users.Any(u => u.Username == EditingUser.Username && u.UserId != EditingUser.UserId))
+            { System.Windows.MessageBox.Show("Tên đăng nhập đã tồn tại!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); return; }
             try
             {
                 if (EditingUser.UserId == 0)
@@ -183,6 +187,8 @@ namespace WpfAppMobileShop.ViewModels
             }
             catch (Exception ex)
             {
+                if (EditingUser != null && EditingUser.UserId == 0)
+                    _context.Entry(EditingUser).State = System.Data.Entity.EntityState.Detached;
                 System.Windows.MessageBox.Show($"Lỗi lưu: {ex.Message}", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
